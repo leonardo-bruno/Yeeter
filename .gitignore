@@ -3,10 +3,9 @@ build/
 .DS_Store
 # Compiled class file
 *.class
-
 # Log file
 *.log
-
+YeeterApp-ejb/build/
 # BlueJ files
 *.ctxt
 
