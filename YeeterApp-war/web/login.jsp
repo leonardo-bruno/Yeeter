@@ -23,9 +23,9 @@
     <body class="text-center">
         <div class="container d-flex justify-content-center" style="align-items: center;">
             <div style="width: 250px;">
-                <form class="form-signin" action="Login" name="loginInfo" 
+                <h1 class="h3 mb-3 font-weight-normal">Log In</h1>
+                <form class="form-login-container" action="Login" name="loginInfo" 
                       accept-charset="UTF-8" method="post">
-                    <h1 class="h3 mb-3 font-weight-normal">Log In</h1>
                     <label for="inputEmail" class="sr-only">Email address</label>
                     <input name="email" type="email" id="inputEmail" class="form-control" 
                            placeholder="Email address" required="" autofocus="">
@@ -43,12 +43,12 @@
                         <a cass="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a>
                     </div>
                     <div class="btn-group" role="group">
-                        <button class="btn btn-lg btn-outline-info btn-block" type="submit">
-                            Entrar
-                        </button>
                         <a href="register.jsp" class="btn btn-lg btn-outline-secondary">
                             Registrarse
                         </a>
+                        <button class="btn btn-lg btn-outline-info btn-block" type="submit">
+                            Entrar
+                        </button>
                     </div>
                 </form>
             </div>
