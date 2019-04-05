@@ -6,6 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<% 
+    String error = (String) request.getAttribute("error");
+%>
 <html>
     <head>
         <title>Yeeter</title>
@@ -20,20 +23,32 @@
     <body class="text-center">
         <div class="container d-flex justify-content-center" style="align-items: center;">
             <div style="width: 250px;">
-                <form class="form-signin">
+                <form class="form-signin" action="Login" name="loginInfo" 
+                      accept-charset="UTF-8" method="post">
                     <h1 class="h3 mb-3 font-weight-normal">Log In</h1>
                     <label for="inputEmail" class="sr-only">Email address</label>
-                    <input type="email" id="inputEmail" class="form-control" 
+                    <input name="email" type="email" id="inputEmail" class="form-control" 
                            placeholder="Email address" required="" autofocus="">
                     <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                    <input name="password" 
+                           type="password" id="inputPassword" 
+                           class="form-control" placeholder="Password" required="">
                     <div class="checkbox mb-3 mt-3">
+                        <% if (error != null) {
+                        %>
+                        <div class="alert alert-warning"><%=error%></div>
+                        <%
+                            }
+                        %>
                         <a cass="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a>
                     </div>
                     <div class="btn-group" role="group">
-                        <button class="btn btn-lg btn-outline-info btn-block" type="submit">Entrar</button>
+                        <button class="btn btn-lg btn-outline-info btn-block" type="submit">
+                            Entrar
+                        </button>
                         <a href="register.jsp" class="btn btn-lg btn-outline-secondary">
-                            Registrarse</a>
+                            Registrarse
+                        </a>
                     </div>
                 </form>
             </div>

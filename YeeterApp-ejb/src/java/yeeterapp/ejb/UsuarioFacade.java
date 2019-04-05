@@ -7,7 +7,9 @@ package yeeterapp.ejb;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -27,6 +29,17 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public UsuarioFacade() {
         super(Usuario.class);
+    }
+    
+    public Usuario queryUserByEmail(String email){
+        Query q = this.em.createNamedQuery("Usuario.findByCorreo");
+        q.setParameter("correo", email);
+        try {
+            return (Usuario) q.getSingleResult();
+        } catch(NoResultException e) {
+            return null;
+        }
+            
     }
     
 }
