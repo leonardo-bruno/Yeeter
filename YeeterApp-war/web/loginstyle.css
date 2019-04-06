@@ -26,3 +26,7 @@ and open the template in the editor.
   border-radius: 0 0 0.25rem 0.25rem;
   border-top: none;
 }
+
+.form-login-container input:nth-of-type(1):focus { 
+    z-index: 10; 
+}

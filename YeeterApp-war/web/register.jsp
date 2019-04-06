@@ -4,7 +4,7 @@
     Author     : alec
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <%
     String invalidPassword = (String) request.getAttribute("passwordError");
@@ -16,7 +16,7 @@
 %>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
         <title>Yeeter</title>
         <link rel="stylesheet" 
               href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
@@ -104,7 +104,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Apellidos</span>
                         </div>
-                    <input type="text" class="form-control" required="" name="surnames">
+                    <input type="text" class="form-control" required="" name="surname">
                     </div>
                     
                     <%

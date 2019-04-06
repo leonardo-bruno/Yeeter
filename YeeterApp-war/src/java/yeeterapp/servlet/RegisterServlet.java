@@ -84,10 +84,11 @@ public class RegisterServlet extends HttpServlet {
         String bio = request.getParameter("bio");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
+        String birthSTR = request.getParameter("birth");
         Date birth = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            birth = sdf.parse(request.getParameter("birth"));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            birth = sdf.parse(birthSTR);
         } catch (ParseException ex) {
             request.setAttribute("birthNotOkey", INVALID_FIELD);
             rd = this.getServletContext().getRequestDispatcher("/register.jsp");
@@ -97,14 +98,14 @@ public class RegisterServlet extends HttpServlet {
         Usuario user = new Usuario();
         
         
-        user.setNombre(username);
+        user.setUsername(username);
         user.setPassword(password1);
         user.setBiografia(bio);
         user.setNombre(name);
         user.setFechaNacimiento(birth);
         user.setApellidos(surname);
         user.setCorreo(email);
-       
+        
         usuarioFacade.create(user);
         
         request.setAttribute("registerCompleted", "Usuario creado correctamente");
