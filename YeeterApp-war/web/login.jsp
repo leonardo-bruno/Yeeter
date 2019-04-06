@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <% 
     String error = (String) request.getAttribute("error");
+    String user = (String) request.getAttribute("registerCompleted");
 %>
 <html>
     <head>
@@ -21,36 +22,45 @@
         <link rel="stylesheet" href="loginstyle.css"/>
     </head>
     <body class="text-center">
-        <div class="container d-flex justify-content-center" style="align-items: center;">
-            <div style="width: 250px;">
-                <h1 class="h3 mb-3 font-weight-normal">Log In</h1>
-                <form class="form-login-container" action="Login" name="loginInfo" 
-                      accept-charset="UTF-8" method="post">
-                    <label for="inputEmail" class="sr-only">Email address</label>
-                    <input name="email" type="email" id="inputEmail" class="form-control" 
-                           placeholder="Email address" required="" autofocus="">
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input name="password" 
-                           type="password" id="inputPassword" 
-                           class="form-control" placeholder="Password" required="">
-                    <div class="checkbox mb-3 mt-3">
-                        <% if (error != null) {
-                        %>
-                        <div class="alert alert-warning"><%=error%></div>
-                        <%
-                            }
-                        %>
-                        <a cass="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <a href="register.jsp" class="btn btn-lg btn-outline-secondary">
-                            Registrarse
-                        </a>
-                        <button class="btn btn-lg btn-outline-info btn-block" type="submit">
-                            Entrar
-                        </button>
-                    </div>
-                </form>
+        <div class="body-container">
+            <div class="container d-flex justify-content-center" style="align-items: center;">
+                <div style="width: 250px;">
+                    <%
+                        if(user != null) {
+                    %>
+                        <div class="alert alert-success"><%=user%></div>
+                    <% 
+                        }
+                    %>
+                    <h1 class="h3 mb-3 font-weight-normal">Log In</h1>
+                    <form class="form-login-container" action="Login" name="loginInfo" 
+                          accept-charset="UTF-8" method="post">
+                        <label for="inputEmail" class="sr-only">Email address</label>
+                        <input name="email" type="email" id="inputEmail" class="form-control" 
+                               placeholder="Email address" required="" autofocus="">
+                        <label for="inputPassword" class="sr-only">Password</label>
+                        <input name="password" 
+                               type="password" id="inputPassword" 
+                               class="form-control" placeholder="Password" required="">
+                        <div class="checkbox mb-3 mt-3">
+                            <% if (error != null) {
+                            %>
+                            <div class="alert alert-warning"><%=error%></div>
+                            <%
+                                }
+                            %>
+                            <a cass="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <a href="register.jsp" class="btn btn-lg btn-outline-secondary">
+                                Registrarse
+                            </a>
+                            <button class="btn btn-lg btn-outline-info btn-block" type="submit">
+                                Entrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </body>
