@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : alec
 */
 
-body {
+.body-container {
     heigth: 100%;
     display: flex;
     justify-content: center;
