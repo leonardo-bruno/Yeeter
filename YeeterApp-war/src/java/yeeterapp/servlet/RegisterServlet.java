@@ -104,7 +104,7 @@ public class RegisterServlet extends HttpServlet {
         user.setFechaNacimiento(birth);
         user.setApellidos(surname);
         user.setCorreo(email);
-       
+        
         usuarioFacade.create(user);
         
         request.setAttribute("registerCompleted", "Usuario creado correctamente");
