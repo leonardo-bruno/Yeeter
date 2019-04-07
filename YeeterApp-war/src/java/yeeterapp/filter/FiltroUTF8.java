@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 /**
+ * Solución obtenida de https://github.com/melchor629/AplicacionTecnologiasWeb/blob/6449bb0e2c9ffd17b06e62b56f292a146c12404a/web/web/registro.jsp#L42
  * Filtro que captura todos los request para fijar el character encoding como
  * UTF8 y asi evitar problemas con las tildes
  * Ademas añade comodidad ya que en los servlets se puede obtener directamente la cadena
