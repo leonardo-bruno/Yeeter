@@ -93,6 +93,11 @@ public class RegisterServlet extends HttpServlet {
         }
         
         if(error) {
+            request.setAttribute("lastUsername", username);
+            request.setAttribute("lastEmail", email);
+            request.setAttribute("lastBio", bio);
+            request.setAttribute("lastName", name);
+            request.setAttribute("lastSurname", surname);
             request.setAttribute("fields", fieldsThatFail);
             rd = this.getServletContext().getRequestDispatcher("/register.jsp");
             rd.forward(request, response);
