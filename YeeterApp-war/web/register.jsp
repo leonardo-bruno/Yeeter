@@ -7,12 +7,10 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <%
-    String invalidPassword = (String) request.getAttribute("passwordError");
-    String invalidUsername = (String) request.getAttribute("usernameError");
-    String birthNotOkey = (String) request.getAttribute("birthNotOkey");
+    String fieldsThatFail = (String) request.getAttribute("fields");
     String userAlreadyExists = (String) request.getAttribute("userAlreadyExists");
     String userErrorMessage = (String) request.getAttribute("userError");
-    String email = (String) request.getAttribute("emailInUse");
+    boolean thereWasSomeError = true;
 %>
 <html>
     <head>
@@ -51,12 +49,12 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">username</span>
                         </div>
-                        <input type="text" class="form-control <%=invalidUsername%><%=userAlreadyExists%>" placeholder="Username" 
+                        <input type="text" class="form-control <%=(fieldsThatFail != null && fieldsThatFail.contains("user") ? "is-invalid" : null)%>" placeholder="Username" 
                                aria-label="Username" aria-describedby="basic-addon1"
                                name="username" required="" autofocus="">
                     </div>
                     <%
-                        if(email != null) {
+                        if(fieldsThatFail != null && fieldsThatFail.contains("email")) {
                     %>
                         <div class="alert alert-warning">
                             El email ya está en uso!
@@ -75,7 +73,7 @@
                                aria-label="Recipient's username" aria-describedby="basic-addon2">
                     </div>
                     <%
-                        if(invalidPassword != null) {
+                        if(fieldsThatFail != null && fieldsThatFail.contains("pass")) {
                     %>
                     <div class="alert alert-warning">Las contraseñas no coinciden o tienen un tamaño menor que 6</div>
                     <% 
@@ -89,8 +87,8 @@
                             </span>
                         </div>
                         </div>
-                        <input placeholder="Contraseña" required="" type="password" name="password1" class="form-control <%=invalidPassword%>" id="basic-url" aria-describedby="basic-addon3">
-                        <input placeholder="Repetir contraseña" required="" type="password" name="password2" class="form-control <%=invalidPassword%>" id="basic-url" aria-describedby="basic-addon3">
+                        <input placeholder="Contraseña" required="" type="password" name="password1" class="form-control <%=(fieldsThatFail != null && fieldsThatFail.contains("pass")) ? "is-invalid" : null%>" id="basic-url" aria-describedby="basic-addon3">
+                        <input placeholder="Repetir contraseña" required="" type="password" name="password2" class="form-control <%=(fieldsThatFail != null && fieldsThatFail.contains("pass")) ? "is-invalid" : null%>" id="basic-url" aria-describedby="basic-addon3">
                     </div>
 
                     <div class="input-group mb-3">
@@ -108,7 +106,7 @@
                     </div>
                     
                     <%
-                        if(birthNotOkey != null) {
+                        if(fieldsThatFail != null && fieldsThatFail.contains("birth")) {
                     %>
                     <div class="alert alert-warning">
                         La fecha no es correcta
@@ -121,7 +119,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Fecha de Nacimiento</span>
                         </div>
-                    <input type="date" class="form-control <%=birthNotOkey%>" required="" name="birth">
+                    <input type="date" class="form-control <%=(fieldsThatFail != null && fieldsThatFail.contains("birth")) ? "is-invalid" : null%>" required="" name="birth">
                     </div>
 
                     <div class="input-group">
@@ -136,3 +134,4 @@
         </div>
     </body>
 </html>
+

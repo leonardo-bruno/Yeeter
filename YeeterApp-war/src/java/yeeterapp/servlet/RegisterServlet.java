@@ -18,7 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Usuario;
 
@@ -47,6 +46,8 @@ public class RegisterServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        boolean error = false;
+        String fieldsThatFail = "";
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("username");
         RequestDispatcher rd;
@@ -59,26 +60,23 @@ public class RegisterServlet extends HttpServlet {
             } else {
                 request.setAttribute("userError", "El usuario contiene caracteres especiales o es menor que 6");
             }
-            request.setAttribute("usernameError", INVALID_FIELD);
-            rd = this.getServletContext().getRequestDispatcher("/register.jsp");
-            rd.forward(request, response);
+            fieldsThatFail = "user";
+            error = true;
         }
         
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
         
         if(!password1.equals(password2) || password1.length() < 6) {
-            request.setAttribute("passwordError", INVALID_FIELD);
-            rd = this.getServletContext().getRequestDispatcher("/register.jsp");
-            rd.forward(request, response);
+            error = true;
+            fieldsThatFail += "pass";
         }
         
         String email = request.getParameter("email");
         
         if(!emailIsAvailable(email)) {
-            request.setAttribute("emailInUse", INVALID_FIELD);
-            rd = this.getServletContext().getRequestDispatcher("/register.jsp");
-            rd.forward(request, response);
+            error = true;
+            fieldsThatFail += "email";
         }
         
         String bio = request.getParameter("bio");
@@ -90,9 +88,15 @@ public class RegisterServlet extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             birth = sdf.parse(birthSTR);
         } catch (ParseException ex) {
-            request.setAttribute("birthNotOkey", INVALID_FIELD);
+            error = true;
+            fieldsThatFail += "date";
+        }
+        
+        if(error) {
+            request.setAttribute("fields", fieldsThatFail);
             rd = this.getServletContext().getRequestDispatcher("/register.jsp");
             rd.forward(request, response);
+
         }
         
         Usuario user = new Usuario();
@@ -105,8 +109,9 @@ public class RegisterServlet extends HttpServlet {
         user.setFechaNacimiento(birth);
         user.setApellidos(surname);
         user.setCorreo(email);
-        
-        usuarioFacade.create(user);
+        if(!error) {
+            usuarioFacade.create(user);
+        }
         
         request.setAttribute("registerCompleted", "Usuario creado correctamente");
         rd = this.getServletContext().getRequestDispatcher("/login.jsp");
