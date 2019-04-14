@@ -13,7 +13,6 @@
     String lastEmail = (String) request.getAttribute("lastEmail");
     String lastName = (String) request.getAttribute("lastName");
     String lastSurname = (String) request.getAttribute("lastSurname");
-    boolean thereWasSomeError = true;
 %>
 <html>
     <head>
