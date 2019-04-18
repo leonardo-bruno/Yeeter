@@ -15,12 +15,14 @@ create table Usuario (
     biografia varchar(564)
 )ENGINE = InnoDB;
 
-drop table if exists Grupo;
-create table Grupo (
+drop table if exists GRUPO;
+create table GRUPO (
     id int AUTO_INCREMENT primary key,
     nombre varchar(255) not null,
     descripcion varchar(255),
-    fecha_creacion timestamp not null
+    fecha_creacion timestamp not null,
+    idCreador int not null unique,
+	FOREIGN KEY (idCreador) REFERENCES USUARIO(id)
 )ENGINE = InnoDB;
 
 drop table if exists Post;
@@ -28,14 +30,14 @@ create table Post (
     id int AUTO_INCREMENT primary key, 
     contenido varchar(255) not null,
     fecha_publicacion timestamp not null
-)ENGINE = InnoDB;;
+)ENGINE = InnoDB;
 
 drop table if exists Mensaje;
 create table Mensaje (
     id int AUTO_INCREMENT primary key, 
     contenido varchar(255) not null,
     fecha datetime not null
-)ENGINE = InnoDB;;
+)ENGINE = InnoDB;
 
 drop table if exists Notificaciones;
 create table Notificaciones (
@@ -43,7 +45,7 @@ create table Notificaciones (
     contenido varchar(255) not null,
     link varchar(255) not null,
     notificacionLeida bit not null default false
-)ENGINE = InnoDB;;
+)ENGINE = InnoDB;
 
 drop table if exists PeticionAmistad;
 create table PeticionAmistad(
@@ -61,14 +63,13 @@ create table PeticionAmistad(
         references Usuario (id)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
-)ENGINE = InnoDB;;
-
+)ENGINE = InnoDB;
 
 drop table if exists Amigos;
 create table Amigos(
     idUsuario int not null,
     idAmigo int not null,
-    primary key (idUsuario, idAmigo)
+    primary key (idUsuario, idAmigo),
     constraint idUsuario_FK
         Foreign key (idUsuario)
         references Usuario (id)
@@ -79,7 +80,26 @@ create table Amigos(
         references Usuario (id)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
-)ENGINE = InnoDB;;
+)ENGINE = InnoDB;
+
+
+drop TABLE if EXISTS USUARIO_PERTENECE_GRUPO;
+CREATE TABLE USUARIO_PERTENECE_GRUPO(
+  idUsuario int not null,
+  idGrupo int not null,
+  PRIMARY KEY(idUsuario,idGrupo),
+  CONSTRAINT idUsuario_FK1
+  Foreign key (idUsuario)
+  references USUARIO (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+constraint idGrupo_FK
+  Foreign key (idGrupo)
+  references GRUPO (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+  )ENGINE = InnoDB;
+
 
 -- id inicial de los objetos que se van a introducir en la BD
 ALTER TABLE USUARIO AUTO_INCREMENT=0;
