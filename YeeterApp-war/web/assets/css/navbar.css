@@ -14,3 +14,18 @@ and open the template in the editor.
     top: 0;
     z-index: 10;
 }
+
+.btn .pencil-left {
+    transform: translateY(-10px) translateX(9px);
+    font-size: 0.6rem;
+    filter: drop-shadow(0px 0px 1px #000000);
+}
+
+
+.btn .book-right{
+    transform: translateY(-4px);
+}
+
+.btn:hover .pencil-left{
+    filter: drop-shadow(0px 0px 1px #FFFFFF);
+}

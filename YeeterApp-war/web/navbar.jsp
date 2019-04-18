@@ -12,7 +12,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="navbar.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link rel="stylesheet" href="assets/css/navbar.css"/>
     </head>
     <body>
         <nav class="yeeter-nav navbar navbar-expand-lg navbar-dark bg-dark mb-5">
@@ -35,7 +36,11 @@
                 <form class="form-inline">
                     <input class="form-control mr-sm-2" type="search" placeholder="Buscar Amigos" aria-label="Search">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-light" type="submit">Buscar</button>
+                        <button class="btn btn-outline-light" style="height: 38px; width: 50px;" type="submit" >
+                            <span style="width: 25px; height: 25px; display:inline-block;">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </button>
                   </div>
               </form>
                 <ul class="navbar-nav ml-3">
@@ -45,7 +50,14 @@
                 </ul>
                 <ul class="navbar-nav ml-3">
                 <li class="nav-item">
-                    <a href="#"><button class="btn btn-outline-light my-2 my-sm-0">Nuevo Post</button></a>
+                    <a href="#">
+                        <button class="btn btn-outline-light my-2 my-sm-0" style="height: 38px;">
+                            <span class="fa-stack" style="width: 25px; height: 25px;">
+                                <i class="fas fa-book-open fa-stack-1x book-right"></i>
+                               <i class="fas fa-pencil-alt fa-stack-1x pencil-left"></i>
+                            </span>
+                        </button>
+                    </a>
                 </li>
                 </ul>
             </div>
