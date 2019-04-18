@@ -8,6 +8,9 @@ and open the template in the editor.
     Author     : alec
 */
 
-.nav-background {
-    background: #17a2b8;
+.yeeter-nav {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
