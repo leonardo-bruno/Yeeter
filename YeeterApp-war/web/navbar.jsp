@@ -38,7 +38,7 @@
                 </form>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Perfil</a>
+                      <a class="nav-link" href="panelUser">Perfil</a>
                     </li>
                 </ul>
             </div>
