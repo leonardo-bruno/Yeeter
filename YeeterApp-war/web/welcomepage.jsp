@@ -17,8 +17,5 @@
     <body>
         <a href="">Wan, este tag tiene el href, rellénalo con el path al
         sitio al que quieras ir para que hagas tu parte del trabajo</a>
-        <%--<a href="panelUserServlet?id=<%= usuario.getId() %>">Perfil</a><br/>
-        ID usuario: <%= usuario.getId() %>
-        --%>
     </body>
 </html>
