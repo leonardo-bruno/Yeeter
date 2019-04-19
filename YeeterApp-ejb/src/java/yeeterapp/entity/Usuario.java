@@ -39,13 +39,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByBiografia", query = "SELECT u FROM Usuario u WHERE u.biografia = :biografia")
-, @NamedQuery(name = "Usuario.findUserFeed", query = "select x from (select p from Post p where p.idAutor = :id \n" +
-"union\n" +
-"select p from Post p where p.idGrupo in (Select g.id from Grupo g Left Join UsuarioPerteneceGrupo upg ON g.id = upg.idGrupo Left Join \n" +
-" Usuario u ON u.id = upg.idUsuario where u.id = :id)\n" +
-"union\n" +
-"select p from Post p where p.idAutor in (select a.idAmigo from Amigos a left join Usuario u on a.idAmigo = u.id)\n" +
-") x order by x.fecha_publicacion desc "  )})
+    , @NamedQuery(name = "Usuario.findSelfPosts", query = "SELECT p from Post p where p.idAutor = :id ORDER BY p.fechaPublicacion desc")
+    , @NamedQuery(name = "Usuario.findGroupPosts", query = "SELECT p FROM Post p WHERE p.idGrupo in "
+                    + "(SELECT g.id FROM Grupo g LEFT JOIN UsuarioPerteneceGrupo upg LEFT JOIN Usuario u WHERE u.id = :id) ORDER BY p.fechaPublicacion desc") 
+    , @NamedQuery(name = "Usuario.findFriendsPosts", query = "SELECT p FROM Post p WHERE p.idAutor IN (SELECT a.amigosPK.idAmigo FROM Amigos a LEFT JOIN Usuario u ON a.amigosPK.idAmigo = u.id) ORDER BY p.fechaPublicacion desc")  
+    })
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
