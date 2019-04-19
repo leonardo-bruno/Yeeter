@@ -15,13 +15,18 @@ insert into Usuario(correo, password, nombre, apellidos, fecha_nacimiento, usern
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'parejo%')),
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'alkasete%')),
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'pumuky%'));
+
+insert into Amigos(idUsuario, idAmigo) values 
+	((select id from Usuario where correo like 'alkasete%'),(select id from Usuario where correo like 'pedro%'));
  
  select * from Amigos left join usuario on amigos.idAmigo = Usuario.id; # amigos de Leonardo
 
  
  insert into Grupo(nombre, descripcion, fecha_creacion, idCreador) values 
  ('Devs In Pyjamas', 'Grupo de estudiantes de Ingeniería del software que realiza software.', '2018-09-01',
- (select id from Usuario where correo like 'pumuky%'));
+ (select id from Usuario where correo like 'pumuky%')),
+ ('Yeeter Developers Group', 'Grupo para el desarrollo de la plataforma', '2019-01-20',
+ (select id from Usuario where correo like 'alkasete%'));
 
  
 insert into USUARIO_PERTENECE_GRUPO(idUsuario, idGrupo) values
@@ -30,8 +35,26 @@ insert into USUARIO_PERTENECE_GRUPO(idUsuario, idGrupo) values
 	 ((select id from Usuario where correo like 'leo%'), (select id from grupo where nombre like 'Devs%')), 
 	 ((select id from Usuario where correo like 'parejo%'), (select id from grupo where nombre like 'Devs%')),
 	 ((select id from Usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'Devs%')),
-	 ((select id from Usuario where correo like 'pumuky%'), (select id from grupo where nombre like 'Devs%'))
+	 ((select id from Usuario where correo like 'pumuky%'), (select id from grupo where nombre like 'Devs%')),
+     ((select id from Usuario where correo like 'wan%'), (select id from grupo where nombre like 'Yeeter%')),
+	 ((select id from Usuario where correo like 'pedro%'), (select id from grupo where nombre like 'Yeeter%')),
+	 ((select id from Usuario where correo like 'leo%'), (select id from grupo where nombre like 'Yeeter%')), 
+	 ((select id from Usuario where correo like 'parejo%'), (select id from grupo where nombre like 'Yeeter%')),
+	 ((select id from Usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'Yeeter%')),
+	 ((select id from Usuario where correo like 'pumuky%'), (select id from grupo where nombre like 'Yeeter%'))
 ;
+
+insert into POST(contenido, fecha_publicacion, idAutor) values 
+	('Hola mundo!', '2019-01-20', (select id from usuario where correo like 'alkasete%')),
+    ('Hola mundo! (me copio del @alkasete)', '2019-01-20', (select id from usuario where correo like 'pedro%')),
+    ('JEJEJEJE EL ALKASET!!!', '2018-01-20', (select id from usuario where correo like 'alkasete%')),
+    ('Comprobando como van las movidas de las fechas oWo', '2017-01-20', (select id from usuario where correo like 'pedro%')),
+    ('Se ha muerto mi abuela YEET 👌🏻😂💯', '2016-01-20', (select id from usuario where correo like 'wan%'));
+insert into POST(contenido, fecha_publicacion, idAutor, idGrupo) values
+	('Hola grupo!!!', '2019-01-20', (select id from usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'devs%')),
+    ('Hola grupo!!!', '2019-01-20', (select id from usuario where correo like 'pedro%'), (select id from grupo where nombre like 'Yeeter%'));
+    
+    
  
 
 Select *  from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo Left Join 

@@ -2,9 +2,8 @@ drop database if exists Yeeter;
 create schema Yeeter;
 use Yeeter;
 
-
-drop table if exists Usuario;
-create table Usuario (
+drop table if exists USUARIO;
+create table USUARIO (
     id int AUTO_INCREMENT primary key,
     correo varchar(255) unique not null,
     password varchar(64) not null,
@@ -22,66 +21,78 @@ create table GRUPO (
     descripcion varchar(255),
     fecha_creacion timestamp not null,
     idCreador int not null unique,
-	FOREIGN KEY (idCreador) REFERENCES USUARIO(id)
+    FOREIGN KEY (idCreador) REFERENCES USUARIO(id)
 )ENGINE = InnoDB;
 
-drop table if exists Post;
-create table Post (
-    id int AUTO_INCREMENT primary key, 
+drop table if exists POST;
+create table POST (
+    id int AUTO_INCREMENT primary key,
     contenido varchar(255) not null,
-    fecha_publicacion timestamp not null
+    fecha_publicacion timestamp not null,
+    idAutor int not null,
+    idGrupo int unique,
+    FOREIGN KEY (idAutor) REFERENCES USUARIO(id),
+    FOREIGN KEY (idGrupo) REFERENCES GRUPO(id)
 )ENGINE = InnoDB;
 
-drop table if exists Mensaje;
-create table Mensaje (
-    id int AUTO_INCREMENT primary key, 
+drop table if exists MENSAJE;
+create table MENSAJE (
+    id int AUTO_INCREMENT primary key,
     contenido varchar(255) not null,
-    fecha datetime not null
+    fecha datetime not null,
+    idEmisor int not null unique,
+    idReceptor int not null unique,
+    constraint idEmisor_FK
+    foreign key (idEmisor) references USUARIO(id),
+    constraint idReceptor_FK
+    foreign key (idReceptor) references USUARIO(id)
 )ENGINE = InnoDB;
 
-drop table if exists Notificaciones;
-create table Notificaciones (
+drop table if exists NOTIFICACIONES;
+create table NOTIFICACIONES (
     id int AUTO_INCREMENT primary key,
     contenido varchar(255) not null,
     link varchar(255) not null,
-    notificacionLeida bit not null default false
+    notificacionLeida bit not null default false,
+    idUsuario int not null unique,
+    FOREIGN KEY (idUsuario) REFERENCES USUARIO(id)
 )ENGINE = InnoDB;
 
-drop table if exists PeticionAmistad;
-create table PeticionAmistad(
+drop table if exists PETICION_AMISTAD;
+create table PETICION_AMISTAD(
     usuarioEmisor int not null,
     usuarioReceptor int not null,
     mensaje varchar(255),
     PRIMARY KEY (usuarioEmisor, usuarioReceptor),
     constraint PeticionAmistad_Emisor
         Foreign Key (usuarioEmisor)
-        references Usuario (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        references USUARIO (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     constraint PeticionAmistad_Receptor
         foreign key (usuarioReceptor)
-        references Usuario (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        references USUARIO (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 )ENGINE = InnoDB;
 
-drop table if exists Amigos;
-create table Amigos(
+
+drop table if exists AMIGOS;
+create table AMIGOS(
     idUsuario int not null,
     idAmigo int not null,
     primary key (idUsuario, idAmigo),
     constraint idUsuario_FK
         Foreign key (idUsuario)
-        references Usuario (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        references USUARIO (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     constraint idAmigo_FK
         Foreign key (idAmigo)
-        references Usuario (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        references USUARIO (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 )ENGINE = InnoDB;
-
 
 drop TABLE if EXISTS USUARIO_PERTENECE_GRUPO;
 CREATE TABLE USUARIO_PERTENECE_GRUPO(
@@ -101,11 +112,11 @@ constraint idGrupo_FK
   )ENGINE = InnoDB;
 
 
+
+
 -- id inicial de los objetos que se van a introducir en la BD
 ALTER TABLE USUARIO AUTO_INCREMENT=0;
-ALTER TABLE Grupo AUTO_INCREMENT=1000;
+ALTER TABLE GRUPO AUTO_INCREMENT=1000;
 ALTER TABLE POST AUTO_INCREMENT=2000;
 ALTER TABLE MENSAJE AUTO_INCREMENT=3000;
 ALTER TABLE NOTIFICACIONES AUTO_INCREMENT=4000;
-
-
