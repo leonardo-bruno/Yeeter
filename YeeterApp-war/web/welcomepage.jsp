@@ -23,7 +23,6 @@ List<Post> feed = (List)request.getAttribute("feed");
     </head>
     <body>
         
-        
         <div class="row">
             <div class="col-1"></div>
 </div>
@@ -56,5 +55,6 @@ for(Post post: feed){
 }
 
 %>
+
 </body>
 </html>
