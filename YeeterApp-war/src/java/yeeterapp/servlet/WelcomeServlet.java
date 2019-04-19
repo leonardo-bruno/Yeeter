@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,7 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import javax.ejb.EJB;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,21 +14,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Usuario;
 
 /**
  *
  * @author alec
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/Login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
+public class WelcomeServlet extends HttpServlet {
 
-    @EJB
-    private UsuarioFacade usuarioFacade;
-
-    
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,18 +35,15 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        Usuario user = usuarioFacade.queryUserByEmail(email);
-        RequestDispatcher rd;
-        if(user == null || !user.getPassword().equals(password)) {
-            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "La combinación de usuario y contraseña no es correcta");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+             HttpSession session = request.getSession();
+             Usuario us=(Usuario)session.getAttribute("loggedUser");
+            RequestDispatcher rd;
+            
+            session.setAttribute("loggedUser", us);
+            rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
             rd.forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user);
-            response.sendRedirect("WelcomeServlet");
         }
     }
 
