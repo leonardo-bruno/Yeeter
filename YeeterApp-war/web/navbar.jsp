@@ -32,8 +32,8 @@
                   <a class="nav-link" href="#">Grupos</a>
                 </li>
               </ul>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar Amigos" aria-label="Search">
+                <form class="form-inline" action="BuscarAmigos">
+                    <input name = "input" class="form-control mr-sm-2" type="search" placeholder="Buscar Amigos" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Buscar</button>
                 </form>
                 <ul class="navbar-nav">

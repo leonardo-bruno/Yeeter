@@ -5,6 +5,7 @@
  */
 package yeeterapp.ejb;
 
+import java.util.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -51,4 +52,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         }
     }
     
+    public List<Usuario> queryUserByUsernameOrName(String input) {
+        Query q = this.em.createNamedQuery("Usuario.findByNameOrUsername");
+        input = "%" + input + "%"; // Esta linea no estoy seguro de si habría que ponerla o no la verdad
+        q.setParameter("input", input);
+        try {
+            return (ArrayList<Usuario>) q.getSingleResult();
+        } catch(NoResultException r) {
+            return null;
+        }
+    }
 }
