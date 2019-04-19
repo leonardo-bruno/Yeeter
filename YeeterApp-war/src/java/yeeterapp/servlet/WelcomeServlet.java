@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import yeeterapp.ejb.PostFacade;
+
 
 /**
  *
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
 public class WelcomeServlet extends HttpServlet {
+
+     private PostFacade postFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,6 +36,10 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       
+        String username = request.getParameter("username");
+      
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -39,6 +47,8 @@ public class WelcomeServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
             rd.forward(request, response);
         }
+        
+       String getPost = postFacade.queryPost(request.getParameter(username))
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

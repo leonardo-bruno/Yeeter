@@ -5,11 +5,13 @@
  */
 package yeeterapp.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -50,5 +52,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return null;
         }
     }
+   public List<Post> queryUserFeed(int userID){
+      Query q = this.em.createNamedQuery("Usuario.findUserFeed");
+      q.setParameter("id",userID);
+      try{
+          return q.getResultList();
+      }catch (NoResultException r){
+          return null;
+      }
+   }
     
 }
