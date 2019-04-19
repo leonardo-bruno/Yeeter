@@ -4,12 +4,9 @@
     Author     : alec
 --%>
 
-<<<<<<< HEAD
 <%@page import="yeeterapp.entity.Usuario"%>
-=======
 <%@page import="java.util.List"%>
 <%@page import="yeeterapp.entity.Post"%>
->>>>>>> d35b5fa92f6472405617df4eb4d48528e635db5c
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 
@@ -26,6 +23,7 @@ List<Post> feed = (List)request.getAttribute("feed");
     </head>
     <body>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <a href="">Wan, este tag tiene el href, rellénalo con el path al
         sitio al que quieras ir para que hagas tu parte del trabajo</a>
 <<<<<<< HEAD
@@ -34,6 +32,8 @@ List<Post> feed = (List)request.getAttribute("feed");
         ID usuario: <%= usuario.getId() %>
         --%>
 =======
+=======
+>>>>>>> master
         
         
         <div class="row">
@@ -68,7 +68,11 @@ for(Post post: feed){
 }
 
 %>
+<<<<<<< HEAD
 >>>>>>> d35b5fa92f6472405617df4eb4d48528e635db5c
 >>>>>>> master
     </body>
+=======
+</body>
+>>>>>>> master
 </html>
