@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <%
   Usuario usuario=(Usuario)session.getAttribute("loggedUser");
-    %>
+%>
 <html>
     <head>
         <title>Yeeter</title>
