@@ -23,7 +23,7 @@
             <h1 class="mt-5 justify-content-center">Crear un nuevo post</h1>
         </div>
         <div class="body-container">
-            <form method="post" action="NewPost">
+            <form method="post" action="CrearPost">
                 <textarea name="post" rows="5" cols="50"></textarea>
                 <select name="grupos">
                     <%
