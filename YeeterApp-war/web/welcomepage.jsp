@@ -4,12 +4,9 @@
     Author     : alec
 --%>
 
-<<<<<<< HEAD
 <%@page import="yeeterapp.entity.Usuario"%>
-=======
 <%@page import="java.util.List"%>
 <%@page import="yeeterapp.entity.Post"%>
->>>>>>> d35b5fa92f6472405617df4eb4d48528e635db5c
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 
@@ -25,13 +22,6 @@ List<Post> feed = (List)request.getAttribute("feed");
         <title>Yeeter</title>
     </head>
     <body>
-<<<<<<< HEAD
-        <a href="">Wan, este tag tiene el href, rellénalo con el path al
-        sitio al que quieras ir para que hagas tu parte del trabajo</a>
-        <%--<a href="panelUserServlet?id=<%= usuario.getId() %>">Perfil</a><br/>
-        ID usuario: <%= usuario.getId() %>
-        --%>
-=======
         
         
         <div class="row">
@@ -66,6 +56,5 @@ for(Post post: feed){
 }
 
 %>
->>>>>>> d35b5fa92f6472405617df4eb4d48528e635db5c
-    </body>
+</body>
 </html>
