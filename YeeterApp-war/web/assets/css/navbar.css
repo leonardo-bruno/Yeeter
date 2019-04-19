@@ -29,3 +29,10 @@ and open the template in the editor.
 .btn:hover .pencil-left{
     filter: drop-shadow(0px 0px 1px #FFFFFF);
 }
+
+.paneluser-navbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}

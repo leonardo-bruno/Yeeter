@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,6 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,21 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
-
-
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author alec
+ * @author leonardobruno
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "panelUserServlet", urlPatterns = {"/panelUserServlet"})
+public class panelUserServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
-   
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,18 +41,15 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        String username = request.getParameter("username");
-      
-        
-        response.setContentType("text/html;charset=UTF-8");
-    
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");    
-        request.setAttribute("feed", usuarioFacade.queryUserFeed(user.getId()));
-        
+
+        int str=Integer.valueOf(request.getParameter("id"));
+        Usuario us=this.usuarioFacade.find(str);
+        request.setAttribute("usuario", us);
         RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
+        
+        session.setAttribute("loggedUser", us);
+        rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
         rd.forward(request, response);
     }
 

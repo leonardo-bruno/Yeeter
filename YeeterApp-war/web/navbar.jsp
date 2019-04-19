@@ -3,9 +3,12 @@
     Created on : 04-Apr-2019, 12:26:08
     Author     : alec
 --%>
-
+<%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+  Usuario usuario=(Usuario)session.getAttribute("loggedUser");
+    %>
 <html>
     <head>
         <title>Yeeter</title>
@@ -45,7 +48,7 @@
               </form>
                 <ul class="navbar-nav ml-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Perfil</a>
+                      <a class="nav-link" href="panelUserServlet?id=<%= usuario.getId() %>">Perfil</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-3">

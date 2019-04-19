@@ -6,6 +6,7 @@
 
 <%@page import="java.util.List"%>
 <%@page import="yeeterapp.entity.Post"%>
+<%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 
@@ -14,6 +15,7 @@ List<Post> feed = (List)request.getAttribute("feed");
 
 %>
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
