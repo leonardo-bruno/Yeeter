@@ -50,7 +50,7 @@
                 </ul>
                 <ul class="navbar-nav ml-3">
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="PrePostServlet">
                         <button class="btn btn-outline-light my-2 my-sm-0" style="height: 38px;">
                             <span class="fa-stack" style="width: 25px; height: 25px;">
                                 <i class="fas fa-book-open fa-stack-1x book-right"></i>
