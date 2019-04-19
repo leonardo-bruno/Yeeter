@@ -4,9 +4,19 @@
     Author     : alec
 --%>
 
+<<<<<<< HEAD
 <%@page import="yeeterapp.entity.Usuario"%>
+=======
+<%@page import="java.util.List"%>
+<%@page import="yeeterapp.entity.Post"%>
+>>>>>>> d35b5fa92f6472405617df4eb4d48528e635db5c
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
+
+<% 
+List<Post> feed = (List)request.getAttribute("feed");
+
+%>
 <!DOCTYPE html>
 
 <html>
@@ -15,7 +25,50 @@
         <title>Yeeter</title>
     </head>
     <body>
+<<<<<<< HEAD
         <a href="">Wan, este tag tiene el href, rellénalo con el path al
         sitio al que quieras ir para que hagas tu parte del trabajo</a>
+<<<<<<< HEAD
+=======
+        <%--<a href="panelUserServlet?id=<%= usuario.getId() %>">Perfil</a><br/>
+        ID usuario: <%= usuario.getId() %>
+        --%>
+=======
+        
+        
+        <div class="row">
+            <div class="col-1"></div>
+</div>
+            <div class="col-3" style=" padding-left: 10px;">
+                 <div class="card text-white" style="width: 18rem;  background-color:#343A40;">
+  <img src="https://i1.sndcdn.com/avatars-000091067179-721zox-t500x500.jpg" class="card-img-top" alt="...">
+  <div class="card-body" >
+    <h5 class="card-title">Nombre del usuario</h5>
+    <p class="card-text">Biografiaputamadre</p>
+    <a href="#" class="btn btn-primary">Boton Wan, panel de control</a>
+  </div>
+</div>
+                
+                
+            </div>
+  <div class="col-8"></div>
+</div>
+
+
+
+<% 
+for(Post post: feed){
+%>
+<div >
+    <%=  post.getContenido()%>
+</div>
+
+
+<%
+}
+
+%>
+>>>>>>> d35b5fa92f6472405617df4eb4d48528e635db5c
+>>>>>>> master
     </body>
 </html>
