@@ -16,18 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-<<<<<<< HEAD
+
 import yeeterapp.entity.Usuario;
-=======
->>>>>>> dd61a2d134ca595d2cde10fdf444d6f4fca52ecd
+
+
 
 import yeeterapp.ejb.UsuarioFacade;
 
-<<<<<<< HEAD
-=======
+
 
 import yeeterapp.entity.Usuario;
->>>>>>> dd61a2d134ca595d2cde10fdf444d6f4fca52ecd
+
 
 /**
  *
@@ -57,7 +56,7 @@ public class WelcomeServlet extends HttpServlet {
       
         
         response.setContentType("text/html;charset=UTF-8");
-<<<<<<< HEAD
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
              HttpSession session = request.getSession();
@@ -69,8 +68,7 @@ public class WelcomeServlet extends HttpServlet {
             rd.forward(request, response);
         }
 
-=======
->>>>>>> dd61a2d134ca595d2cde10fdf444d6f4fca52ecd
+
     
         HttpSession session = request.getSession();
         Usuario user=(Usuario) session.getAttribute("loggedUser");    
@@ -79,10 +77,7 @@ public class WelcomeServlet extends HttpServlet {
         RequestDispatcher rd;
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
         rd.forward(request, response);
-<<<<<<< HEAD
 
-=======
->>>>>>> dd61a2d134ca595d2cde10fdf444d6f4fca52ecd
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
