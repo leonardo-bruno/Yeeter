@@ -8,11 +8,13 @@ package yeeterapp.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Usuario;
 
@@ -20,7 +22,7 @@ import yeeterapp.entity.Usuario;
  *
  * @author leonardobruno
  */
-@WebServlet(name = "panelUser", urlPatterns = {"/panelUser"})
+@WebServlet(name = "panelUserServlet", urlPatterns = {"/panelUserServlet"})
 public class panelUserServlet extends HttpServlet {
 
     @EJB
@@ -39,10 +41,16 @@ public class panelUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String str=request.getParameter("id");
-        Integer idUser=new Integer(str);
+        HttpSession session = request.getSession();
+
+        int str=Integer.valueOf(request.getParameter("id"));
         Usuario us=this.usuarioFacade.find(str);
-        }
+        request.setAttribute("usuario", us);
+        RequestDispatcher rd;
+        
+        session.setAttribute("loggedUser", us);
+        rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
