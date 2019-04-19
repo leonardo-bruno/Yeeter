@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
@@ -77,4 +78,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
        }
     }
     
+   
+   public List<Grupo> queryGroups(int userId) {
+       Query q = this.em.createNamedQuery("Usuario.findGroupsImIn");
+       q.setParameter("id", userId);
+       try {
+           return q.getResultList();
+       } catch(NoResultException e) {
+           return null;
+       }
+   }
 }

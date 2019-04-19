@@ -46,14 +46,14 @@ public class WelcomeServlet extends HttpServlet {
       
         
         response.setContentType("text/html;charset=UTF-8");
-        
-         HttpSession session = request.getSession();
-         Usuario user=(Usuario) session.getAttribute("loggedUser");    
+    
+        HttpSession session = request.getSession();
+        Usuario user=(Usuario) session.getAttribute("loggedUser");    
         request.setAttribute("feed", usuarioFacade.queryUserFeed(user.getId()));
         
-      RequestDispatcher rd;
-            rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-            rd.forward(request, response);
+        RequestDispatcher rd;
+        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
