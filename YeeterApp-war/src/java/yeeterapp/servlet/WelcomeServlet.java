@@ -6,14 +6,16 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import yeeterapp.ejb.PostFacade;
+import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Usuario;
 
 
 /**
@@ -23,7 +25,10 @@ import yeeterapp.ejb.PostFacade;
 @WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
 public class WelcomeServlet extends HttpServlet {
 
-     private PostFacade postFacade;
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
+   
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,14 +46,14 @@ public class WelcomeServlet extends HttpServlet {
       
         
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            RequestDispatcher rd;
+        
+         HttpSession session = request.getSession();
+         Usuario user=(Usuario) session.getAttribute("loggedUser");    
+        request.setAttribute("feed", usuarioFacade.queryUserFeed(user.getId()));
+        
+      RequestDispatcher rd;
             rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
             rd.forward(request, response);
-        }
-        
-       String getPost = postFacade.queryPost(request.getParameter(username))
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -4,8 +4,15 @@
     Author     : alec
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="yeeterapp.entity.Post"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
+
+<% 
+List<Post> feed = (List)request.getAttribute("feed");
+
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,5 +39,20 @@
             </div>
   <div class="col-8"></div>
 </div>
+
+
+
+<% 
+for(Post post: feed){
+%>
+<div >
+    <%=  post.getContenido()%>
+</div>
+
+
+<%
+}
+
+%>
     </body>
 </html>
