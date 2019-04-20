@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import yeeterapp.entity.Usuario;
 import yeeterapp.ejb.UsuarioFacade;
 
+
 /**
  *
  * @author alec
@@ -46,7 +47,6 @@ public class WelcomeServlet extends HttpServlet {
       
         
         response.setContentType("text/html;charset=UTF-8");
-    
         HttpSession session = request.getSession();
         Usuario user=(Usuario) session.getAttribute("loggedUser");    
         request.setAttribute("feed", usuarioFacade.queryUserFeed(user.getId()));

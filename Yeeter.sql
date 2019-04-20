@@ -20,7 +20,7 @@ create table GRUPO (
     nombre varchar(255) not null,
     descripcion varchar(255),
     fecha_creacion timestamp not null,
-    idCreador int not null unique,
+    idCreador int not null,
     FOREIGN KEY (idCreador) REFERENCES USUARIO(id)
 )ENGINE = InnoDB;
 

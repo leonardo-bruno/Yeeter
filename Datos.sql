@@ -26,7 +26,8 @@ insert into Amigos(idUsuario, idAmigo) values
  ('Devs In Pyjamas', 'Grupo de estudiantes de Ingeniería del software que realiza software.', '2018-09-01',
  (select id from Usuario where correo like 'pumuky%')),
  ('Yeeter Developers Group', 'Grupo para el desarrollo de la plataforma', '2019-01-20',
- (select id from Usuario where correo like 'alkasete%'));
+ (select id from Usuario where correo like 'alkasete%')),
+ ("Just me lol", "literally just me", '2010-01-01', (select id from usuario where correo like 'alkasete%'));
 
  
 insert into USUARIO_PERTENECE_GRUPO(idUsuario, idGrupo) values
@@ -41,7 +42,10 @@ insert into USUARIO_PERTENECE_GRUPO(idUsuario, idGrupo) values
 	 ((select id from Usuario where correo like 'leo%'), (select id from grupo where nombre like 'Yeeter%')), 
 	 ((select id from Usuario where correo like 'parejo%'), (select id from grupo where nombre like 'Yeeter%')),
 	 ((select id from Usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'Yeeter%')),
-	 ((select id from Usuario where correo like 'pumuky%'), (select id from grupo where nombre like 'Yeeter%'))
+	 ((select id from Usuario where correo like 'pumuky%'), (select id from grupo where nombre like 'Yeeter%')),
+     ((select id from Usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'Just%')),
+     ((select id from Usuario where correo like 'pedro%'), (select id from grupo where nombre like 'Just%'))
+     
 ;
 
 insert into POST(contenido, fecha_publicacion, idAutor) values 
@@ -53,7 +57,8 @@ insert into POST(contenido, fecha_publicacion, idAutor) values
 insert into POST(contenido, fecha_publicacion, idAutor, idGrupo) values
 	('Hola grupo!!!', '2019-01-20', (select id from usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'devs%')),
     ('Hola grupo!!!', '2019-01-20', (select id from usuario where correo like 'pedro%'), (select id from grupo where nombre like 'Yeeter%'));
-    
+insert into POST(contenido, fecha_publicacion, idAutor, idGrupo) values
+('Joder como te foyaba con la poya 😂', '2010-01-20', (select id from usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'Just%'));    
     
  
 
