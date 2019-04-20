@@ -11,6 +11,7 @@
 
 <!DOCTYPE html>
 <%
+    String message = (String) request.getAttribute("message");
     List<Usuario> users = (List<Usuario>)request.getAttribute("users");
 %>
 
@@ -20,6 +21,14 @@
         <title>Yeeter</title>
     </head>
     <body class = "text-center">
+        <% if (message != null) {
+        %>
+        
+        <div class="alert alert-success"><%=message%></div>
+        
+        <%
+           }
+        %>
         <table class = "table">
             <tr>
                 <th>NOMBRE</th>
@@ -33,25 +42,19 @@
             %>
             
             <tr class='clickable-row' data-href='url://'>
+                <th><%=u.getNombre()%></th>
+                <th><%=u.getApellidos()%></th>
+                <th><%=u.getUsername()%></th>
                 <th>
-                    <%
-                        u.getNombre();
-                    %>
-                </th>
-                <th>
-                    <%
-                        u.getApellidos();
-                    %>
-                </th>
-                <th>
-                    <%
-                        u.getUsername();
-                    %>
-                </th>
-                <th>
-                    <%
-                        /*Aqui habria que meter el enlace para añadir como amigo*/
-                    %>
+                    <form class="form-inline" action = "PeticionAmigo">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-dark" style="height: 38px; width: 50px;" type="submit" >
+                                <span style="width: 25px; height: 25px; display:inline-block;">
+                                    <i class="fas fa-user-plus"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
                 </th>
             </tr>
             

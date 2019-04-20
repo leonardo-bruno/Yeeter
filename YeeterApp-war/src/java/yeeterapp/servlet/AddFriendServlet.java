@@ -49,11 +49,14 @@ public class AddFriendServlet extends HttpServlet {
         
         if(us == null){
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "Por favor inicie sesión primero.");
+            request.setAttribute("error", "Por favor inicie sesión.");
             rd.forward(request, response);
         }else{
             String destinatario = request.getParameter("destinatario");
             peticionFacade.create(new PeticionAmistad(us.getId(), Integer.parseInt(destinatario)));
+            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+            request.setAttribute("message", "La solicitud se ha enviado con exito.");
+            rd.forward(request, response);
         }   
     }
 
