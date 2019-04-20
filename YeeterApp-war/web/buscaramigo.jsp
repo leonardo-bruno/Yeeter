@@ -20,11 +20,7 @@
         <title>Yeeter</title>
     </head>
     <body class = "text-center">
-        <form class="form-inline" action="BuscarAmigos">
-            <input name = "input" class="form-control mr-sm-2" type="search" placeholder="Buscar Amigos" aria-label="Search">
-            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Buscar</button>
-        </form>
-        <table>
+        <table class = "table">
             <tr>
                 <th>NOMBRE</th>
                 <th>APELLIDOS</th>
@@ -33,36 +29,33 @@
             </tr>
             
             <%
-                Iterator<Usuario> u = users.iterator();
-                Usuario temp = u.next();
-                while(temp != null){
+                for(Usuario u: users){
             %>
             
             <tr class='clickable-row' data-href='url://'>
-                <td>
+                <th>
                     <%
-                        temp.getNombre();
+                        u.getNombre();
                     %>
-                </td>
-                <td>
+                </th>
+                <th>
                     <%
-                        temp.getApellidos();
+                        u.getApellidos();
                     %>
-                </td>
-                <td>
+                </th>
+                <th>
                     <%
-                        temp.getUsername();
+                        u.getUsername();
                     %>
-                </td>
-                <td>
+                </th>
+                <th>
                     <%
                         /*Aqui habria que meter el enlace para añadir como amigo*/
                     %>
-                </td>
+                </th>
             </tr>
             
             <%
-                    temp = u.next();
                 }
             %>
         </table>

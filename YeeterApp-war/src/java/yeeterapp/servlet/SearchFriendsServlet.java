@@ -52,7 +52,7 @@ public class SearchFriendsServlet extends HttpServlet {
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         }else{
-            String input = request.getParameter("input");
+            String input = request.getParameter("busqueda");
             List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
         
             if(users.isEmpty()){
@@ -60,6 +60,7 @@ public class SearchFriendsServlet extends HttpServlet {
                 request.setAttribute("error", "No existe ningún usuario que coincida con esos datos.");
                 rd.forward(request, response);
             }else{
+                request.setAttribute("users", users);
                 rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
                 rd.forward(request, response);
             }
