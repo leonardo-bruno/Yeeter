@@ -28,9 +28,20 @@
         .content .top .btn-primary{
          position: absolute;
          right: 50%;
+         
         }
         
     </style>
+    <%
+        //Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
+        Usuario us=(Usuario)request.getAttribute("usuario");
+        boolean mismoUsuario=false;
+        if(usuario.getId()==us.getId())mismoUsuario=true;
+
+        %>
+        <script>
+            //if(usuario.getId()==us.getId())document.getElementById('togglee')
+        </script>
     <head>
        <title>Yeeter</title>
         <meta charset="UTF-8">
@@ -39,8 +50,11 @@
     <body>
         <div class="content">
             <div class="top">
-                <p>Perfil
-                <a href="#" class="btn btn-primary" role="button">Modificar Contraseña</a></p>
+                <p>Perfil<% if(mismoUsuario) { %>
+                    <a href="#" class="btn btn-primary" role="button" > Modificar Contraseña</a></p>
+                <% } else{ %>
+                    <a href="#" class="btn btn-primary" role="button" hidden="true"> Modificar Contraseña</a></p>
+                    <% } %> 
             </div>
             <div class="bot">
         <form action="ModificarPerfilServlet" method="post">
@@ -82,7 +96,15 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary" >Modificar</button>
+                <% if(mismoUsuario) { %>
+                <button type="submit" class="btn btn-primary">Modificar</button>
+                <button type="submit" class="btn btn-primary" hidden="true">Enviar Mensaje</button>
+                <button type="submit" class="btn btn-primary" hidden="true">Añadir Amigo</button>
+                <% } else { %>
+                <button type="submit" class="btn btn-primary" hidden="true">Modificar</button>
+                <button type="submit" class="btn btn-primary" >Enviar Mensaje</button>
+                <button type="submit" class="btn btn-primary" >Añadir Amigo</button>
+                <% } %>
             </div>
           </div>
         </form>
