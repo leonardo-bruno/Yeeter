@@ -49,6 +49,7 @@ public class panelUserServlet extends HttpServlet {
         RequestDispatcher rd;
         
         session.setAttribute("loggedUser", us);
+        request.setAttribute("currentPage", "perfil");
         rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
         rd.forward(request, response);
     }
