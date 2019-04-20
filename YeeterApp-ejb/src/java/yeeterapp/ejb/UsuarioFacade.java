@@ -57,7 +57,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         input = "%" + input + "%"; // Esta linea no estoy seguro de si habría que ponerla o no la verdad
         q.setParameter("input", input);
         try {
-            return (ArrayList<Usuario>) q.getSingleResult();
+            return (List<Usuario>) q.getResultList();
         } catch(NoResultException r) {
             return null;
         }

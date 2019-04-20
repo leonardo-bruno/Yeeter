@@ -8,6 +8,7 @@ package yeeterapp.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,9 +44,17 @@ public class AddFriendServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        String destinatario = request.getParameter("destinatario");
-        peticionFacade.create(new PeticionAmistad(user.getId(), Integer.parseInt(destinatario)));
+        Usuario us=(Usuario) session.getAttribute("loggedUser");
+        RequestDispatcher rd;
+        
+        if(us == null){
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }else{
+            String destinatario = request.getParameter("destinatario");
+            peticionFacade.create(new PeticionAmistad(us.getId(), Integer.parseInt(destinatario)));
+        }   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

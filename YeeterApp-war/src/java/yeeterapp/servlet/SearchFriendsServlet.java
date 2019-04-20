@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Usuario;
 
@@ -42,18 +43,27 @@ public class SearchFriendsServlet extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
         
-        String input = request.getParameter("input");
-        List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
+        HttpSession session = request.getSession();
+        Usuario us = (Usuario) session.getAttribute("loggedUser");
         RequestDispatcher rd;
         
-        if(users.isEmpty()){
-            rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-            request.setAttribute("error", "No existe ningún usuario que coincida con esos datos.");
+        if(us == null){
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         }else{
-            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
-            rd.forward(request, response);
-        }
+            String input = request.getParameter("input");
+            List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
+        
+            if(users.isEmpty()){
+                rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
+                request.setAttribute("error", "No existe ningún usuario que coincida con esos datos.");
+                rd.forward(request, response);
+            }else{
+                rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+                rd.forward(request, response);
+            }
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
