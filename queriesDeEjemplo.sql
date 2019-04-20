@@ -18,16 +18,16 @@ select * from Post where idGrupo in (Select Grupo.id from Grupo Left Join USUARI
  
  
 select * from (
-select * from Post where idAutor = (select id from usuario where correo like 'alkasete%')
+select * from Post where idAutor = (select id from usuario where correo like 'pedro%')
 
 union
 
 select * from Post where idGrupo in (Select Grupo.id from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo Left Join 
- Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario where usuario.id = (select id from usuario where correo like 'alkasete%'))
+ Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario where usuario.id = (select id from usuario where correo like 'pedro%'))
  
  union
  
- select * from Post where idAutor in (select idAmigo from Amigos left join usuario on amigos.idAmigo = Usuario.id))
+ select * from Post where idAutor in (select idAmigo from Amigos left join usuario on amigos.idAmigo = Usuario.id) and idGrupo is null)
  xd order by xd.fecha_publicacion desc
  ;
 
@@ -36,19 +36,6 @@ Select * from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERT
  Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario where usuario.id = (select id from usuario where correo like 'alkasete%');
  
  
- 
- select * from (
-select * from Post where idAutor = ?1
 
-union
-
-select * from Post where idGrupo in (Select Grupo.id from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo Left Join 
- Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario where usuario.id = ?1)
  
- union
  
- select * from Post where idAutor in (select idAmigo from Amigos left join usuario on amigos.idAmigo = Usuario.id))
- xd order by xd.fecha_publicacion desc
- ;
- 
- select * from Post where idAutor in (select idAmigo from Amigos where (select id from Usuarios where email like 'alkasete%') = Usuario.id);
