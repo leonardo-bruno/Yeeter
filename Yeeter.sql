@@ -30,7 +30,7 @@ create table POST (
     contenido varchar(255) not null,
     fecha_publicacion timestamp not null,
     idAutor int not null,
-    idGrupo int unique,
+    idGrupo int,
     FOREIGN KEY (idAutor) REFERENCES USUARIO(id),
     FOREIGN KEY (idGrupo) REFERENCES GRUPO(id)
 )ENGINE = InnoDB;
