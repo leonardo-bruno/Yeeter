@@ -55,6 +55,6 @@ for(Post post: feed){
 }
 
 %>
-
+<a href="panelUserServlet?id=4">Perfil Prueba</a>
 </body>
 </html>

@@ -28,9 +28,36 @@
         .content .top .btn-primary{
          position: absolute;
          right: 50%;
+         
         }
         
     </style>
+    <%
+        //Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
+        Usuario us=(Usuario)request.getAttribute("usuario");
+        boolean mismoUsuario=false;
+        String userName,nombre, apellidos,email,fechaNacimiento,biografia;
+        if(usuario.getId()==us.getId()){
+            mismoUsuario=true;
+            userName= usuario.getUsername();
+            nombre=usuario.getNombre();
+            apellidos=usuario.getApellidos();
+            email=usuario.getCorreo();
+
+            biografia=usuario.getBiografia();
+        }else{
+            userName= us.getUsername();
+            nombre=us.getNombre();
+            apellidos=us.getApellidos();
+            email=us.getCorreo();
+
+            biografia=us.getBiografia();
+        }
+
+        %>
+        <script>
+            //if(usuario.getId()==us.getId())document.getElementById('togglee')
+        </script>
     <head>
        <title>Yeeter</title>
         <meta charset="UTF-8">
@@ -39,33 +66,36 @@
     <body>
         <div class="content">
             <div class="top">
-                <p>Perfil
-                <a href="#" class="btn btn-primary" role="button">Modificar Contraseña</a></p>
+                <p>Perfil<% if(mismoUsuario) { %>
+                    <a href="#" class="btn btn-primary" role="button" > Modificar Contraseña</a></p>
+                <% } else{ %>
+                    </p>
+                    <% } %> 
             </div>
             <div class="bot">
         <form action="ModificarPerfilServlet" method="post">
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-2 col-form-label">Usuario</label>
             <div class="col-sm-7">
-                <input readonly="true" type="usuario" class="form-control" id="usuario" value="<%= usuario.getUsername() %>">
+                <input readonly="true" type="usuario" class="form-control" id="usuario" value="<%= userName %>">
             </div>
           </div>
           <div class="form-group row">
             <label for="inputPassword3" class="col-sm-2 col-form-label">Nombre</label>
             <div class="col-sm-7">
-              <input readonly="true" type="nombre" class="form-control" id="nombre" value="<%= usuario.getNombre() %>">
+              <input readonly="true" type="nombre" class="form-control" id="nombre" value="<%= nombre %>">
             </div>
           </div>
           <div class="form-group row">
             <label for="inputPassword3" class="col-sm-2 col-form-label">Apellidos</label>
             <div class="col-sm-7">
-              <input readonly="true" type="apellidos" class="form-control" id="apellidos" value="<%= usuario.getApellidos() %>">
+              <input readonly="true" type="apellidos" class="form-control" id="apellidos" value="<%= apellidos %>">
             </div>
           </div>
           <div class="form-group row">
             <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-7">
-              <input readonly="true" type="email" class="form-control" id="email" value="<%= usuario.getCorreo() %>">
+              <input readonly="true" type="email" class="form-control" id="email" value="<%= email %>">
             </div>
           </div>
           <div class="form-group row">
@@ -77,12 +107,17 @@
           <div class="form-group row">
             <label for="inputPassword3" class="col-sm-2 col-form-label">Biografia</label>
             <div class="col-sm-7">
-              <textarea readonly="true" class="form-control" aria-label="biografia" value="<%= usuario.getBiografia() %>"></textarea>
+              <textarea readonly="true" class="form-control" aria-label="biografia" ><%= biografia %></textarea>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary" >Modificar</button>
+                <% if(mismoUsuario) { %>
+                <a href="ModificarPerfilServlet"  class="btn btn-primary">Modificar</a>
+                <% } else { %>
+                <a href="#" class="btn btn-primary" >Enviar Mensaje</a>
+                <a href="#" class="btn btn-primary" >Añadir Amigo</a>
+                <% } %>
             </div>
           </div>
         </form>
