@@ -34,7 +34,7 @@ select * from Post where idGrupo in (Select Grupo.id from Grupo Left Join USUARI
 # grupos a los que pertenece un usuario.
 Select * from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo Left Join 
  Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario where usuario.id = (select id from usuario where correo like 'alkasete%');
- 
+ Select * from Grupo left join USUARIO_PERTENECE_GRUPO grupo on grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo where USUARIO_PERTENECE_GRUPO.idUsuario = 5;
  
  
  select * from (
