@@ -7,7 +7,9 @@ package yeeterapp.ejb;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import yeeterapp.entity.Grupo;
 
 /**
@@ -29,4 +31,13 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         super(Grupo.class);
     }
     
+    public Grupo queryByName(String name) {
+        Query q = this.em.createNamedQuery("Grupo.findByNombre");
+        q.setParameter("nombre", name);
+        try {
+            return (Grupo) q.getSingleResult();
+        } catch(NoResultException e) {
+            return null;
+        }  
+    }
 }

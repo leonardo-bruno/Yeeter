@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.PostFacade;
+import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
@@ -59,12 +60,10 @@ public class CrearPostServlet extends HttpServlet {
         
         post.setContenido(content);
         post.setIdAutor(usuario.getId());
-        /**if(grupo != null) {
-            * Aquí haría falta comprobar que el grupo no es nullo y si no 
-            * lo es, entonces meterlo en el grupo. De momento no lo pongo bc reasons
-            * No sé como se pasa la info del .jsp al deste (no sé == me da pereza investigar)
-            * @Jesuspa98 es tu trabajete 
-        }**/
+        Grupo group = grupoFacade.queryByName(grupo);
+        if(group != null){
+            post.setIdGrupo(group.getId());
+        }
 
         Date date = new java.util.Date(System.currentTimeMillis());  
         post.setFechaPublicacion(date);
