@@ -12,6 +12,8 @@
 
 <!DOCTYPE html>
 <%
+    session = request.getSession();
+    Usuario logUs=(Usuario) session.getAttribute("loggedUser");
     String message = (String) request.getAttribute("message");
     List<Usuario> users = (List<Usuario>)request.getAttribute("users");
     List<Amigos> amigos = (List<Amigos>)request.getAttribute("friends");
@@ -50,7 +52,7 @@
                 <th><%=u.getUsername()%></th>
                 <th>
                     <%
-                        if(!amigos.contains(u)){    
+                        if(!amigos.contains(u) && !u.equals(logUs)){    
                     %>
                     
                     <form method = "post" action = "PeticionAmigo">
