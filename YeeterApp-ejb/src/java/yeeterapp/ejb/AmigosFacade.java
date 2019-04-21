@@ -5,9 +5,9 @@
  */
 package yeeterapp.ejb;
 
+import java.util.*;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import yeeterapp.entity.Amigos;
 
 /**
@@ -29,4 +29,13 @@ public class AmigosFacade extends AbstractFacade<Amigos> {
         super(Amigos.class);
     }
     
+    public List<Amigos> queryFriendsList(int id) {
+        Query q = this.em.createNamedQuery("Amigos.friendsList");
+        q.setParameter("input", id);
+        try {
+            return (List<Amigos>) q.getResultList();
+        } catch(NoResultException r) {
+            return null;
+        }
+    }
 }

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.ejb.AmigosFacade;
+import yeeterapp.entity.Amigos;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -28,6 +30,7 @@ public class SearchFriendsServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
+    private AmigosFacade amigosFacade;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,6 +57,7 @@ public class SearchFriendsServlet extends HttpServlet {
         }else{
             String input = request.getParameter("busqueda");
             List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
+            List<Amigos> friends = amigosFacade.queryFriendsList(us.getId());
         
             if(users.isEmpty()){
                 rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
@@ -61,6 +65,7 @@ public class SearchFriendsServlet extends HttpServlet {
                 rd.forward(request, response);
             }else{
                 request.setAttribute("users", users);
+                request.setAttribute("friends", friends);
                 rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
                 rd.forward(request, response);
             }

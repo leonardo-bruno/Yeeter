@@ -52,8 +52,8 @@ public class AddFriendServlet extends HttpServlet {
             request.setAttribute("error", "Por favor inicie sesión.");
             rd.forward(request, response);
         }else{
-            String destinatario = request.getParameter("destinatario");
-            peticionFacade.create(new PeticionAmistad(us.getId(), Integer.parseInt(destinatario)));
+            int dest = Integer.valueOf(request.getParameter("destID"));
+            peticionFacade.create(new PeticionAmistad(us.getId(), dest));
             rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
             request.setAttribute("message", "La solicitud se ha enviado con exito.");
             rd.forward(request, response);
