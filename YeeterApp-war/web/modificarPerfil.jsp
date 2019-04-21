@@ -38,7 +38,8 @@
             <div class="top">
             </div>
             <div class="bot">
-        <form action="ModificarPerfilServlet?id=<%= usuario.getId()%>" method="post">
+        <form action="ModificarPerfilServlet" method="post">
+            <input type="hidden" name="id" id="id" value="<%= usuario.getId()%>" /> <br/>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-2 col-form-label">Usuario</label>
             <div class="col-sm-7">

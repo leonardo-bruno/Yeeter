@@ -55,9 +55,6 @@
         }
 
         %>
-        <script>
-            //if(usuario.getId()==us.getId())document.getElementById('togglee')
-        </script>
     <head>
        <title>Yeeter</title>
         <meta charset="UTF-8">

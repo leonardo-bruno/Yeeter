@@ -45,12 +45,8 @@ public class ModificarPerfilServlet extends HttpServlet {
         HttpSession session = request.getSession();
         RequestDispatcher rd;
         
-        
         Usuario us;
         
-        
-        
-        //String id=session.getId();
         String userName=request.getParameter("userName");
         String name=request.getParameter("nombreM");
         String apell=request.getParameter("apellidoM");
@@ -59,7 +55,7 @@ public class ModificarPerfilServlet extends HttpServlet {
         
        us=this.usuarioFacade.queryUserByUsername(userName);
         if(us!=null){
-            us=this.usuarioFacade.queryUserByUsername(userName);
+
             us.setUsername(userName);
             us.setNombre(name);
             us.setApellidos(apell);
@@ -68,10 +64,11 @@ public class ModificarPerfilServlet extends HttpServlet {
             this.usuarioFacade.edit(us);
             
             
-            request.setAttribute("usuario", us);
+            
+            
             session.setAttribute("loggedUser", us);
-        
-            rd = this.getServletContext().getRequestDispatcher("/panelUserServlet");
+            request.setAttribute("usuario", us);
+            rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
             rd.forward(request, response);
                   
         }else{

@@ -42,12 +42,10 @@ public class panelUserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String mismoUsuario="false";
         
         int str=Integer.valueOf(request.getParameter("id"));
         Usuario us=this.usuarioFacade.find(str);
         Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
-        if(us.equals(usLogeado))mismoUsuario="true";
         request.setAttribute("usuario", us);
         RequestDispatcher rd;
         
@@ -55,7 +53,7 @@ public class panelUserServlet extends HttpServlet {
         session.setAttribute("loggedUser", usLogeado);
         request.setAttribute("usuario", us);
         request.setAttribute("currentPage", "perfil");
-        //request.setAttribute("mismoUsuario", mismoUsuario);
+
         rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
         rd.forward(request, response);
     }
