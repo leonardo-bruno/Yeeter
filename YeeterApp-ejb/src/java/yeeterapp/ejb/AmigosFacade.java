@@ -31,7 +31,7 @@ public class AmigosFacade extends AbstractFacade<Amigos> {
     
     public List<Amigos> queryFriendsList(int id) {
         Query q = this.em.createNamedQuery("Amigos.friendsList");
-        q.setParameter("input", id);
+        q.setParameter("id", id);
         try {
             return (List<Amigos>) q.getResultList();
         } catch(NoResultException r) {

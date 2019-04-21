@@ -20,7 +20,7 @@ create table GRUPO (
     nombre varchar(255) not null,
     descripcion varchar(255),
     fecha_creacion timestamp not null,
-    idCreador int not null unique,
+    idCreador int not null,
     FOREIGN KEY (idCreador) REFERENCES USUARIO(id)
 )ENGINE = InnoDB;
 
@@ -30,7 +30,7 @@ create table POST (
     contenido varchar(255) not null,
     fecha_publicacion timestamp not null,
     idAutor int not null,
-    idGrupo int unique,
+    idGrupo int,
     FOREIGN KEY (idAutor) REFERENCES USUARIO(id),
     FOREIGN KEY (idGrupo) REFERENCES GRUPO(id)
 )ENGINE = InnoDB;

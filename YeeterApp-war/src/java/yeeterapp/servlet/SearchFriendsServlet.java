@@ -30,6 +30,7 @@ public class SearchFriendsServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
+    @EJB
     private AmigosFacade amigosFacade;
     
     /**
