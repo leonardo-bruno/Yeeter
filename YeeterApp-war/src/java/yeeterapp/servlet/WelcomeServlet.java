@@ -6,6 +6,9 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
 
@@ -49,7 +53,14 @@ public class WelcomeServlet extends HttpServlet {
     
         HttpSession session = request.getSession();
         Usuario user=(Usuario) session.getAttribute("loggedUser");    
-        request.setAttribute("feed", usuarioFacade.queryUserFeed(user.getId()));
+        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());        
+        Map<Post,Usuario> feed = new HashMap<>();
+        
+        for(Post post: posts){
+          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
+          feed.put(post,u);
+        }
+        request.setAttribute("feed",feed);
         
         RequestDispatcher rd;
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
