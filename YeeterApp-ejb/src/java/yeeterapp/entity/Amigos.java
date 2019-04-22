@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Amigos.findAll", query = "SELECT a FROM Amigos a")
     , @NamedQuery(name = "Amigos.findByIdUsuario", query = "SELECT a FROM Amigos a WHERE a.amigosPK.idUsuario = :idUsuario")
     , @NamedQuery(name = "Amigos.findByIdAmigo", query = "SELECT a FROM Amigos a WHERE a.amigosPK.idAmigo = :idAmigo")
-    , @NamedQuery(name = "Amigos.friendsList", query = "SELECT a FROM Amigos a INNER JOIN Usuario u ON a.amigosPK.idUsuario = u.id WHERE a.amigosPK.idUsuario = :id")})
+    , @NamedQuery(name = "Amigos.friendsList", query = "SELECT a FROM Amigos a INNER JOIN Usuario u ON a.amigosPK.idAmigo = u.id WHERE a.amigosPK.idUsuario = :id")})
 public class Amigos implements Serializable {
 
     private static final long serialVersionUID = 1L;
