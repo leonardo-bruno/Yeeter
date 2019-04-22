@@ -33,7 +33,6 @@
         
     </style>
     <%
-        //Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
         Usuario us=(Usuario)request.getAttribute("usuario");
         boolean mismoUsuario=false;
         String userName,nombre, apellidos,email,fechaNacimiento,biografia;
