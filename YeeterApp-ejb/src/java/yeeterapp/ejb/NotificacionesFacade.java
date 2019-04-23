@@ -5,9 +5,12 @@
  */
 package yeeterapp.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import yeeterapp.entity.Notificaciones;
 
 /**
@@ -29,4 +32,14 @@ public class NotificacionesFacade extends AbstractFacade<Notificaciones> {
         super(Notificaciones.class);
     }
     
+    
+    public List<Notificaciones> queryByUsername(int id) {
+        Query q = this.em.createNamedQuery("Notificaciones.findByIdUsuario");
+        q.setParameter("id", id);
+        try {
+            return q.getResultList();
+        } catch(NoResultException e) {
+            return null;
+        }
+    }
 }
