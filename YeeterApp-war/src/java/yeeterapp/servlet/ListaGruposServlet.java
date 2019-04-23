@@ -59,9 +59,14 @@ public class ListaGruposServlet extends HttpServlet {
             RequestDispatcher rd;
             HttpSession session = request.getSession();
 
+            int todos=0;
+            int str=0;
+            Usuario us=null;
+
+                str=Integer.valueOf(request.getParameter("id"));
+                us=this.usuarioFacade.find(str);
+            
             Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
-            int str=Integer.valueOf(request.getParameter("id"));
-            Usuario us=this.usuarioFacade.find(str);
             
             List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
             List<Grupo> grupos=this.grupoFacade.findAll();
@@ -72,6 +77,7 @@ public class ListaGruposServlet extends HttpServlet {
             request.setAttribute("usuario", us);
             request.setAttribute("usuariosGrupos", usGrupo);
             request.setAttribute("grupos", grupos);
+            request.setAttribute("todos", todos);
             
             rd = this.getServletContext().getRequestDispatcher("/listaGrupos.jsp");
             rd.forward(request, response);

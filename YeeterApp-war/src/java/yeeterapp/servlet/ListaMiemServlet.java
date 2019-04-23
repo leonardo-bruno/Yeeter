@@ -7,11 +7,22 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.ejb.UsuarioPerteneceGrupoFacade;
+import yeeterapp.entity.Grupo;
+import yeeterapp.entity.Usuario;
+import yeeterapp.entity.UsuarioPerteneceGrupo;
 
 /**
  *
@@ -19,6 +30,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ListaMiemServlet", urlPatterns = {"/ListaMiemServlet"})
 public class ListaMiemServlet extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private UsuarioPerteneceGrupoFacade usuarioPerteneceGrupoFacade;
+
+    @EJB
+    private GrupoFacade grupoFacade;
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,16 +54,26 @@ public class ListaMiemServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ListaMiemServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ListaMiemServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            RequestDispatcher rd;
+            HttpSession session = request.getSession();
+            
+            
+            int str=Integer.valueOf(request.getParameter("id"));
+            Grupo grupo=this.grupoFacade.find(str);
+            List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
+            List<Usuario> listaUsuarios=new ArrayList<Usuario>();
+            for(UsuarioPerteneceGrupo upg : usGrupo){
+                if(upg.getUsuarioPerteneceGrupoPK().getIdGrupo()==grupo.getId())listaUsuarios.add(this.usuarioFacade.find(upg.getUsuarioPerteneceGrupoPK().getIdUsuario()));
+   
+            }
+            
+            Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
+            
+            session.setAttribute("loggedUser", usLogeado);
+            request.setAttribute("usuarios", listaUsuarios);
+            
+            rd = this.getServletContext().getRequestDispatcher("/listaMiem.jsp");
+            rd.forward(request, response);
         }
     }
 
