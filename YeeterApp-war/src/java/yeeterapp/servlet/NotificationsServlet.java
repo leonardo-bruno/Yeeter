@@ -8,6 +8,7 @@ package yeeterapp.servlet;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.entity.Usuario;
 import yeeterapp.ejb.NotificacionesFacade;
+import yeeterapp.entity.Notificaciones;
 
 /**
  *
@@ -44,7 +46,10 @@ public class NotificationsServlet extends HttpServlet {
         Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
         
         List<Notificaciones> notificaciones = notificacionesFacade.queryByUsername(loggedUser.getId());
+        request.setAttribute("notifications", notificaciones);
         
+        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -35,7 +35,7 @@ public class NotificacionesFacade extends AbstractFacade<Notificaciones> {
     
     public List<Notificaciones> queryByUsername(int id) {
         Query q = this.em.createNamedQuery("Notificaciones.findByIdUsuario");
-        q.setParameter("id", id);
+        q.setParameter("idUsuario", id);
         try {
             return q.getResultList();
         } catch(NoResultException e) {

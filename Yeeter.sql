@@ -54,7 +54,7 @@ create table NOTIFICACIONES (
     contenido varchar(255) not null,
     link varchar(255) not null,
     notificacionLeida bit not null default false,
-    idUsuario int not null unique,
+    idUsuario int not null,
     FOREIGN KEY (idUsuario) REFERENCES USUARIO(id)
 )ENGINE = InnoDB;
 

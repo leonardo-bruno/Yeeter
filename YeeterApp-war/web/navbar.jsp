@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">                    
                     <li class="nav-item d-flex align-items-center <%=("notificaciones".equals(path) ? "active" : "")%>">
-                        <a class="nav-link" href="#"><i class="fas fa-bell"></i> Notificaciones<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="NotificationsServlet"><i class="fas fa-bell"></i> Notificaciones<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item d-flex align-items-center <%=("mensajes".equals(path) ? "active" : "")%>">
                         <a class="nav-link" href="#"><i class="fas fa-envelope"></i> Mensajes</a>
