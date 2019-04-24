@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,9 +6,8 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,23 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Post;
+import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.UsuarioFacade;
-
 
 /**
  *
- * @author alec
+ * @author jesus
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
+public class PrePostServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
-
-
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,24 +42,19 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-
-        for(Post post: posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
+        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
+        
+        List<Grupo> grupos = usuarioFacade.queryGroups(usuario.getId());
+        if (grupos != null){
+            request.setAttribute("grupos", grupos);
+        } else {
+            request.setAttribute("grupos", new ArrayList<>());
         }
-        request.setAttribute("feed",feed);
-
+        
         RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
+        rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
         rd.forward(request, response);
     }
 

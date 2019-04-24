@@ -5,10 +5,7 @@
  */
 package yeeterapp.ejb;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -68,7 +65,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
                 " union\n" +
                 " \n" +
                 " select * from Post where idAutor in (select idAmigo from Amigos where ?1 = Amigos.idUsuario)\n" +
-                ") xd order by xd.fecha_publicacion desc\n" +
+                " and idGrupo is null) xd order by xd.fecha_publicacion desc\n" +
                 " ;", Post.class);
        q.setParameter(1, userID);
        try {

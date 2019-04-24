@@ -3,9 +3,13 @@
     Created on : 04-Apr-2019, 12:26:08
     Author     : alec
 --%>
-
+<%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+  Usuario usuario=(Usuario)session.getAttribute("loggedUser");
+  String path = (String) request.getAttribute("currentPage");
+%>
 <html>
     <head>
         <title>Yeeter</title>
@@ -22,15 +26,15 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Notificaciones<span class="sr-only">(current)</span></a>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">                    
+                    <li class="nav-item d-flex align-items-center <%=("notificaciones".equals(path) ? "active" : "")%>">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i> Notificaciones<span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Mensajes</a>
+                    <li class="nav-item d-flex align-items-center <%=("mensajes".equals(path) ? "active" : "")%>">
+                        <a class="nav-link" href="#"><i class="fas fa-envelope"></i> Mensajes</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Grupos</a>
+                    <li class="nav-item d-flex align-items-center <%=("grupos".equals(path) ? "active" : "")%>">
+                        <a class="nav-link" href="ListaGruposServlet?id=<%= usuario.getId() %>"><i class="fas fa-users"></i> Grupos</a>
                     </li>               
                 </ul> 
                 <form class="form-inline">
@@ -44,13 +48,13 @@
                   </div>
               </form>
                 <ul class="navbar-nav ml-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Perfil</a>
+                    <li class="nav-item <%=("perfil".equals(path) ? "active" : "")%>">
+                      <a class="nav-link" href="panelUserServlet?id=<%= usuario.getId() %>"><i class="fas fa-user"></i> Perfil</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-3">
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="PrePostServlet">
                         <button class="btn btn-outline-light my-2 my-sm-0" style="height: 38px;">
                             <span class="fa-stack" style="width: 25px; height: 25px;">
                                 <i class="fas fa-book-open fa-stack-1x book-right"></i>

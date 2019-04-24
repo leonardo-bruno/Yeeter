@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,9 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,23 +15,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.PostFacade;
+import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.UsuarioFacade;
-
 
 /**
  *
- * @author alec
+ * @author jesus
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "CrearPostServlet", urlPatterns = {"/CrearPost"})
+public class CrearPostServlet extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
+    private GrupoFacade grupoFacade;
 
 
+    @EJB
+    private PostFacade postFacade;
+    
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,25 +49,31 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-
-        for(Post post: posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
+        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
+        String content = request.getParameter("post");
+        String grupo = request.getParameter("grupos");
+        
+        
+        Post post = new Post();
+        
+        post.setContenido(content);
+        post.setIdAutor(usuario.getId());
+        Grupo group = grupoFacade.queryByName(grupo);
+        if(group != null){
+            post.setIdGrupo(group.getId());
         }
-        request.setAttribute("feed",feed);
 
-        RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-        rd.forward(request, response);
+        Date date = new java.util.Date(System.currentTimeMillis());  
+        post.setFechaPublicacion(date);
+        
+        
+        postFacade.create(post);
+        
+        
+        request.setAttribute("publishedPost", "Post publicado correctamente");
+        response.sendRedirect("WelcomeServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -12,10 +12,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 
-<% 
+<%
 Map<Post,Usuario> feed = (Map) request.getAttribute("feed");
 %>
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -26,7 +27,7 @@ Map<Post,Usuario> feed = (Map) request.getAttribute("feed");
 <body>
     <div class="container">
         <div class="row">
-            
+
             <div class="col-3">
                 <button type="button" class="btn btn-secondary">Boton Panel de Control</button>
             </div>
