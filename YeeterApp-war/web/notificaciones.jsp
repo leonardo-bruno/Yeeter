@@ -31,6 +31,10 @@
             <div><%= not.getContenido() %>          </div>
             <div><%= not.getLink()%>                </div>
             <div><%= not.getNotificacionLeida() %>  </div>
+            <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
+                <input value="<%= not.getId() %>" hidden="true" name="idNotification"/>
+                <button type="submit">Marcar como leída</button>
+            </form>
         <%
             }
         %>
