@@ -23,20 +23,25 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>(<%= noLeidas %>) Notificaciones</title>
+        <link rel="stylesheet" href="assets/css/loginstyle.css"/>
     </head>
     <body>
-        <% 
-            for(Notificaciones not : notificaciones) {
-        %>
-            <div><%= not.getContenido() %>          </div>
-            <div><%= not.getLink()%>                </div>
-            <div><%= not.getNotificacionLeida() %>  </div>
-            <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
-                <input value="<%= not.getId() %>" hidden="true" name="idNotification"/>
-                <button type="submit">Marcar como leída</button>
-            </form>
-        <%
-            }
-        %>
+        <table>
+            <% 
+                for(Notificaciones not : notificaciones) {
+            %>
+            <tr data-href="<%= not.getLink() %>" class="btn btn-outline-info">
+                <th><%= not.getContenido() %></th>
+                <th>
+                    <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
+                        <input value="<%= not.getId() %>" hidden="true" name="idNotification"/>
+                        <button type="submit">Marcar como leída</button>
+                    </form>
+                </th>
+            </tr>
+            <%
+                }
+                %>
+        </table>
     </body>
 </html>
