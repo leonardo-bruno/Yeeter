@@ -44,11 +44,18 @@ public class NotificationsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
+        RequestDispatcher rd;
+        
+        if(loggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }
         
         List<Notificaciones> notificaciones = notificacionesFacade.queryByUsername(loggedUser.getId());
         request.setAttribute("notifications", notificaciones);
         
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
+        rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
         rd.forward(request, response);
     }
 
