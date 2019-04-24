@@ -42,4 +42,14 @@ public class NotificacionesFacade extends AbstractFacade<Notificaciones> {
             return null;
         }
     }
+    
+    public List<Notificaciones> queryNonReadNotificationsByUsername(int id) {
+        Query q = this.em.createNamedQuery("Notificaciones.findAllNotificationsByUser");
+        q.setParameter("idUsuario", q);
+        try {
+            return q.getResultList();
+        } catch(NoResultException e) {
+            return null;
+        }
+    }
 }
