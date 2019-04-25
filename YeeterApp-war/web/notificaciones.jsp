@@ -10,38 +10,36 @@
 <%@include file="navbar.jsp" %>
 <% 
     List<Notificaciones> notificaciones = (List) request.getAttribute("notifications");
-    // long noLeidas = notificaciones.stream().filter(notificacion -> !notificacion.getNotificacionLeida()).count(); a jsp no le gusta
-    // la programación funcional ;)
-    int noLeidas = 0;
-    for(Notificaciones n : notificaciones) {
-        if(!n.getNotificacionLeida())
-            noLeidas += 1;
-    }
+    long noLeidas = (Long) request.getAttribute("noLeidas");
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>(<%= noLeidas %>) Notificaciones</title>
+        <title><%=(noLeidas != 0)? "(" + Long.toString(noLeidas) + ")":""%> Notificaciones</title>
         <link rel="stylesheet" href="assets/css/loginstyle.css"/>
+        <link rel="stylesheer" href="assets/css/table.css"/>
+        <script src="assets/js/rowSelecter.js"></script>
     </head>
     <body>
-        <table>
-            <% 
-                for(Notificaciones not : notificaciones) {
-            %>
-            <tr data-href="<%= not.getLink() %>" class="btn btn-outline-info">
-                <th><%= not.getContenido() %></th>
-                <th>
-                    <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
-                        <input value="<%= not.getId() %>" hidden="true" name="idNotification"/>
-                        <button type="submit">Marcar como leída</button>
-                    </form>
-                </th>
-            </tr>
-            <%
-                }
+        <div class="body-container">
+            <table>
+                <% 
+                    for(Notificaciones not : notificaciones) {
                 %>
-        </table>
+                <tr data-href="<%= not.getLink() %>" class="btn btn-outline-info" style="cursor:pointer;">
+                    <th>
+                        <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
+                            <%= not.getContenido() %>
+                            <input value="<%= not.getId() %>" hidden="true" name="idNotification"/>
+                            <button type="submit" class="btn btn-outline-dark">Marcar como leída</button>
+                        </form>
+                    </th>
+                </tr>
+                <%
+                    }
+                %>
+            </table>
+        </div>
     </body>
 </html>

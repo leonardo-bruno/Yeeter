@@ -54,6 +54,13 @@ public class NotificationsServlet extends HttpServlet {
         
         List<Notificaciones> notificaciones = notificacionesFacade.queryByUsername(loggedUser.getId());
         request.setAttribute("notifications", notificaciones);
+        long noLeidas;
+        noLeidas = notificaciones.stream().filter(notificacion -> !notificacion.getNotificacionLeida()).count();
+        // easy win programación funcional gracias por tanto.
+        /*for(Notificaciones n : notificaciones) 
+            if(!n.getNotificacionLeida())
+                noLeidas++;*/
+        request.setAttribute("noLeidas", noLeidas);
         
         rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
         rd.forward(request, response);
