@@ -4,6 +4,8 @@
     Author     : leonardobruno
 --%>
 
+<%@page import="java.text.Format"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
@@ -14,22 +16,25 @@
         Usuario us=(Usuario)request.getAttribute("usuario");
         boolean mismoUsuario=false;
         String userName,nombre, apellidos,email,fechaNacimiento,biografia;
+        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
         if(usuario.getId()==us.getId()){
             mismoUsuario=true;
             userName= usuario.getUsername();
             nombre=usuario.getNombre();
             apellidos=usuario.getApellidos();
             email=usuario.getCorreo();
-
+            fechaNacimiento = formatter.format(usuario.getFechaNacimiento());
             biografia=usuario.getBiografia();
         }else{
             userName= us.getUsername();
             nombre=us.getNombre();
             apellidos=us.getApellidos();
             email=us.getCorreo();
-
+            fechaNacimiento = formatter.format(us.getFechaNacimiento());
             biografia=us.getBiografia();
         }
+        
+        
 
         %>
     <head>
@@ -77,10 +82,12 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
-                    <div class="col-sm-7">
-                      <input readonly="true" type="fechaNacimiento" class="form-control" id="fechaNacimiento" value="<%= usuario.getUsername() %>">
-                    </div>
+                      
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha Nacimiento</label>
+                        <div class="col-sm-7">
+                        <input id="fechaNacimiento" readonly="true" type="date" class="form-control" value="<%= fechaNacimiento %>" format="DD-MM-YYYY">
+                        <span class="result"></span>
+                        </div>
                   </div>    
                   <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Biografia</label>

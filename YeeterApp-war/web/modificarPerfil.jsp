@@ -4,6 +4,9 @@
     Author     : leonardobruno
 --%>
 
+<%@page import="java.text.Format"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
@@ -26,6 +29,10 @@
         }
         
     </style>
+    <%
+        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaNacimiento = formatter.format(usuario.getFechaNacimiento());
+        %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -67,7 +74,7 @@
           <div class="form-group row">
             <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" id="fechaNacimientoM" name="fechaNacimientoM" value="<%= usuario.getUsername() %>">
+              <input type="text" class="form-control" id="fechaNacimientoM" name="fechaNacimientoM" value="<%= fechaNacimiento %>">
             </div>
           </div>    
           <div class="form-group row">
