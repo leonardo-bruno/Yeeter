@@ -74,6 +74,16 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
            return null;
        }
     }
+   
+   public Usuario queryUserByID(Integer id) {
+        Query q = this.em.createNamedQuery("Usuario.findById");
+        q.setParameter("id", id);
+        try {
+            return (Usuario) q.getSingleResult();
+        } catch(NoResultException r) {
+            return null;
+        }
+    }
     
    
    public List<Grupo> queryGroups(int userId) {

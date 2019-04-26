@@ -163,6 +163,13 @@ public class Usuario implements Serializable {
     public void setBiografia(String biografia) {
         this.biografia = biografia;
     }
+    public String idPass(int id){
+        String nom=null;
+        if(this.id.equals(id)){
+             nom= this.username;
+        }
+        return nom;
+    }
 
     @Override
     public int hashCode() {
