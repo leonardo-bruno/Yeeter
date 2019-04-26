@@ -73,7 +73,7 @@
           <div class="form-group row">
             <label for="inputPassword3" class="col-sm-2 col-form-label">Biografia</label>
             <div class="col-sm-7">
-              <textarea class="form-control" aria-label="biografia" id="bibliografiaM" name="bibliografiaM" value="<%= usuario.getBiografia() %>"></textarea>
+              <textarea class="form-control" aria-label="biografia" id="bibliografiaM" name="bibliografiaM"><%= usuario.getBiografia() %></textarea>
             </div>
           </div>
           <div class="form-group row">

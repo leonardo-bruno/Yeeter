@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,13 +20,15 @@ import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author leonardobruno
+ * @author alec
  */
-@WebServlet(name = "GrupoServlet", urlPatterns = {"/GrupoServlet"})
-public class GrupoServlet extends HttpServlet {
+@WebServlet(name = "EditarGrupoServlet", urlPatterns = {"/EditarGrupoServlet"})
+public class EditarGrupoServlet extends HttpServlet {
 
     @EJB
     private GrupoFacade grupoFacade;
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,28 +41,30 @@ public class GrupoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
+
         RequestDispatcher rd;
         HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("loggedUser");
-        if(user == null) {
+        Usuario logged = (Usuario) session.getAttribute("loggedUser");
+        if(logged == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         }
-
-
-        int str=Integer.valueOf(request.getParameter("id"));
-        Grupo grupo=this.grupoFacade.find(str);
-        String strEditingValue = request.getParameter("editing");
-        if(strEditingValue != null) {
-            request.setAttribute("editing", Boolean.parseBoolean(strEditingValue));
-        }
-        request.setAttribute("grupo", grupo);
-
+        int idGrupo = Integer.parseInt(request.getParameter("idGrupo"));
+        Grupo grupo = this.grupoFacade.find(idGrupo);
         
-        rd = this.getServletContext().getRequestDispatcher("/grupo.jsp");
-        rd.forward(request, response);
+        String temp = request.getParameter("nombre");
+        grupo.setNombre(temp);
+        temp = request.getParameter("descripcion");
+        grupo.setDescripcion(temp);
+        
+        grupoFacade.edit(grupo);
+                
+        
+        request.setAttribute("id", grupo.getId());
+        response.sendRedirect("GrupoServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
