@@ -67,11 +67,11 @@ Select *  from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PER
 
 
  insert into Notificaciones(contenido, link, idUsuario) values 
- ('Jesucristo te quiere añadir como amigo', 'hhtps://', (select id from Usuario where correo like 'alkasete%')),
- ('Jesucristo te quiere añadir como amigo', 'hhtps://', (select id from Usuario where correo like 'pedro%')), 
- ('Paco maruenda ha comentado en tu perfil', 'hhtps://', (select id from Usuario where correo like 'alkasete%')),
- ('JUANJOSE te quiere añadir como amigo', 'hhtps://', (select id from Usuario where correo like 'alkasete%')),
- ('So excited to finally announce that I\'m sad', 'hhtps://', (select id from Usuario where correo like 'alkasete%')),
- ('Pewdipie is now banned from sweden', 'hhtps://', (select id from Usuario where correo like 'alkasete%'))
+ ('Wan ha comentado en tu post', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('Jesucristo te quiere añadir como amigo', 'WelcomeServlet', (select id from Usuario where correo like 'pedro%')), 
+ ('Paco maruenda ha comentado en tu perfil', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('JUANJOSE te quiere añadir como amigo', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('So excited to finally announce that I\'m sad', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('Pewdipie is now banned from sweden', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%'))
  ;
 

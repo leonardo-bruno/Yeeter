@@ -6,14 +6,17 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.entity.Notificaciones;
+import yeeterapp.entity.Usuario;
 
 /**
  *
@@ -39,11 +42,23 @@ public class MarkAsReadServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        int idNotificacion =  Integer.parseInt(request.getParameter("idNotification"));
-        Notificaciones notificacion = notificacionesFacade.find(idNotificacion);
-        notificacion.setNotificacionLeida(true);
-        
-        notificacionesFacade.edit(notificacion);
+        String strId =  request.getParameter("idNotification");
+        Notificaciones notificacion;
+        if(strId == null) {
+            HttpSession session = request.getSession();
+            Usuario user = (Usuario) session.getAttribute("loggedUser");
+            List<Notificaciones> notificaciones = 
+                    notificacionesFacade.queryNonReadNotificationsByUsername(user.getId());
+            notificaciones.forEach((not) -> {
+                not.setNotificacionLeida(true);
+                notificacionesFacade.edit(not);
+            });
+        } else {
+            int idNotificacion = Integer.parseInt(strId);
+            notificacion = notificacionesFacade.find(idNotificacion);
+            notificacion.setNotificacionLeida(true);
+            notificacionesFacade.edit(notificacion);
+        }
         
         request.setAttribute("success", "Notificación marcada como leída");
         response.sendRedirect("NotificationsServlet");
