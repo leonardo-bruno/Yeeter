@@ -7,6 +7,7 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -45,23 +46,24 @@ public class ModificarPerfilServlet extends HttpServlet {
         HttpSession session = request.getSession();
         RequestDispatcher rd;
         
-        Usuario us;
+        Usuario us=null;
         
-        String userName=request.getParameter("userName");
-        String name=request.getParameter("nombreM");
-        String apell=request.getParameter("apellidoM");
-        String correo=request.getParameter("emailM");
-        String bio=request.getParameter("bibliografiaM");
-        
-       us=this.usuarioFacade.queryUserByUsername(userName);
-        if(us!=null){
-
+        try{
+            int id=Integer.valueOf(request.getParameter("id"));
+            us=this.usuarioFacade.find(id);
+            String userName=request.getParameter("userName");
+            String name=request.getParameter("nombreM");
+            String apell=request.getParameter("apellidoM");
+            String correo=request.getParameter("emailM");
+            String bio=request.getParameter("bibliografiaM");
+            String fechaNacimiento=request.getParameter("");
+            
             us.setUsername(userName);
-            us.setNombre(name);
-            us.setApellidos(apell);
-            us.setCorreo(correo);
-            us.setBiografia(bio);
             this.usuarioFacade.edit(us);
+            //this.usuarioFacade.remove(us);
+            /*Usuario usu=new Usuario();
+            usu.setUsername("leonardo");
+            this.usuarioFacade.create(usu);*/
             
             
             
@@ -70,11 +72,15 @@ public class ModificarPerfilServlet extends HttpServlet {
             request.setAttribute("usuario", us);
             rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
             rd.forward(request, response);
-                  
-        }else{
+            
+        }catch(Exception e){
             rd = this.getServletContext().getRequestDispatcher("/modificarPerfil.jsp");
             rd.forward(request, response);
         }
+        
+        
+        
+        
         
         
     }

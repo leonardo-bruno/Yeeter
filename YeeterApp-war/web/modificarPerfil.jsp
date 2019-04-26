@@ -45,7 +45,7 @@
             <div class="top">
             </div>
             <div class="bot">
-        <form action="ModificarPerfilServlet" method="post">
+        <form action="ModificarPerfilServlet?id=<%= usuario.getId()%>" method="post">
             <input type="hidden" name="id" id="id" value="<%= usuario.getId()%>" /> <br/>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-2 col-form-label">Usuario</label>
@@ -72,15 +72,16 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
-            <div class="col-sm-7">
-              <input type="text" class="form-control" id="fechaNacimientoM" name="fechaNacimientoM" value="<%= fechaNacimiento %>">
-            </div>
+            <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha Nacimiento</label>
+                        <div class="col-sm-7">
+                        <input id="fechaNacimiento"  type="date" class="form-control" value="<%= fechaNacimiento %>" format="DD-MM-YYYY">
+                        <span class="result"></span>
+                        </div>
           </div>    
           <div class="form-group row">
             <label for="inputPassword3" class="col-sm-2 col-form-label">Biografia</label>
             <div class="col-sm-7">
-              <textarea class="form-control" aria-label="biografia" id="bibliografiaM" name="bibliografiaM" value="<%= usuario.getBiografia() %>"></textarea>
+              <textarea class="form-control" aria-label="biografia" id="bibliografiaM" name="bibliografiaM" ><%= usuario.getBiografia() %></textarea>
             </div>
           </div>
           <div class="form-group row">
