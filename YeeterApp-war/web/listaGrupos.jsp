@@ -46,8 +46,6 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">   
         <link rel="stylesheet" href="assets/css/estilos.css"/>
         <title>Yeeter - Grupos</title>
     </head>
@@ -57,16 +55,16 @@
                 <nav class="navbar navbar-dark bg-dark">
                     <span class="navbar-brand">Grupos</span>
                     <form class="form-inline my-2 my-lg-0" action="ListaGruposServlet">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="todos" id="todos" value="1">Todos</button>
+                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" id="todos" value="1">Todos</button>
                     </form>
                 </nav>
                     
-                    <div class="list-group">
-                        <% for(int i=0;i<grupos.size();i++){
-                        %>
-                        <a type="button" href="GrupoServlet?id=<%= grupos.get(i).getId() %>" class="list-group-item list-group-item-action"><%= grupos.get(i).getNombre() %></a>
-                        <% } %>
-                    </div>
+                <div class="list-group">
+                    <% for(int i=0;i<grupos.size();i++){
+                    %>
+                    <a href="GrupoServlet?id=<%= grupos.get(i).getId() %>" class="list-group-item list-group-item-action btn-outline-dark"><%= grupos.get(i).getNombre() %></a>
+                    <% } %>
+                </div>
                 
             </div>
         </div>
