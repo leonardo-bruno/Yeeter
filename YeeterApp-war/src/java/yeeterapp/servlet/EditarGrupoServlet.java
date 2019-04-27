@@ -64,7 +64,9 @@ public class EditarGrupoServlet extends HttpServlet {
                 
         
         request.setAttribute("id", grupo.getId());
-        response.sendRedirect("GrupoServlet");
+        rd = this.getServletContext().getRequestDispatcher("/GrupoServlet");
+        rd.forward(request, response);
+        //response.sendRedirect("GrupoServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
