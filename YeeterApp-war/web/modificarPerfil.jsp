@@ -11,6 +11,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 <!DOCTYPE html>
+<html>
+    <head>
 <style>
         .body-container {
             height: 100%;
@@ -35,8 +37,6 @@
         String lastPass=(String)request.getAttribute("password");
 
     %>
-    <head>
-    <html>
         <meta charset="UTF-8">
         <title>Yeeter</title>
     </head>
@@ -46,7 +46,7 @@
         </div>
         <div class="body-container">
             <form method="post" action="ModificarPerfilServlet?id=<%= usuario.getId()%>">
-                <input hidden="true" name="pass" value="<%= lastPass %>"/>
+                <input type="hidden" name="pass" value="<%= lastPass %>"/>
                 <div style="align-items: center;">
                     <%
                         if(userErrorMessage != null) {
