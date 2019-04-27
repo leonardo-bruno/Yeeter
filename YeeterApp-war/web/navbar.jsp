@@ -50,7 +50,7 @@
               </form>
                 <ul class="navbar-nav ml-3">
                     <li class="nav-item <%=("perfil".equals(path) ? "active" : "")%>">
-                      <a class="nav-link" href="panelUserServlet?id=<%= usuario.getId() %>"><i class="fas fa-user"></i> Perfil</a>
+                      <a class="nav-link" href="panelUserServlet"><i class="fas fa-user"></i> Perfil</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-3">

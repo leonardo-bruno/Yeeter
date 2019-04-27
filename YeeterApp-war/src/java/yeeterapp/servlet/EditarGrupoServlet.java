@@ -14,18 +14,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author leonardobruno
+ * @author alec
  */
-@WebServlet(name = "panelUserServlet", urlPatterns = {"/panelUserServlet"})
-public class panelUserServlet extends HttpServlet {
+@WebServlet(name = "EditarGrupoServlet", urlPatterns = {"/EditarGrupoServlet"})
+public class EditarGrupoServlet extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
+    private GrupoFacade grupoFacade;
     
     
 
@@ -40,27 +41,32 @@ public class panelUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        
+        response.setContentType("text/html;charset=UTF-8");
+
         RequestDispatcher rd;
-        String idString = request.getParameter("id");
-        Usuario us;
-        us=(Usuario)session.getAttribute("loggedUser");
-        if(us == null) {
+        HttpSession session = request.getSession();
+        Usuario logged = (Usuario) session.getAttribute("loggedUser");
+        if(logged == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }    
-        if(idString != null) {
-            int str=Integer.valueOf(idString);
-            us=this.usuarioFacade.find(str);
         }
-        request.setAttribute("usuario", us);
+        int idGrupo = Integer.parseInt(request.getParameter("idGrupo"));
+        Grupo grupo = this.grupoFacade.find(idGrupo);
         
+        String temp = request.getParameter("nombre");
+        grupo.setNombre(temp);
+        temp = request.getParameter("descripcion");
+        grupo.setDescripcion(temp);
         
-        request.setAttribute("currentPage", "perfil");
-
-        rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
+        grupoFacade.edit(grupo);
+                
+        
+        request.setAttribute("id", grupo.getId());
+        rd = this.getServletContext().getRequestDispatcher("/GrupoServlet");
         rd.forward(request, response);
+        //response.sendRedirect("GrupoServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -85,16 +85,6 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         }
     }
 
-    public List<Usuario> queryUserByUsernameOrName(String input) {
-        Query q = this.em.createNamedQuery("Usuario.findByNameOrUsername");
-        input = "%" + input + "%"; // Esta linea no estoy seguro de si habría que ponerla o no la verdad
-        q.setParameter("input", input);
-        try {
-            return (List<Usuario>) q.getResultList();
-        } catch(NoResultException r) {
-            return null;
-        }
-    }
 
    public List<Grupo> queryGroups(int userId) {
        Query q = this.em.createNamedQuery("Usuario.findGroupsImIn");
@@ -105,4 +95,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
            return null;
        }
    }
+    public List<Usuario> queryUserByUsernameOrName(String input) {
+        Query q = this.em.createNamedQuery("Usuario.findByNameOrUsername");
+        input = "%" + input + "%"; // Esta linea no estoy seguro de si habría que ponerla o no la verdad
+        q.setParameter("input", input);
+        try {
+            return (List<Usuario>) q.getResultList();
+        } catch(NoResultException r) {
+            return null;
+        }
+    }
 }
