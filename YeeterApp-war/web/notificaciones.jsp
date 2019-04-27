@@ -32,12 +32,14 @@
                 <% 
                     for(Notificaciones not : notificaciones) {
                 %>
-                <tr data-href="<%= not.getLink() %>" class="table-row btn btn-outline-info" style="cursor:pointer;">
+                <tr data-href="<%= not.getLink() %>" class="table-row btn <%= (!not.getNotificacionLeida())? "btn-outline-info" : "btn-outline-secondary" %>" style="cursor:pointer;">
                     <th>
                         <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
                             <%= not.getContenido() %>
                             <input value="<%= not.getId() %>" type="hidden" name="idNotification"/>
-                            <button type="submit" class="table-row btn btn-outline-dark">Marcar como leída</button>
+                            <% if(!not.getNotificacionLeida()) { %>
+                                <button type="submit" class="table-row btn btn-outline-dark">Marcar como leída</button>
+                            <% } %>
                         </form>
                     </th>
                 </tr>
