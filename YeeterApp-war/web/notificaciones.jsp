@@ -33,26 +33,27 @@
                     </form>
 
                 </nav>
-                <div class="list-group btn-group-vertical">
-                    <% 
-                        for(Notificaciones not : notificaciones) {
-                    %>
-                    <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST" class="w-100">
-                        <div class="btn-group w-100">
-                            <a href="<%= not.getLink() %>" 
-                                class="btn <%= (!not.getNotificacionLeida())? "btn-outline-info" : "btn-outline-secondary" %> w-75">
-                                <%= not.getContenido() %>
-                            </a>
-                            <input value="<%= not.getId() %>" type="hidden" name="idNotification"/>
-                            <% if(!not.getNotificacionLeida()) { %>
-                                <button type="submit" class="btn btn-outline-dark" style="width: 1%!important;"><i class="fas fa-check"></i></button>
-                            <% } %>
+                <% 
+                for(Notificaciones not : notificaciones) {
+                %>
+                <div class="<%= (!not.getNotificacionLeida())? "not-read" : "" %> card w-100 mt-1 mb-1" data-href="<%= not.getLink() %>" style="cursor: pointer;">
+                    <div class="card-body row align-items-center">
+                        <div class="col-11 ">
+                            <%= not.getContenido() %>
                         </div>
-                    </form>
-                    <%
-                        }
-                    %>
+                        <% if(!not.getNotificacionLeida()) { %>
+                            <div class="col-1">
+                                <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST" class="w-100">
+                                <input value="<%= not.getId() %>" type="hidden" name="idNotification"/>
+                                    <button type="submit" class="btn btn-outline-dark btn-sm"><i class="fas fa-check"></i></button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
                 </div>
+                <%
+                }
+                %>
             </div>
         </div>
     </body>
