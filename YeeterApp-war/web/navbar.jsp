@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : newjsp
     Created on : 04-Apr-2019, 12:26:08
     Author     : alec
@@ -27,7 +27,7 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">                    
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item d-flex align-items-center <%=("notificaciones".equals(path) ? "active" : "")%>">
                         <a class="nav-link" href="NotificationsServlet"><i class="fas fa-bell"></i> Notificaciones<span class="sr-only">(current)</span></a>
                     </li>
@@ -36,10 +36,10 @@
                     </li>
                     <li class="nav-item d-flex align-items-center <%=("grupos".equals(path) ? "active" : "")%>">
                         <a class="nav-link" href="ListaGruposServlet?id=<%= usuario.getId() %>"><i class="fas fa-users"></i> Grupos</a>
-                    </li>               
-                </ul> 
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar Amigos" aria-label="Search">
+                    </li>
+                </ul>
+                <form class="form-inline" action="BuscarAmigos">
+                    <input name = "busqueda" class="form-control mr-sm-2" type="search" placeholder="Buscar Amigos" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-outline-light" style="height: 38px; width: 50px;" type="submit" >
                             <span style="width: 25px; height: 25px; display:inline-block;">
@@ -66,6 +66,6 @@
                 </li>
                 </ul>
             </div>
-          </nav>                  
+          </nav>
     </body>
 </html>

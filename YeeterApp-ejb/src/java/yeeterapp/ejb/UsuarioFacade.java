@@ -5,7 +5,7 @@
  */
 package yeeterapp.ejb;
 
-import java.util.List;
+import java.util.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -33,7 +33,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
+
     public Usuario queryUserByEmail(String email){
         Query q = this.em.createNamedQuery("Usuario.findByCorreo");
         q.setParameter("correo", email);
@@ -41,9 +41,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return (Usuario) q.getSingleResult();
         } catch(NoResultException e) {
             return null;
-        }       
+        }
     }
-    
+
     public Usuario queryUserByUsername(String username) {
         Query q = this.em.createNamedQuery("Usuario.findByUsername");
         q.setParameter("username", username);
@@ -74,7 +74,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
            return null;
        }
     }
-   
+
    public Usuario queryUserByID(Integer id) {
         Query q = this.em.createNamedQuery("Usuario.findById");
         q.setParameter("id", id);
@@ -84,8 +84,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return null;
         }
     }
-    
-   
+
+
    public List<Grupo> queryGroups(int userId) {
        Query q = this.em.createNamedQuery("Usuario.findGroupsImIn");
        q.setParameter("id", userId);
@@ -95,4 +95,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
            return null;
        }
    }
+    public List<Usuario> queryUserByUsernameOrName(String input) {
+        Query q = this.em.createNamedQuery("Usuario.findByNameOrUsername");
+        input = "%" + input + "%"; // Esta linea no estoy seguro de si habría que ponerla o no la verdad
+        q.setParameter("input", input);
+        try {
+            return (List<Usuario>) q.getResultList();
+        } catch(NoResultException r) {
+            return null;
+        }
+    }
 }

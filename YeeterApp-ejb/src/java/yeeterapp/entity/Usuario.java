@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByBiografia", query = "SELECT u FROM Usuario u WHERE u.biografia = :biografia")
     , @NamedQuery(name = "Usuario.findGroupsImIn", query = "SELECT DISTINCT g FROM Grupo g INNER JOIN UsuarioPerteneceGrupo upg WHERE upg.usuarioPerteneceGrupoPK.idUsuario = :id")
-    })
+    , @NamedQuery(name = "Usuario.findByNameOrUsername", query = "SELECT u FROM Usuario u where concat(u.nombre, u.apellidos) like :input or u.username like :input")})
+
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -195,5 +196,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "yeeterapp.entity.Usuario[ id=" + id + " ]";
     }
-    
+
 }
