@@ -24,7 +24,7 @@
     <body>
         <div class="content">
             <div class="bot-grupos">
-                <nav class="navbar navbar-dark bg-dark">
+                <nav class="navbar navbar-dark bg-dark mb-5">
                     <span class="navbar-brand">Notificaciones</span>
                     <form class="inline-form" name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
                         <button class="btn btn-outline-info">
