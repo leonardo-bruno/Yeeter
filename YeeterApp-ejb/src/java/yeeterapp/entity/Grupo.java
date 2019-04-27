@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")
     , @NamedQuery(name = "Grupo.findByDescripcion", query = "SELECT g FROM Grupo g WHERE g.descripcion = :descripcion")
     , @NamedQuery(name = "Grupo.findByFechaCreacion", query = "SELECT g FROM Grupo g WHERE g.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Grupo.findByIdCreador", query = "SELECT g FROM Grupo g WHERE g.idCreador = :idCreador")})
+    , @NamedQuery(name = "Grupo.findByIdCreador", query = "SELECT g FROM Grupo g WHERE g.idCreador = :idCreador")
+    , @NamedQuery(name = "Grupo.getGroupPosts", query = "SELECT p FROM Post p WHERE p.idGrupo = :idGroup")})
+
 public class Grupo implements Serializable {
 
     private static final long serialVersionUID = 1L;

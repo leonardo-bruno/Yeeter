@@ -4,6 +4,9 @@
     Author     : leonardobruno
 --%>
 
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
+<%@page import="yeeterapp.entity.Post"%>
 <%@page import="yeeterapp.entity.Grupo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
@@ -11,6 +14,7 @@
     Grupo grupo=(Grupo)request.getAttribute("grupo");
     boolean esAdmin=false;
     if(usuario.getId()==grupo.getIdCreador()) esAdmin=true;
+    Map<Post,Usuario> groupFeed = (Map) request.getAttribute("groupFeed");
     %>
 <!DOCTYPE html>
 <html>
@@ -32,8 +36,17 @@
                     <% if(esAdmin){ %>
                     <a class="nav-item nav-link active" href="#" style="margin-left: 20px">Modificar</a>
                     <% } %>
-                </nav>
-                
+                </nav>                
+            </div>
+            <div class="col-7">
+                <% for(Entry<Post,Usuario> post: groupFeed.entrySet()){   %>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%=post.getValue().getUsername()%></h5>
+                        <p class="card-text"><%=post.getKey().getContenido()%></p>
+                    </div>
+                </div>
+                <% }  %>
             </div>
         </div>
     </body>

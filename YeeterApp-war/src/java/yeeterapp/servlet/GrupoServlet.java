@@ -7,6 +7,7 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Grupo;
+import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -28,6 +31,8 @@ public class GrupoServlet extends HttpServlet {
 
     @EJB
     private GrupoFacade grupoFacade;
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +48,8 @@ public class GrupoServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            RequestDispatcher rd;
             HttpSession session = request.getSession();
-            
-            
+
             int str=Integer.valueOf(request.getParameter("id"));
             Grupo grupo=this.grupoFacade.find(str);
             
@@ -55,6 +58,17 @@ public class GrupoServlet extends HttpServlet {
             session.setAttribute("loggedUser", usLogeado);
             request.setAttribute("grupo", grupo);
             
+            List<Post> groupPosts = grupoFacade.queryGroupFeed(str);
+            Map<Post,Usuario> groupFeed = new HashMap<>();
+            
+            for(Post p: groupPosts){
+                Usuario u = usuarioFacade.queryUserByID(p.getIdAutor());
+                groupFeed.put(p, u);
+            }
+            
+            request.setAttribute("groupFeed", groupFeed);
+            
+            RequestDispatcher rd;
             rd = this.getServletContext().getRequestDispatcher("/grupo.jsp");
             rd.forward(request, response);
         }
