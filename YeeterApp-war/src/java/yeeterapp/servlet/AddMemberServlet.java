@@ -6,39 +6,19 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.GrupoFacade;
-import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.ejb.UsuarioPerteneceGrupoFacade;
-import yeeterapp.entity.Grupo;
-import yeeterapp.entity.Usuario;
-import yeeterapp.entity.UsuarioPerteneceGrupo;
 
 /**
  *
- * @author leonardobruno
+ * @author alec
  */
-@WebServlet(name = "ListaMiemServlet", urlPatterns = {"/ListaMiemServlet"})
-public class ListaMiemServlet extends HttpServlet {
-
-    @EJB
-    private UsuarioFacade usuarioFacade;
-
-    @EJB
-    private UsuarioPerteneceGrupoFacade usuarioPerteneceGrupoFacade;
-
-    @EJB
-    private GrupoFacade grupoFacade;
-    
+@WebServlet(name = "AddMemberServlet", urlPatterns = {"/AddMemberServlet"})
+public class AddMemberServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,28 +32,18 @@ public class ListaMiemServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd;
-        HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("loggedUser");
-        if(user == null) {
-             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "Por favor inicie sesión primero.");
-            rd.forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AddMemberServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AddMemberServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-
-        int str = Integer.valueOf(request.getParameter("id"));
-        Grupo grupo=this.grupoFacade.find(str);
-        List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
-        List<Usuario> listaUsuarios=new ArrayList<>();
-        usGrupo.stream().filter((upg) -> (upg.getUsuarioPerteneceGrupoPK().getIdGrupo()==grupo.getId())).forEachOrdered((upg) -> {
-            listaUsuarios.add(this.usuarioFacade.find(upg.getUsuarioPerteneceGrupoPK().getIdUsuario()));
-        });
-
-        request.setAttribute("grupo", grupo);
-        request.setAttribute("usuarios", listaUsuarios);
-
-        rd = this.getServletContext().getRequestDispatcher("/listaMiem.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
