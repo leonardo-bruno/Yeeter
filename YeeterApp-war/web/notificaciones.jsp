@@ -45,7 +45,7 @@
                             <div class="col-1">
                                 <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST" class="w-100">
                                 <input value="<%= not.getId() %>" type="hidden" name="idNotification"/>
-                                    <button type="submit" class="btn btn-outline-dark btn-sm"><i class="fas fa-check"></i></button>
+                                    <button type="submit" class="btn btn-outline-info btn-sm"><i class="fas fa-check"></i></button>
                                 </form>
                             </div>
                         <% } %>
