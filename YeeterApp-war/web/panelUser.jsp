@@ -16,7 +16,7 @@
         Usuario us=(Usuario)request.getAttribute("usuario");
         boolean mismoUsuario=false;
         String userName,nombre, apellidos,email,fechaNacimiento,biografia;
-        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         if(usuario.getId()==us.getId()){
             mismoUsuario=true;
             userName= usuario.getUsername();
@@ -50,7 +50,7 @@
         <div class="content">
             <div class="top">
                 <p>Perfil<% if(mismoUsuario) { %>
-                    <a href="#" class="btn btn-primary" role="button" > Modificar Contraseña</a></p>
+                    <a href="ModificarPasswordServlet" class="btn btn-primary" role="button" > Modificar Contraseña</a></p>
                 <% } else{ %>
                     </p>
                     <% } %> 
