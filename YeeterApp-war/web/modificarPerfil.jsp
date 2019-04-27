@@ -45,7 +45,7 @@
             <div class="top">
             </div>
             <div class="bot">
-        <form action="ModificarPerfilServlet?id=<%= usuario.getId()%>" method="post">
+        <form action="ModificarPerfilServlet?id=<%= usuario.getId()%>" method="get">
             <input type="hidden" name="id" id="id" value="<%= usuario.getId()%>" /> <br/>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-2 col-form-label">Usuario</label>
@@ -86,7 +86,7 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary" >Modificar</button>
+              <button class="btn btn-primary" >Modificar</button>
             </div>
           </div>
         </form>

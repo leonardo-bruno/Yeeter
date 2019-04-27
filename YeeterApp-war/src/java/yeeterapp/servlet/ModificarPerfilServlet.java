@@ -57,6 +57,7 @@ public class ModificarPerfilServlet extends HttpServlet {
             String correo=request.getParameter("emailM");
             String bio=request.getParameter("bibliografiaM");
             String fechaNacimiento=request.getParameter("");
+            us.setApellidos("AAA");
             
             us.setUsername(userName);
             this.usuarioFacade.edit(us);
