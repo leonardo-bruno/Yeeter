@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 .body-container {
-    heigth: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

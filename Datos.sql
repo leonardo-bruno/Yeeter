@@ -19,7 +19,7 @@ insert into Usuario(correo, password, nombre, apellidos, fecha_nacimiento, usern
 insert into Amigos(idUsuario, idAmigo) values 
 	((select id from Usuario where correo like 'alkasete%'),(select id from Usuario where correo like 'pedro%'));
  
- select * from Amigos left join usuario on amigos.idAmigo = Usuario.id; # amigos de Leonardo
+ select * from Amigos left join usuario on amigos.idAmigo = Usuario.id where id = (select id from usuario where correo like 'alkasete%'); # amigos de Leonardo
 
  
  insert into Grupo(nombre, descripcion, fecha_creacion, idCreador) values 
@@ -64,4 +64,14 @@ insert into POST(contenido, fecha_publicacion, idAutor, idGrupo) values
 
 Select *  from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo Left Join 
  Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario;
+
+
+ insert into Notificaciones(contenido, link, idUsuario) values 
+ ('Wan ha comentado en tu post', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('Jesucristo te quiere añadir como amigo', 'WelcomeServlet', (select id from Usuario where correo like 'pedro%')), 
+ ('Paco maruenda ha comentado en tu perfil', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('JUANJOSE te quiere añadir como amigo', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('So excited to finally announce that I\'m sad', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
+ ('Pewdipie is now banned from sweden', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%'))
+ ;
 

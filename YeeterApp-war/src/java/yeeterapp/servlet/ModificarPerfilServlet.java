@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,9 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,23 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.UsuarioFacade;
-
 
 /**
  *
- * @author alec
+ * @author leonardobruno
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "ModificarPerfilServlet", urlPatterns = {"/ModificarPerfilServlet"})
+public class ModificarPerfilServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
 
-
-
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,25 +41,42 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-
-        for(Post post: posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
-        }
-        request.setAttribute("feed",feed);
-
         RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-        rd.forward(request, response);
+        
+        Usuario us;
+        
+        String userName=request.getParameter("userName");
+        String name=request.getParameter("nombreM");
+        String apell=request.getParameter("apellidoM");
+        String correo=request.getParameter("emailM");
+        String bio=request.getParameter("bibliografiaM");
+        
+       us=this.usuarioFacade.queryUserByUsername(userName);
+        if(us!=null){
+
+            us.setUsername(userName);
+            us.setNombre(name);
+            us.setApellidos(apell);
+            us.setCorreo(correo);
+            us.setBiografia(bio);
+            this.usuarioFacade.edit(us);
+            
+            
+            
+            
+            session.setAttribute("loggedUser", us);
+            request.setAttribute("usuario", us);
+            rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
+            rd.forward(request, response);
+                  
+        }else{
+            rd = this.getServletContext().getRequestDispatcher("/modificarPerfil.jsp");
+            rd.forward(request, response);
+        }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

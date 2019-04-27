@@ -54,8 +54,19 @@ create table NOTIFICACIONES (
     contenido varchar(255) not null,
     link varchar(255) not null,
     notificacionLeida bit not null default false,
-    idUsuario int not null unique,
+    idUsuario int not null,
     FOREIGN KEY (idUsuario) REFERENCES USUARIO(id)
+)ENGINE = InnoDB;
+
+create table COMENTARIO (
+	id int auto_increment primary key,
+    contenido varchar(1024) not null,
+    autor int not null,
+    post int not null,
+    constraint Comentario_Autor_FK
+    foreign key (autor) references USUARIO(id),
+    constraint Post_FK
+    foreign key (post) references Post(id)
 )ENGINE = InnoDB;
 
 drop table if exists PETICION_AMISTAD;
@@ -120,3 +131,4 @@ ALTER TABLE GRUPO AUTO_INCREMENT=1000;
 ALTER TABLE POST AUTO_INCREMENT=2000;
 ALTER TABLE MENSAJE AUTO_INCREMENT=3000;
 ALTER TABLE NOTIFICACIONES AUTO_INCREMENT=4000;
+alter table COMENTARIO Auto_increment=10000;

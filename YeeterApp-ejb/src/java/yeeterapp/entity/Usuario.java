@@ -39,8 +39,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByBiografia", query = "SELECT u FROM Usuario u WHERE u.biografia = :biografia")
-    , @NamedQuery(name = "Usuario.findByNameOrUsername", query = "SELECT u FROM Usuario u where concat(u.nombre, u.apellidos) like :input or u.username like :input")})
-
+    , @NamedQuery(name = "Usuario.findByNameOrUsername", query = "SELECT u FROM Usuario u where concat(u.nombre, u.apellidos) like :input or u.username like :input")
+    , @NamedQuery(name = "Usuario.findGroupsImIn", query = "SELECT DISTINCT g FROM Grupo g INNER JOIN UsuarioPerteneceGrupo upg WHERE upg.usuarioPerteneceGrupoPK.idUsuario = :id")
+    })
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -163,6 +164,13 @@ public class Usuario implements Serializable {
     public void setBiografia(String biografia) {
         this.biografia = biografia;
     }
+    public String idPass(int id){
+        String nom=null;
+        if(this.id.equals(id)){
+             nom= this.username;
+        }
+        return nom;
+    }
 
     @Override
     public int hashCode() {
@@ -188,5 +196,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "yeeterapp.entity.Usuario[ id=" + id + " ]";
     }
-    
+
 }

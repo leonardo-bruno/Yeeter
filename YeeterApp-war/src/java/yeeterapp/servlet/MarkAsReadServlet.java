@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,34 +6,29 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Post;
+import yeeterapp.ejb.NotificacionesFacade;
+import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.UsuarioFacade;
-
 
 /**
  *
  * @author alec
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "MarkAsReadServlet", urlPatterns = {"/MarkAsReadServlet"})
+public class MarkAsReadServlet extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
-
-
+    private NotificacionesFacade notificacionesFacade;
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,25 +41,27 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-
-        for(Post post: posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
+        String strId =  request.getParameter("idNotification");
+        Notificaciones notificacion;
+        if(strId == null) {
+            HttpSession session = request.getSession();
+            Usuario user = (Usuario) session.getAttribute("loggedUser");
+            List<Notificaciones> notificaciones = 
+                    notificacionesFacade.queryNonReadNotificationsByUsername(user.getId());
+            notificaciones.forEach((not) -> {
+                not.setNotificacionLeida(true);
+                notificacionesFacade.edit(not);
+            });
+        } else {
+            int idNotificacion = Integer.parseInt(strId);
+            notificacion = notificacionesFacade.find(idNotificacion);
+            notificacion.setNotificacionLeida(true);
+            notificacionesFacade.edit(notificacion);
         }
-        request.setAttribute("feed",feed);
-
-        RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-        rd.forward(request, response);
+        
+        request.setAttribute("success", "Notificación marcada como leída");
+        response.sendRedirect("NotificationsServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

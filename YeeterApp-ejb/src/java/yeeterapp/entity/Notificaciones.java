@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Notificaciones.findByContenido", query = "SELECT n FROM Notificaciones n WHERE n.contenido = :contenido")
     , @NamedQuery(name = "Notificaciones.findByLink", query = "SELECT n FROM Notificaciones n WHERE n.link = :link")
     , @NamedQuery(name = "Notificaciones.findByNotificacionLeida", query = "SELECT n FROM Notificaciones n WHERE n.notificacionLeida = :notificacionLeida")
-    , @NamedQuery(name = "Notificaciones.findByIdUsuario", query = "SELECT n FROM Notificaciones n WHERE n.idUsuario = :idUsuario")})
+    , @NamedQuery(name = "Notificaciones.findByIdUsuario", query = "SELECT n FROM Notificaciones n WHERE n.idUsuario = :idUsuario")
+    , @NamedQuery(name = "Notificaciones.findAllNotificationsByUser", query = "SELECT n FROM Notificaciones n where not n.notificacionLeida and n.idUsuario = :idUsuario")})
 public class Notificaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;

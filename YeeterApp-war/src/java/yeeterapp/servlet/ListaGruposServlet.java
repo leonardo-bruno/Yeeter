@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,9 +6,8 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,24 +16,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Post;
+import yeeterapp.ejb.UsuarioPerteneceGrupoFacade;
+import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.UsuarioFacade;
-
+import yeeterapp.entity.UsuarioPerteneceGrupo;
 
 /**
  *
- * @author alec
+ * @author leonardobruno
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "ListaGruposServlet", urlPatterns = {"/ListaGruposServlet"})
+public class ListaGruposServlet extends HttpServlet {
+
+    @EJB
+    private GrupoFacade grupoFacade;
+
+    @EJB
+    private UsuarioPerteneceGrupoFacade usuarioPerteneceGrupoFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
+    
+    
 
-
-
+   
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,25 +53,36 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            RequestDispatcher rd;
+            HttpSession session = request.getSession();
 
-        for(Post post: posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
+            int todos=0;
+            int str=0;
+            Usuario us=null;
+
+                str=Integer.valueOf(request.getParameter("id"));
+                us=this.usuarioFacade.find(str);
+            
+            Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
+            
+            List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
+            List<Grupo> grupos=this.grupoFacade.findAll();
+            
+            
+            
+            session.setAttribute("loggedUser", usLogeado);
+            request.setAttribute("usuario", us);
+            request.setAttribute("usuariosGrupos", usGrupo);
+            request.setAttribute("grupos", grupos);
+            request.setAttribute("todos", todos);
+            
+            rd = this.getServletContext().getRequestDispatcher("/listaGrupos.jsp");
+            rd.forward(request, response);
+            
         }
-        request.setAttribute("feed",feed);
-
-        RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
