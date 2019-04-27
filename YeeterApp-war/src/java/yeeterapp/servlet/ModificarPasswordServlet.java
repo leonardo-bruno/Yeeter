@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,9 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,22 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.UsuarioFacade;
-
 
 /**
  *
- * @author alec
+ * @author leonardobruno
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "ModificarPasswordServlet", urlPatterns = {"/ModificarPasswordServlet"})
+public class ModificarPasswordServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
-
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,25 +39,53 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-
-        for(Post post : posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
-        }
-        request.setAttribute("feed",feed);
-
         RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-        rd.forward(request, response);
+        String fieldsThatFail = "";
+        boolean error = false;
+        Usuario user=null;
+        
+        try{
+            int str=Integer.valueOf(request.getParameter("id"));
+            user=this.usuarioFacade.find(str);
+            String oldPassword = request.getParameter("oldPassword");
+            
+            if(!oldPassword.equals(user.getPassword())){
+               error=true; 
+               fieldsThatFail += "oldPass";
+            }
+            
+            String password1 = request.getParameter("password1");
+            String password2 = request.getParameter("password2");
+
+            if(!password1.equals(password2) || password1.length() < 6) {
+                error = true;
+                fieldsThatFail += "pass";
+            }
+            
+            if(error){
+                request.setAttribute("fields", fieldsThatFail);
+                rd = this.getServletContext().getRequestDispatcher("/modificarPassword.jsp");
+                rd.forward(request, response);
+            }else{
+                user.setPassword(password2);
+                usuarioFacade.edit(user);
+                session.setAttribute("loggedUser", user);
+                request.setAttribute("usuario", user);
+                rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
+                rd.forward(request, response);
+            }
+            
+            
+            
+        }catch(Exception ex){
+            user=(Usuario)session.getAttribute("loggedUser");
+            session.setAttribute("loggedUser", user);
+            rd = this.getServletContext().getRequestDispatcher("/modificarPassword.jsp");
+            rd.forward(request, response);
+        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
