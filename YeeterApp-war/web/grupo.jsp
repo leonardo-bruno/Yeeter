@@ -34,10 +34,10 @@
                         <nav class="navbar navbar-dark bg-dark">
                             <input name="nombre" value="<%= grupo.getNombre() %>">
                         </nav>
-                        <textarea name="descripcion"><%= grupo.getDescripcion() %></textarea>
+                        <textarea name="descripcion" class="w-100 h-100"><%= grupo.getDescripcion() %></textarea>
                         <input type="hidden" value="<%= grupo.getId() %>" name="idGrupo">
                         <div class="btn-group mt-5 mr-auto" role="group">
-                            <button type="submit" class="btn btn-lg btn-outline-info"> Modificar </button>
+                            <button class="btn btn-lg btn-outline-info btn-block" type="submit"> Modificar </button>
                             <a class="btn btn-lg btn-outline-secondary" href="WelcomeServlet">
                                 Cancelar
                             </a>
@@ -48,12 +48,12 @@
                 %>
                 <% if(!editing){ %>
                     <nav class="nav nav-pills flex-column flex-sm-row">
-                        <a class="nav-item nav-link active" href="ListaMiemServlet?id=<%= grupo.getId() %>">Miembros</a>
+                        <a class="btn btn-lg btn-outline-info" href="ListaMiemServlet?id=<%= grupo.getId() %>">Miembros</a>
                         <% if(esAdmin){ %>
                             <form action="GrupoServlet" method="post">
                                 <input type="hidden" value="true" name="editing">
                                 <input type="hidden" value ="<%= grupo.getId() %>" name="id">
-                                <input type="submit"> Modificar
+                                <button class="btn btn-lg btn-outline-info btn-block" type="submit"> Modificar </button>
                             </form>
                         <% } %>
                     </nav>
