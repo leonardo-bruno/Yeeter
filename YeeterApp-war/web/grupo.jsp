@@ -61,8 +61,6 @@
                             </form>
                         <% } %>
                     </nav>
-                <% }
-                %>
             </div>
             <div class="col-7">
                 <% for(Entry<Post,Usuario> post: groupFeed.entrySet()){   %>
@@ -72,8 +70,10 @@
                         <p class="card-text"><%=post.getKey().getContenido()%></p>
                     </div>
                 </div>
-                <% } %>
-			      </div>
+                <% }
+                   }
+                %>
+            </div>
         </div>
     </body>
 </html>
