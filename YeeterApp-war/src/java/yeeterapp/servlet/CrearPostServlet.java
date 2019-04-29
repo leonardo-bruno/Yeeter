@@ -51,7 +51,15 @@ public class CrearPostServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
+        Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
+        RequestDispatcher rd;
+        
+        if(loggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }
+        
         String content = request.getParameter("post");
         String grupo = request.getParameter("grupos");
         
@@ -59,7 +67,7 @@ public class CrearPostServlet extends HttpServlet {
         Post post = new Post();
         
         post.setContenido(content);
-        post.setIdAutor(usuario.getId());
+        post.setIdAutor(loggedUser.getId());
         Grupo group = grupoFacade.queryByName(grupo);
         if(group != null){
             post.setIdGrupo(group.getId());
