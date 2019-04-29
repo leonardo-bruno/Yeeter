@@ -44,7 +44,7 @@ public class AddFriendServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         HttpSession session = request.getSession();
-        Usuario us=(Usuario) session.getAttribute("loggedUser");
+        Usuario us = (Usuario)session.getAttribute("loggedUser");
         RequestDispatcher rd;
         
         if(us == null){
@@ -52,9 +52,9 @@ public class AddFriendServlet extends HttpServlet {
             request.setAttribute("error", "Por favor inicie sesión.");
             rd.forward(request, response);
         }else{
-            int dest = Integer.valueOf(request.getParameter("destID"));
+            int dest = Integer.parseInt(request.getParameter("destID"));
             peticionFacade.create(new PeticionAmistad(us.getId(), dest));
-            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+            rd = this.getServletContext().getRequestDispatcher("/BuscarAmigos");
             request.setAttribute("message", "La solicitud se ha enviado con exito.");
             rd.forward(request, response);
         }   
