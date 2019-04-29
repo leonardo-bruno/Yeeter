@@ -15,6 +15,11 @@ insert into Usuario(correo, password, nombre, apellidos, fecha_nacimiento, usern
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'parejo%')),
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'alkasete%')),
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'pumuky%'));
+insert into Amigos(idUsuario, idAmigo) values
+((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'wan%')),
+ ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'leo%')),
+ ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'parejo%')),
+ ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'pumuky%'));
 
 insert into Amigos(idUsuario, idAmigo) values 
 	((select id from Usuario where correo like 'alkasete%'),(select id from Usuario where correo like 'pedro%'));

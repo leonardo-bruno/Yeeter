@@ -7,11 +7,22 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.AmigosFacade;
+import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Amigos;
+import yeeterapp.entity.Grupo;
+import yeeterapp.entity.Usuario;
 
 /**
  *
@@ -19,6 +30,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AddMemberServlet", urlPatterns = {"/AddMemberServlet"})
 public class AddMemberServlet extends HttpServlet {
+
+    @EJB
+    private GrupoFacade grupoFacade;
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private AmigosFacade amigosFacade;
+
+    
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,18 +56,35 @@ public class AddMemberServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddMemberServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddMemberServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        HttpSession session = request.getSession();
+        Usuario logged = (Usuario) session.getAttribute("loggedUser");
+        String idValue = request.getParameter("id");
+        RequestDispatcher rd;
+        if(logged == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
         }
+        Grupo currentGroup = grupoFacade.find(new Integer(idValue));
+        List<Amigos> amigos = this.amigosFacade.queryFriendsList(logged.getId());
+        List<Usuario> amigosUser = new ArrayList<>();
+        for(int i = 0; i < amigos.size(); i++) {
+            Usuario temp = this.usuarioFacade.find(amigos.get(i).getAmigosPK().getIdAmigo());
+            if(!usuarioFacade.queryGroups(temp.getId()).contains(currentGroup)) {
+                amigosUser.add(temp);
+            }
+        }
+        amigos.forEach(amigo -> {
+            Usuario temp = this.usuarioFacade.find(amigo.getAmigosPK().getIdAmigo());
+            if(!usuarioFacade.queryGroups(temp.getId()).contains(currentGroup)) {
+                amigosUser.add(temp);
+            }
+        });
+        
+        request.setAttribute("amigos", amigosUser);
+        
+        rd = this.getServletContext().getRequestDispatcher("/addUser.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
