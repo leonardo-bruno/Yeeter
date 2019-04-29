@@ -58,7 +58,7 @@ public class SearchFriendsServlet extends HttpServlet {
         }else{
             String input = request.getParameter("busqueda");
             List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
-            List<Amigos> friends = amigosFacade.queryFriendsList(us.getId());
+            List<Integer> friends = amigosFacade.queryFriendsList(us.getId());
         
             if(users.isEmpty()){
                 rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");

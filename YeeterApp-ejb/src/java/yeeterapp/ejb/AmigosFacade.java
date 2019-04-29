@@ -29,11 +29,11 @@ public class AmigosFacade extends AbstractFacade<Amigos> {
         super(Amigos.class);
     }
     
-    public List<Amigos> queryFriendsList(int id) {
+    public List<Integer> queryFriendsList(int id) {
         Query q = this.em.createNamedQuery("Amigos.friendsList");
         q.setParameter("id", id);
         try {
-            return (List<Amigos>) q.getResultList();
+            return (List<Integer>) q.getResultList();
         } catch(NoResultException r) {
             return null;
         }
