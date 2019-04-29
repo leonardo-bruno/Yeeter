@@ -56,7 +56,7 @@ public class WelcomeServlet extends HttpServlet {
         List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
         Map<Post,Usuario> feed = new HashMap<>();
 
-        for(Post post: posts){
+        for(Post post : posts){
           Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
           feed.put(post,u);
         }

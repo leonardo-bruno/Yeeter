@@ -18,33 +18,43 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=(noLeidas != 0)? "(" + Long.toString(noLeidas) + ")":""%> Notificaciones</title>
         <link rel="stylesheet" href="assets/css/loginstyle.css"/>
+        <link rel="stylesheet" href="assets/css/estilos.css"/>
         <script src="assets/js/rowSelecter.js"></script>
     </head>
     <body>
-        <h3>Notificaciones</h3>
-        <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
-            <button>
-                Marcar todas como leídas
-            </button>
-        </form>
-        <div class="body-container">
-            <table>
+        <div class="content">
+            <div class="bot-grupos">
+                <nav class="navbar navbar-dark bg-dark mb-5">
+                    <span class="navbar-brand">Notificaciones</span>
+                    <form class="inline-form" name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
+                        <button class="btn btn-outline-info">
+                            Marcar todas como leídas
+                        </button>
+                    </form>
+
+                </nav>
                 <% 
-                    for(Notificaciones not : notificaciones) {
+                for(Notificaciones not : notificaciones) {
                 %>
-                <tr data-href="<%= not.getLink() %>" class="table-row btn btn-outline-info" style="cursor:pointer;">
-                    <th>
-                        <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST">
+                <div class="<%= (!not.getNotificacionLeida())? "not-read" : "" %> card w-100 mt-1 mb-1" data-href="<%= not.getLink() %>" style="cursor: pointer;">
+                    <div class="card-body row align-items-center">
+                        <div class="col-11 ">
                             <%= not.getContenido() %>
-                            <input value="<%= not.getId() %>" type="hidden" name="idNotification"/>
-                            <button type="submit" class="table-row btn btn-outline-dark">Marcar como leída</button>
-                        </form>
-                    </th>
-                </tr>
+                        </div>
+                        <% if(!not.getNotificacionLeida()) { %>
+                            <div class="col-1">
+                                <form name="markAsReadNotification" action="MarkAsReadServlet" method="POST" class="w-100">
+                                <input value="<%= not.getId() %>" type="hidden" name="idNotification"/>
+                                    <button type="submit" class="btn btn-outline-info btn-sm"><i class="fas fa-check"></i></button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
                 <%
-                    }
+                }
                 %>
-            </table>
+            </div>
         </div>
     </body>
 </html>

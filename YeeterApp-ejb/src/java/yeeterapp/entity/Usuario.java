@@ -8,6 +8,7 @@ package yeeterapp.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,10 +41,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByBiografia", query = "SELECT u FROM Usuario u WHERE u.biografia = :biografia")
+    , @NamedQuery(name = "Usuario.findByNameOrUsername", query = "SELECT u FROM Usuario u where concat(u.nombre, u.apellidos) like :input or u.username like :input")
     , @NamedQuery(name = "Usuario.findGroupsImIn", query = "SELECT DISTINCT g FROM Grupo g INNER JOIN UsuarioPerteneceGrupo upg WHERE upg.usuarioPerteneceGrupoPK.idUsuario = :id")
     })
 public class Usuario implements Serializable {
 
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -195,5 +199,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "yeeterapp.entity.Usuario[ id=" + id + " ]";
     }
-    
+
 }

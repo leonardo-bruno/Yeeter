@@ -6,7 +6,7 @@
 
 
 $(document).ready(function($) {
-    $(".table-row").click(function() {
+    $(".card").click(function() {
         window.document.location = $(this).data("href");
     });
 });

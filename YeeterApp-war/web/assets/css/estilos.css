@@ -33,3 +33,7 @@
     position: static;
     margin-top: 10px;
 }
+
+.not-read {
+    border-color: #17a2b8;
+}

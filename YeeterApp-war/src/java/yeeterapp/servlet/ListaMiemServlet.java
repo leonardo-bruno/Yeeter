@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -53,28 +52,28 @@ public class ListaMiemServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            RequestDispatcher rd;
-            HttpSession session = request.getSession();
-            
-            
-            int str=Integer.valueOf(request.getParameter("id"));
-            Grupo grupo=this.grupoFacade.find(str);
-            List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
-            List<Usuario> listaUsuarios=new ArrayList<Usuario>();
-            for(UsuarioPerteneceGrupo upg : usGrupo){
-                if(upg.getUsuarioPerteneceGrupoPK().getIdGrupo()==grupo.getId())listaUsuarios.add(this.usuarioFacade.find(upg.getUsuarioPerteneceGrupoPK().getIdUsuario()));
-   
-            }
-            
-            Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
-            
-            session.setAttribute("loggedUser", usLogeado);
-            request.setAttribute("usuarios", listaUsuarios);
-            
-            rd = this.getServletContext().getRequestDispatcher("/listaMiem.jsp");
+        RequestDispatcher rd;
+        HttpSession session = request.getSession();
+        Usuario user = (Usuario) session.getAttribute("loggedUser");
+        if(user == null) {
+             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         }
+
+        int str = Integer.valueOf(request.getParameter("id"));
+        Grupo grupo=this.grupoFacade.find(str);
+        List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
+        List<Usuario> listaUsuarios=new ArrayList<>();
+        usGrupo.stream().filter((upg) -> (upg.getUsuarioPerteneceGrupoPK().getIdGrupo()==grupo.getId())).forEachOrdered((upg) -> {
+            listaUsuarios.add(this.usuarioFacade.find(upg.getUsuarioPerteneceGrupoPK().getIdUsuario()));
+        });
+
+        request.setAttribute("grupo", grupo);
+        request.setAttribute("usuarios", listaUsuarios);
+
+        rd = this.getServletContext().getRequestDispatcher("/listaMiem.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

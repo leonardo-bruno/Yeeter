@@ -6,6 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,21 +15,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.ejb.PeticionAmistadFacade;
+import yeeterapp.entity.PeticionAmistad;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
-@WebServlet(name = "panelUserServlet", urlPatterns = {"/panelUserServlet"})
-public class panelUserServlet extends HttpServlet {
+@WebServlet(name = "AddFriendServlet", urlPatterns = {"/PeticionAmigo"})
+public class AddFriendServlet extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
+    private PeticionAmistadFacade peticionFacade;
     
-    
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,27 +40,24 @@ public class panelUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        response.setContentType("text/html;charset=UTF-8");
+        
         HttpSession session = request.getSession();
+        Usuario us=(Usuario) session.getAttribute("loggedUser");
         RequestDispatcher rd;
-        String idString = request.getParameter("id");
-        Usuario us;
-        us=(Usuario)session.getAttribute("loggedUser");
-        if(us == null) {
+        
+        if(us == null){
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "Por favor inicie sesión primero.");
+            request.setAttribute("error", "Por favor inicie sesión.");
             rd.forward(request, response);
-        }    
-        if(idString != null) {
-            int str=Integer.valueOf(idString);
-            us=this.usuarioFacade.find(str);
-        }
-        request.setAttribute("usuario", us);
-        
-        
-        request.setAttribute("currentPage", "perfil");
-
-        rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
-        rd.forward(request, response);
+        }else{
+            int dest = Integer.valueOf(request.getParameter("destID"));
+            peticionFacade.create(new PeticionAmistad(us.getId(), dest));
+            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+            request.setAttribute("message", "La solicitud se ha enviado con exito.");
+            rd.forward(request, response);
+        }   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
