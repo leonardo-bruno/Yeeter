@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,19 +23,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Entity
-@Table(name = "NOTIFICACIONES")
+@Table(name = "notificaciones")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Notificaciones.findAll", query = "SELECT n FROM Notificaciones n")
     , @NamedQuery(name = "Notificaciones.findById", query = "SELECT n FROM Notificaciones n WHERE n.id = :id")
     , @NamedQuery(name = "Notificaciones.findByContenido", query = "SELECT n FROM Notificaciones n WHERE n.contenido = :contenido")
     , @NamedQuery(name = "Notificaciones.findByLink", query = "SELECT n FROM Notificaciones n WHERE n.link = :link")
-    , @NamedQuery(name = "Notificaciones.findByNotificacionLeida", query = "SELECT n FROM Notificaciones n WHERE n.notificacionLeida = :notificacionLeida")
-    , @NamedQuery(name = "Notificaciones.findByIdUsuario", query = "SELECT n FROM Notificaciones n WHERE n.idUsuario = :idUsuario")
-    , @NamedQuery(name = "Notificaciones.findAllNotificationsByUser", query = "SELECT n FROM Notificaciones n where not n.notificacionLeida and n.idUsuario = :idUsuario")})
+    , @NamedQuery(name = "Notificaciones.findByNotificacionLeida", query = "SELECT n FROM Notificaciones n WHERE n.notificacionLeida = :notificacionLeida")})
 public class Notificaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,10 +56,9 @@ public class Notificaciones implements Serializable {
     @NotNull
     @Column(name = "notificacionLeida")
     private boolean notificacionLeida;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idUsuario")
-    private int idUsuario;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario idUsuario;
 
     public Notificaciones() {
     }
@@ -68,12 +67,11 @@ public class Notificaciones implements Serializable {
         this.id = id;
     }
 
-    public Notificaciones(Integer id, String contenido, String link, boolean notificacionLeida, int idUsuario) {
+    public Notificaciones(Integer id, String contenido, String link, boolean notificacionLeida) {
         this.id = id;
         this.contenido = contenido;
         this.link = link;
         this.notificacionLeida = notificacionLeida;
-        this.idUsuario = idUsuario;
     }
 
     public Integer getId() {
@@ -108,11 +106,11 @@ public class Notificaciones implements Serializable {
         this.notificacionLeida = notificacionLeida;
     }
 
-    public int getIdUsuario() {
+    public Usuario getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }
 

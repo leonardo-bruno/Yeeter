@@ -45,3 +45,6 @@ Select * from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERT
 
 
   select * from Notificaciones inner join usuario on Notificaciones.idUsuario = usuario.id where not Notificaciones.notificacionLeida;
+
+
+  select * from Mensaje where (idEmisor = 5 and idReceptor = 3) or (idReceptor = 5 and idEmisor = 3);

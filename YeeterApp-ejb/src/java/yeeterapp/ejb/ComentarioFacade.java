@@ -12,7 +12,7 @@ import yeeterapp.entity.Comentario;
 
 /**
  *
- * @author alec
+ * @author jugr9
  */
 @Stateless
 public class ComentarioFacade extends AbstractFacade<Comentario> {

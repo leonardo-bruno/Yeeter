@@ -8,7 +8,6 @@ package yeeterapp.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
 
@@ -27,8 +25,6 @@ import yeeterapp.entity.Usuario;
 @WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
 public class PrePostServlet extends HttpServlet {
 
-    @EJB
-    private UsuarioFacade usuarioFacade;
     
     
     /**
@@ -46,7 +42,7 @@ public class PrePostServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("loggedUser");
         
-        List<Grupo> grupos = usuarioFacade.queryGroups(usuario.getId());
+        List<Grupo> grupos = usuario.getGrupoList();
         if (grupos != null){
             request.setAttribute("grupos", grupos);
         } else {

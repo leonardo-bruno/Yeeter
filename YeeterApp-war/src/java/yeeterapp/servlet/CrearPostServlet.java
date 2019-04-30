@@ -55,14 +55,14 @@ public class CrearPostServlet extends HttpServlet {
         String content = request.getParameter("post");
         String grupo = request.getParameter("grupos");
         
-        
         Post post = new Post();
         
         post.setContenido(content);
-        post.setIdAutor(usuario.getId());
-        Grupo group = grupoFacade.queryByName(grupo);
+        post.setIdAutor(usuario);
+        Grupo group = grupoFacade.find(new Integer(grupo));
+        
         if(group != null){
-            post.setIdGrupo(group.getId());
+            post.setIdGrupo(group);
         }
 
         Date date = new java.util.Date(System.currentTimeMillis());  

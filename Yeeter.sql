@@ -40,8 +40,8 @@ create table MENSAJE (
     id int AUTO_INCREMENT primary key,
     contenido varchar(255) not null,
     fecha datetime not null,
-    idEmisor int not null unique,
-    idReceptor int not null unique,
+    idEmisor int not null,
+    idReceptor int not null,
     constraint idEmisor_FK
     foreign key (idEmisor) references USUARIO(id),
     constraint idReceptor_FK
