@@ -4,7 +4,7 @@
     Author     : Juan Garcia Ruiz
 --%>
 
-<%@page import="yeeterapp.entity.Amigos"%>
+<%@page import="yeeterapp.entity.Usuario"%>
 <%@page import="java.util.*"%>
 <%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +16,7 @@
     Usuario logUs=(Usuario) session.getAttribute("loggedUser");
     String message = (String) request.getAttribute("message");
     List<Usuario> users = (List<Usuario>)request.getAttribute("users");
-    List<Amigos> amigos = (List<Amigos>)request.getAttribute("friends");
+    List<Usuario> amigos = (List<Usuario>)request.getAttribute("friends");
 %>
 
 <html>
