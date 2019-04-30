@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 import yeeterapp.ejb.UsuarioFacade;
@@ -55,10 +54,9 @@ public class WelcomeServlet extends HttpServlet {
         Usuario user=(Usuario) session.getAttribute("loggedUser");
         List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
         Map<Post,Usuario> feed = new HashMap<>();
-
+        
         posts.forEach((post) -> {
-            Usuario u = usuarioFacade.find(post.getIdAutor());
-            feed.put(post,u);
+            feed.put(post,post.getIdAutor());
         });
         request.setAttribute("feed",feed);
 
@@ -66,7 +64,7 @@ public class WelcomeServlet extends HttpServlet {
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
         rd.forward(request, response);
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

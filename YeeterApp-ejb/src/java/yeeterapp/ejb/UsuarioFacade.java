@@ -55,7 +55,25 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     }
 
     public List<Post> queryUserFeed(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = this.em.createNativeQuery("select * from (\n" +
+                "select * from Post where idAutor = ?1\n" +
+                "\n" +
+                "union\n" +
+                "\n" +
+                "select * from Post where idGrupo in (Select Grupo.id from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo Left Join \n" +
+                " Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario where usuario.id = ?1)\n" +
+                " \n" +
+                " union\n" +
+                " \n" +
+                " select * from Post where idAutor in (select idAmigo from Amigos where ?1 = Amigos.idUsuario)\n" +
+                " and idGrupo is null) xd order by xd.fecha_publicacion desc\n" +
+                " ;", Post.class);
+       q.setParameter(1, id);
+       try {
+           return q.getResultList();
+       } catch(NoResultException e) {
+           return null;
+       }
     }
 
     public List<Usuario> queryUserByUsernameOrName(String input) {
