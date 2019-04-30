@@ -18,39 +18,48 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets/css/loginstyle.css"/>
-    </head>
+        <link rel="stylesheet" href="assets/css/estilos.css"/>
+    </head>    
     <body>
-        <div class="container d-flex justify-content-center">
-            <h1 class="mt-5 justify-content-center">Crear un nuevo post</h1>
-        </div>
-        <div class="body-container">
-            <div class="container d-flex justify-content-center" >
-                <div style="width: 200px;">
-                    <form method="post" action="CrearPost">
-                        <textarea name="post" rows="5" cols="50"></textarea>
-                        <select name="grupos">
-                            <option value="-1" selected>P&uacute;blico</option>
-                            <%
-                                for(Grupo grupo: grupos) {
-                            %>
-                            <option value="<%= grupo.getId() %>">
-                                <%= grupo.getNombre() %>
-                            </option>
-                            <%
-                                }
-                            %>
-                        </select>
-                        <div class="btn-group" role="group">
-                            <a href="welcomepage.jsp" class="btn btn-lg btn-outline-secondary">
-                                Cancelar
-                            </a>
-                            <button class="btn btn-lg btn-outline-info btn-block" type="submit">
-                                Publicar
-                            </button>
+        <div class="content">
+            <div class="bot-grupos">
+                <nav class="navbar navbar-dark bg-dark mb-5">
+                    <span class="navbar-brand">Crear un nuevo Post</span>
+                </nav>
+                <!--div class="card w-100 mt-1 mb-1"  style="cursor: pointer;"-->
+                    <div class="card-body row align-items-center" align="center">
+                        <div class="col-11">
+                            <form method="post" action="CrearPost">
+                                <textarea name="post" rows="5" cols="50"  required="true"></textarea><br/>
+                                <select name="grupos">
+                                    <option value="-1" selected>P&uacute;blico</option>
+                                    <%
+                                        for(Grupo grupo: grupos) {
+                                    %>
+                                    <option value="<%= grupo.getId() %>">
+                                        <%= grupo.getNombre() %>
+                                    </option>
+                                    <%
+                                        }
+                                    %>
+                                </select><br/>
+                                <div class="btn-group" role="group">
+                                    <a href="WelcomeServlet" class="btn btn-lg btn-outline-secondary">
+                                        Cancelar
+                                    </a>
+                                    <button class="btn btn-lg btn-outline-info btn-block" type="submit">
+                                        Publicar
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                <!--/div-->
             </div>
         </div>
     </body>
+    
+    
+    
+    
 </html>
