@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.NotificacionesFacade;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.Usuario;
 
@@ -25,6 +26,9 @@ import yeeterapp.entity.Usuario;
  */
 @WebServlet(name = "MarkAsReadServlet", urlPatterns = {"/MarkAsReadServlet"})
 public class MarkAsReadServlet extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
     @EJB
     private NotificacionesFacade notificacionesFacade;
@@ -47,7 +51,8 @@ public class MarkAsReadServlet extends HttpServlet {
         Notificaciones notificacion;
         if(strId == null) {
             HttpSession session = request.getSession();
-            Usuario user = (Usuario) session.getAttribute("loggedUser");
+            Integer idValueUser = (Integer) session.getAttribute("loggedUserID");
+            Usuario user = usuarioFacade.find(idValueUser);
             List<Notificaciones> notificaciones = 
                     user.getNotificacionesList().stream().filter(x -> !x.getNotificacionLeida()).collect(Collectors.toList());
             notificaciones.forEach((not) -> {

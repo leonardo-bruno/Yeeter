@@ -47,8 +47,6 @@ public class WelcomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
@@ -68,7 +66,7 @@ public class WelcomeServlet extends HttpServlet {
         });
         request.setAttribute("feed", feed);
 
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
+        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp"); 
         rd.forward(request, response);
     }
     

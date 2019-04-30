@@ -9,7 +9,7 @@
 <%@include file="navbar.jsp" %>
 <%
     Grupo grupo = (Grupo)request.getAttribute("grupo");
-    boolean esAdmin= usuario.equals(grupo.getIdCreador());
+    boolean esAdmin= usuario.equals(grupo.getIdCreador().getId());
     boolean editing = (Boolean) request.getAttribute("editing") != null && (Boolean) request.getAttribute("editing");
     %>
 <!DOCTYPE html>
