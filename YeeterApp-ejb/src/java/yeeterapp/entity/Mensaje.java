@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")
     , @NamedQuery(name = "Mensaje.findByIdEmisor", query = "SELECT m FROM Mensaje m WHERE m.idEmisor = :idEmisor")
     , @NamedQuery(name = "Mensaje.findByIdReceptor", query = "SELECT m FROM Mensaje m WHERE m.idReceptor = :idReceptor")
-    , @NamedQuery(name = "Mensaje.findByIdEmisorIdReceptor", query = "SELECT m FROM Mensaje m WHERE (m.idEmisor = :idEmisor AND m.idReceptor = :idReceptor) OR (m.idReceptor = :idReceptor AND m.idEmisor = :idEmisor)")
+    , @NamedQuery(name = "Mensaje.findByIdEmisorIdReceptor", query = "SELECT m FROM Mensaje m WHERE (m.idEmisor.id = :idEmisor AND m.idReceptor.id = :idReceptor) OR (m.idReceptor.id = :idReceptor AND m.idEmisor.id = :idEmisor)")
 })
 public class Mensaje implements Serializable {
 

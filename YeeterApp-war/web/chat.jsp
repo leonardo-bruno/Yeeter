@@ -16,6 +16,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="assets/css/loginstyle.css"/>
+        <link rel="stylesheet" href="assets/css/estilos.css"/>
         <title>Chat</title>
     </head>
     <body>
@@ -37,6 +39,14 @@
                 <%
                 }
                 %>
+                <form method="post" action="EnviarMensaje">
+                    <textarea name="mensaje" rows="5" cols="160"></textarea><br/>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-lg btn-outline-info btn-block" type="submit">
+                            Enviar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </body>

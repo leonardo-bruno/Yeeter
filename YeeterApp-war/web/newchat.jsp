@@ -6,7 +6,6 @@
 
 <%@page import="javax.ejb.EJB"%>
 <%@page import="yeeterapp.ejb.UsuarioFacade"%>
-<%@page import="yeeterapp.entity.Amigos"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>

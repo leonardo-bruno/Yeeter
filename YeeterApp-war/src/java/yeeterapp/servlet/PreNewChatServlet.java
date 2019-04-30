@@ -16,9 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.AmigosFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Amigos;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -30,9 +28,6 @@ public class PreNewChatServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
-    @EJB
-    private AmigosFacade amigosFacade;
     
     
 
@@ -48,23 +43,20 @@ public class PreNewChatServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession();        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
-        
-        if(loggedUser == null) {
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
         
-        List<Amigos> amigos = this.amigosFacade.queryFriendsList(loggedUser.getId());
-        List<Usuario> amigosUser = new ArrayList<>();
+        List<Usuario> amigos = loggedUser.getUsuarioList1();
         if (amigos != null){
-            for (Amigos amigo : amigos) {
-                amigosUser.add(this.usuarioFacade.queryUserByID(amigo.getAmigosPK().getIdAmigo()));
-            }
-            request.setAttribute("amigos", amigosUser);
+            request.setAttribute("amigos", amigos);
         } else {
             request.setAttribute("amigos", new ArrayList<>());
         }

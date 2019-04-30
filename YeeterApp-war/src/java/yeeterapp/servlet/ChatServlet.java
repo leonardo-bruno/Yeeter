@@ -47,18 +47,19 @@ public class ChatServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
+        HttpSession session = request.getSession();        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-         
-        if(loggedUser == null) {
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
         
         String idAmigo = request.getParameter("idAmigo");
-        Usuario amigo = this.usuarioFacade.queryUserByID(new Integer(idAmigo));
+        Usuario amigo = this.usuarioFacade.find(new Integer(idAmigo));
         request.setAttribute("amigo", amigo);
         
         List<Mensaje> mensajes = this.mensajeFacade.queryMensajesAmigos(loggedUser.getId(), amigo.getId());
