@@ -62,7 +62,11 @@ public class GrupoServlet extends HttpServlet {
         String idGroupValue = request.getParameter("id");
         request.setAttribute("mensaje", request.getParameter("mensaje"));
         int str;
-        str = Integer.valueOf(idGroupValue);
+        if(idGroupValue == null) {
+            str = (Integer) request.getAttribute("id");
+        } else {
+            str = Integer.valueOf(idGroupValue);
+        }
         Grupo grupo=this.grupoFacade.find(str);
         String strEditingValue = request.getParameter("editing");
         if(strEditingValue != null) {
