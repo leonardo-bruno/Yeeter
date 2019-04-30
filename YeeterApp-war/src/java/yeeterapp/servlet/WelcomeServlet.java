@@ -51,16 +51,23 @@ public class WelcomeServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        List<Post> posts =  usuarioFacade.queryUserFeed(loggedUser.getId());
         Map<Post,Usuario> feed = new HashMap<>();
         
         posts.forEach((post) -> {
             feed.put(post,post.getIdAutor());
         });
-        request.setAttribute("feed",feed);
+        request.setAttribute("feed", feed);
 
-        RequestDispatcher rd;
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
         rd.forward(request, response);
     }

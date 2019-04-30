@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.entity.Notificaciones;
 
 /**
@@ -26,6 +26,8 @@ import yeeterapp.entity.Notificaciones;
 @WebServlet(name = "NotificationsServlet", urlPatterns = {"/NotificationsServlet"})
 public class NotificationsServlet extends HttpServlet {
 
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
     
     /**
@@ -41,14 +43,16 @@ public class NotificationsServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        
-        if(loggedUser == null) {
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        
         
         List<Notificaciones> notificaciones = loggedUser.getNotificacionesList();
         request.setAttribute("notifications", notificaciones);

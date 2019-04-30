@@ -41,20 +41,21 @@ public class panelUserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        RequestDispatcher rd;
         String idString = request.getParameter("id");
-        Usuario us;
-        us=(Usuario)session.getAttribute("loggedUser");
-        if(us == null) {
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }    
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);    
         if(idString != null) {
             int str=Integer.valueOf(idString);
-            us=this.usuarioFacade.find(str);
+            loggedUser=this.usuarioFacade.find(str);
         }
-        request.setAttribute("usuario", us);
+        request.setAttribute("usuario", loggedUser);
         
         
         request.setAttribute("currentPage", "perfil");

@@ -63,10 +63,17 @@ public class ListaGruposServlet extends HttpServlet {
             str = Integer.valueOf(request.getParameter("id"));
             us = this.usuarioFacade.find(str);
             
-            Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
+            Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+            Usuario loggedUser;
+            if(idLoggedUser == null) {
+                rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+                request.setAttribute("error", "Por favor inicie sesión primero.");
+                rd.forward(request, response);
+            } 
+            loggedUser = usuarioFacade.find(idLoggedUser);
             
             
-            List<Grupo> usGrupo = usLogeado.getGrupoList();
+            List<Grupo> usGrupo = loggedUser.getGrupoList();
             List<Grupo> grupos = this.grupoFacade.findAll();
             
             

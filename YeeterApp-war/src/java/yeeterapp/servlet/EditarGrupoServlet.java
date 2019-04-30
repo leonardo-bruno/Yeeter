@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
 
@@ -26,10 +27,13 @@ import yeeterapp.entity.Usuario;
 public class EditarGrupoServlet extends HttpServlet {
 
     @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
     private GrupoFacade grupoFacade;
     
     
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,12 +50,14 @@ public class EditarGrupoServlet extends HttpServlet {
 
         RequestDispatcher rd;
         HttpSession session = request.getSession();
-        Usuario logged = (Usuario) session.getAttribute("loggedUser");
-        if(logged == null) {
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
         int idGrupo = Integer.parseInt(request.getParameter("idGrupo"));
         Grupo grupo = this.grupoFacade.find(idGrupo);
         

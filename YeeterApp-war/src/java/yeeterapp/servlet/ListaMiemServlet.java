@@ -48,14 +48,16 @@ public class ListaMiemServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd;
         HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("loggedUser");
-        if(user == null) {
-             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
 
         int str = Integer.valueOf(request.getParameter("id"));
         Grupo grupo=this.grupoFacade.find(str);
