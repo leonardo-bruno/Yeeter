@@ -17,10 +17,6 @@
         <title>Creaci&oacute;n de posts</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" 
-              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
-              crossorigin="anonymous">
         <link rel="stylesheet" href="assets/css/loginstyle.css"/>
     </head>
     <body>
@@ -33,11 +29,11 @@
                     <form method="post" action="CrearPost">
                         <textarea name="post" rows="5" cols="50"></textarea>
                         <select name="grupos">
-                            <option value="publico" selected>P&uacute;blico</option>
+                            <option value="-1" selected>P&uacute;blico</option>
                             <%
                                 for(Grupo grupo: grupos) {
                             %>
-                            <option value="<%= grupo.getNombre() %>">
+                            <option value="<%= grupo.getId() %>">
                                 <%= grupo.getNombre() %>
                             </option>
                             <%

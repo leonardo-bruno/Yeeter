@@ -55,12 +55,12 @@ public class CrearPostServlet extends HttpServlet {
         String content = request.getParameter("post");
         String grupo = request.getParameter("grupos");
         
-        
         Post post = new Post();
         
         post.setContenido(content);
         post.setIdAutor(usuario);
         Grupo group = grupoFacade.find(new Integer(grupo));
+        
         if(group != null){
             post.setIdGrupo(group);
         }
