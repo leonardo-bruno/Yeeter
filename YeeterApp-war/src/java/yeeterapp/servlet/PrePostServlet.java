@@ -25,8 +25,8 @@ import yeeterapp.entity.Usuario;
 @WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
 public class PrePostServlet extends HttpServlet {
 
-    
-    
+
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,16 +40,21 @@ public class PrePostServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
-        
+        Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
+        RequestDispatcher rd;
+        if(loggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }
+
         List<Grupo> grupos = usuario.getGrupoList();
         if (grupos != null){
             request.setAttribute("grupos", grupos);
         } else {
             request.setAttribute("grupos", new ArrayList<>());
         }
-        
-        RequestDispatcher rd;
+
         rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
         rd.forward(request, response);
     }

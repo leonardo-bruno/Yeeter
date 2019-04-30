@@ -6,7 +6,8 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,28 +16,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.GrupoFacade;
-import yeeterapp.ejb.PostFacade;
-import yeeterapp.entity.Grupo;
-import yeeterapp.entity.Post;
+import yeeterapp.ejb.AmigosFacade;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Amigos;
 import yeeterapp.entity.Usuario;
 
 /**
  *
  * @author jesus
  */
-@WebServlet(name = "CrearPostServlet", urlPatterns = {"/CrearPost"})
-public class CrearPostServlet extends HttpServlet {
+@WebServlet(name = "PreNewChatServlet", urlPatterns = {"/PreNewChatServlet"})
+public class PreNewChatServlet extends HttpServlet {
 
     @EJB
-    private GrupoFacade grupoFacade;
-
+    private UsuarioFacade usuarioFacade;
 
     @EJB
-    private PostFacade postFacade;
-
-
-
+    private AmigosFacade amigosFacade;
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,37 +49,28 @@ public class CrearPostServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
         RequestDispatcher rd;
-
+        Usuario loggedUser = (Usuario) session.getAttribute("loggedUser");
+        
         if(loggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         }
-
-        String content = request.getParameter("post");
-        String grupo = request.getParameter("grupos");
-
-        Post post = new Post();
-
-        post.setContenido(content);
-        post.setIdAutor(usuario);
-        Grupo group = grupoFacade.find(new Integer(grupo));
-
-        if(group != null){
-            post.setIdGrupo(group);
+        
+        List<Amigos> amigos = this.amigosFacade.queryFriendsList(loggedUser.getId());
+        List<Usuario> amigosUser = new ArrayList<>();
+        if (amigos != null){
+            for (Amigos amigo : amigos) {
+                amigosUser.add(this.usuarioFacade.queryUserByID(amigo.getAmigosPK().getIdAmigo()));
+            }
+            request.setAttribute("amigos", amigosUser);
+        } else {
+            request.setAttribute("amigos", new ArrayList<>());
         }
-
-        Date date = new java.util.Date(System.currentTimeMillis());
-        post.setFechaPublicacion(date);
-
-
-        postFacade.create(post);
-
-
-        request.setAttribute("publishedPost", "Post publicado correctamente");
-        response.sendRedirect("WelcomeServlet");
+        
+        rd = this.getServletContext().getRequestDispatcher("/newchat.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
