@@ -12,7 +12,7 @@ import yeeterapp.entity.Mensaje;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Stateless
 public class MensajeFacade extends AbstractFacade<Mensaje> {

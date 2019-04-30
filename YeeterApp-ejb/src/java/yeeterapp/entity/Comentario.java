@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,17 +23,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author alec
+ * @author jugr9
  */
 @Entity
-@Table(name = "COMENTARIO")
+@Table(name = "comentario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Comentario.findAll", query = "SELECT c FROM Comentario c")
     , @NamedQuery(name = "Comentario.findById", query = "SELECT c FROM Comentario c WHERE c.id = :id")
-    , @NamedQuery(name = "Comentario.findByContenido", query = "SELECT c FROM Comentario c WHERE c.contenido = :contenido")
-    , @NamedQuery(name = "Comentario.findByAutor", query = "SELECT c FROM Comentario c WHERE c.autor = :autor")
-    , @NamedQuery(name = "Comentario.findByPost", query = "SELECT c FROM Comentario c WHERE c.post = :post")})
+    , @NamedQuery(name = "Comentario.findByContenido", query = "SELECT c FROM Comentario c WHERE c.contenido = :contenido")})
 public class Comentario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,14 +45,12 @@ public class Comentario implements Serializable {
     @Size(min = 1, max = 1024)
     @Column(name = "contenido")
     private String contenido;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "autor")
-    private int autor;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "post")
-    private int post;
+    @JoinColumn(name = "post", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Post post;
+    @JoinColumn(name = "autor", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario autor;
 
     public Comentario() {
     }
@@ -61,11 +59,9 @@ public class Comentario implements Serializable {
         this.id = id;
     }
 
-    public Comentario(Integer id, String contenido, int autor, int post) {
+    public Comentario(Integer id, String contenido) {
         this.id = id;
         this.contenido = contenido;
-        this.autor = autor;
-        this.post = post;
     }
 
     public Integer getId() {
@@ -84,20 +80,20 @@ public class Comentario implements Serializable {
         this.contenido = contenido;
     }
 
-    public int getAutor() {
-        return autor;
-    }
-
-    public void setAutor(int autor) {
-        this.autor = autor;
-    }
-
-    public int getPost() {
+    public Post getPost() {
         return post;
     }
 
-    public void setPost(int post) {
+    public void setPost(Post post) {
         this.post = post;
+    }
+
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
     }
 
     @Override
@@ -122,7 +118,7 @@ public class Comentario implements Serializable {
 
     @Override
     public String toString() {
-        return "yeeterapp.ejb.Comentario[ id=" + id + " ]";
+        return "yeeterapp.entity.Comentario[ id=" + id + " ]";
     }
     
 }

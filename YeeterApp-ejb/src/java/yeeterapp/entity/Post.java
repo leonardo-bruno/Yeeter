@@ -7,35 +7,39 @@ package yeeterapp.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Entity
-@Table(name = "POST")
+@Table(name = "post")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p")
     , @NamedQuery(name = "Post.findById", query = "SELECT p FROM Post p WHERE p.id = :id")
     , @NamedQuery(name = "Post.findByContenido", query = "SELECT p FROM Post p WHERE p.contenido = :contenido")
-    , @NamedQuery(name = "Post.findByFechaPublicacion", query = "SELECT p FROM Post p WHERE p.fechaPublicacion = :fechaPublicacion")
-    , @NamedQuery(name = "Post.findByIdAutor", query = "SELECT p FROM Post p WHERE p.idAutor = :idAutor")
-    , @NamedQuery(name = "Post.findByIdGrupo", query = "SELECT p FROM Post p WHERE p.idGrupo = :idGrupo")})
+    , @NamedQuery(name = "Post.findByFechaPublicacion", query = "SELECT p FROM Post p WHERE p.fechaPublicacion = :fechaPublicacion")})
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,12 +58,14 @@ public class Post implements Serializable {
     @Column(name = "fecha_publicacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaPublicacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idAutor")
-    private int idAutor;
-    @Column(name = "idGrupo")
-    private Integer idGrupo;
+    @JoinColumn(name = "idGrupo", referencedColumnName = "id")
+    @ManyToOne
+    private Grupo idGrupo;
+    @JoinColumn(name = "idAutor", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario idAutor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<Comentario> comentarioList;
 
     public Post() {
     }
@@ -68,11 +74,10 @@ public class Post implements Serializable {
         this.id = id;
     }
 
-    public Post(Integer id, String contenido, Date fechaPublicacion, int idAutor) {
+    public Post(Integer id, String contenido, Date fechaPublicacion) {
         this.id = id;
         this.contenido = contenido;
         this.fechaPublicacion = fechaPublicacion;
-        this.idAutor = idAutor;
     }
 
     public Integer getId() {
@@ -99,20 +104,29 @@ public class Post implements Serializable {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public int getIdAutor() {
-        return idAutor;
-    }
-
-    public void setIdAutor(int idAutor) {
-        this.idAutor = idAutor;
-    }
-
-    public Integer getIdGrupo() {
+    public Grupo getIdGrupo() {
         return idGrupo;
     }
 
-    public void setIdGrupo(Integer idGrupo) {
+    public void setIdGrupo(Grupo idGrupo) {
         this.idGrupo = idGrupo;
+    }
+
+    public Usuario getIdAutor() {
+        return idAutor;
+    }
+
+    public void setIdAutor(Usuario idAutor) {
+        this.idAutor = idAutor;
+    }
+
+    @XmlTransient
+    public List<Comentario> getComentarioList() {
+        return comentarioList;
+    }
+
+    public void setComentarioList(List<Comentario> comentarioList) {
+        this.comentarioList = comentarioList;
     }
 
     @Override

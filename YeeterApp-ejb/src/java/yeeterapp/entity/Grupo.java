@@ -7,35 +7,41 @@ package yeeterapp.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Entity
-@Table(name = "GRUPO")
+@Table(name = "grupo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g")
     , @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id")
     , @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")
     , @NamedQuery(name = "Grupo.findByDescripcion", query = "SELECT g FROM Grupo g WHERE g.descripcion = :descripcion")
-    , @NamedQuery(name = "Grupo.findByFechaCreacion", query = "SELECT g FROM Grupo g WHERE g.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Grupo.findByIdCreador", query = "SELECT g FROM Grupo g WHERE g.idCreador = :idCreador")})
+    , @NamedQuery(name = "Grupo.findByFechaCreacion", query = "SELECT g FROM Grupo g WHERE g.fechaCreacion = :fechaCreacion")})
 public class Grupo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,10 +63,16 @@ public class Grupo implements Serializable {
     @Column(name = "fecha_creacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idCreador")
-    private int idCreador;
+    @JoinTable(name = "usuario_pertenece_grupo", joinColumns = {
+        @JoinColumn(name = "idGrupo", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "idUsuario", referencedColumnName = "id")})
+    @ManyToMany
+    private List<Usuario> usuarioList;
+    @OneToMany(mappedBy = "idGrupo")
+    private List<Post> postList;
+    @JoinColumn(name = "idCreador", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario idCreador;
 
     public Grupo() {
     }
@@ -69,11 +81,10 @@ public class Grupo implements Serializable {
         this.id = id;
     }
 
-    public Grupo(Integer id, String nombre, Date fechaCreacion, int idCreador) {
+    public Grupo(Integer id, String nombre, Date fechaCreacion) {
         this.id = id;
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
-        this.idCreador = idCreador;
     }
 
     public Integer getId() {
@@ -108,11 +119,29 @@ public class Grupo implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public int getIdCreador() {
+    @XmlTransient
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
+    }
+
+    @XmlTransient
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
+    }
+
+    public Usuario getIdCreador() {
         return idCreador;
     }
 
-    public void setIdCreador(int idCreador) {
+    public void setIdCreador(Usuario idCreador) {
         this.idCreador = idCreador;
     }
 
