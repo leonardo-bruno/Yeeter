@@ -5,6 +5,7 @@
  */
 package yeeterapp.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -36,6 +37,16 @@ public class PostFacade extends AbstractFacade<Post> {
         try {
             return (Post) q.getResultList();
         } catch(NoResultException r) {
+            return null;
+        }
+    }
+     
+    public List<Post> queryGroupFeed(int idGroup){
+        Query q = this.em.createNamedQuery("Post.findByIdGrupo");
+        q.setParameter("idGroup", idGroup);
+        try{
+            return q.getResultList();
+        }catch(NoResultException e){
             return null;
         }
     }

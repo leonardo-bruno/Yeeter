@@ -5,10 +5,14 @@
  */
 package yeeterapp.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import yeeterapp.entity.Comentario;
+import yeeterapp.entity.Post;
 
 /**
  *
@@ -29,4 +33,13 @@ public class ComentarioFacade extends AbstractFacade<Comentario> {
         super(Comentario.class);
     }
     
+    public List<Comentario> queryPostFeed(Post post){
+        Query q = this.em.createNamedQuery("Comentario.findByPost");
+        q.setParameter("post", post);
+        try{
+            return q.getResultList();
+        }catch(NoResultException e){
+            return null;
+        }
+    }
 }

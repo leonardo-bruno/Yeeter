@@ -7,7 +7,9 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,27 +18,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.ComentarioFacade;
 import yeeterapp.ejb.PostFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Grupo;
+import yeeterapp.entity.Comentario;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
-@WebServlet(name = "GrupoServlet", urlPatterns = {"/GrupoServlet"})
-public class GrupoServlet extends HttpServlet {
-
-    @EJB
-    private GrupoFacade grupoFacade;
-    @EJB
-    private UsuarioFacade usuarioFacade;
+@WebServlet(name = "PostServlet", urlPatterns = {"/PostServlet"})
+public class PostServlet extends HttpServlet {
+    
     @EJB
     private PostFacade postFacade;
-
+    @EJB
+    private ComentarioFacade comentarioFacade;
+    @EJB
+    private UsuarioFacade usuarioFacade; 
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,33 +59,32 @@ public class GrupoServlet extends HttpServlet {
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         }
-
-
-        String idGroupValue = request.getParameter("id");
-        int str;
-        if(idGroupValue == null) {
-            str = (Integer) request.getAttribute("id");
+        
+        String idPostValue = request.getParameter("id");
+        int idP;
+        if(idPostValue == null) {
+            idP = (Integer) request.getAttribute("id");
         } else {
-            str = Integer.valueOf(idGroupValue);
+            idP = Integer.valueOf(idPostValue);
         }
-        Grupo grupo=this.grupoFacade.find(str);
-        String strEditingValue = request.getParameter("editing");
-        if(strEditingValue != null) {
-            request.setAttribute("editing", Boolean.parseBoolean(strEditingValue));
+        
+        Post post = postFacade.find(idP);
+        request.setAttribute("post", post);
+        
+        Usuario autor = usuarioFacade.queryUserByID(post.getIdAutor());
+        request.setAttribute("autor", autor);
+        
+        List<Comentario> postComments = comentarioFacade.queryPostFeed(post);
+        Map<Comentario,Usuario> postFeed = new HashMap<>();
+        
+        for(Comentario c: postComments){
+            Usuario u = usuarioFacade.queryUserByID(c.getAutor());
+            postFeed.put(c, u);
         }
-        request.setAttribute("grupo", grupo);
+        
+        request.setAttribute("postFeed", postFeed);
 
-        List<Post> groupPosts = postFacade.queryGroupFeed(str);
-        Map<Post,Usuario> groupFeed = new HashMap<>();
-
-        for(Post p: groupPosts){
-            Usuario u = usuarioFacade.queryUserByID(p.getIdAutor());
-            groupFeed.put(p, u);
-        }
-
-        request.setAttribute("groupFeed", groupFeed);
-
-        rd = this.getServletContext().getRequestDispatcher("/grupo.jsp");
+        rd = this.getServletContext().getRequestDispatcher("/post.jsp");
         rd.forward(request, response);
     }
 
