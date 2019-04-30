@@ -31,9 +31,9 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
     public MensajeFacade() {
         super(Mensaje.class);
     }
-    public List<Mensaje> queryByEmisor(int emisor) {
-       Query q = this.em.createNamedQuery("Mensaje.findByIdEmisor");
-       q.setParameter("emisor", emisor);
+    public List<Mensaje> queryByID (Integer id) {
+       Query q = this.em.createNamedQuery("Mensaje.findById");
+       q.setParameter("id", id);
        try {
            return q.getResultList();
        } catch(NoResultException e) {

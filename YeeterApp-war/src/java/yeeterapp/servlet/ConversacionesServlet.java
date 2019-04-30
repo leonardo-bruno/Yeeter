@@ -53,17 +53,18 @@ public class ConversacionesServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Mensaje> listaMensajes = mensajeFacade.queryByEmisor(user.getId());
-        Map<Usuario,Mensaje> userCover = new HashMap<>();
-       
-        for(Mensaje mens: listaMensajes){
-           Usuario u = mens.getIdReceptor();
-           userCover.put(u, mens);
-        } 
-        request.setAttribute("userCover", userCover);
-        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
+        Usuario loggedUser;
+       
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        List<Mensaje> listaMensajes = mensajeFacade.queryByID(loggedUser.getId());
+        List<Usuario> listaAmigos =loggedUser.getUsuarioList1();
+       
+        request.setAttribute("listaMensajes",listaMensajes);
+        request.setAttribute("listaAmigos",listaAmigos);
+        
+        
         rd = this.getServletContext().getRequestDispatcher("/Conversaciones.jsp");
         rd.forward(request, response);
     }
