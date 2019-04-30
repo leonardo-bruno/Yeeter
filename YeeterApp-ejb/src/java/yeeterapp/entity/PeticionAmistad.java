@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -17,10 +19,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Entity
-@Table(name = "PETICION_AMISTAD")
+@Table(name = "peticion_amistad")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PeticionAmistad.findAll", query = "SELECT p FROM PeticionAmistad p")
@@ -35,6 +37,12 @@ public class PeticionAmistad implements Serializable {
     @Size(max = 255)
     @Column(name = "mensaje")
     private String mensaje;
+    @JoinColumn(name = "usuarioEmisor", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Usuario usuario;
+    @JoinColumn(name = "usuarioReceptor", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Usuario usuario1;
 
     public PeticionAmistad() {
     }
@@ -61,6 +69,22 @@ public class PeticionAmistad implements Serializable {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Usuario getUsuario1() {
+        return usuario1;
+    }
+
+    public void setUsuario1(Usuario usuario1) {
+        this.usuario1 = usuario1;
     }
 
     @Override

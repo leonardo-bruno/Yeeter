@@ -6,27 +6,20 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import yeeterapp.entity.Grupo;
-import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author jesus
+ * @author alec
  */
-@WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
-public class PrePostServlet extends HttpServlet {
+@WebServlet(name = "AddMemberServlet", urlPatterns = {"/AddMemberServlet"})
+public class AddMemberServlet extends HttpServlet {
 
-    
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,19 +32,18 @@ public class PrePostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
-        
-        List<Grupo> grupos = usuario.getGrupoList();
-        if (grupos != null){
-            request.setAttribute("grupos", grupos);
-        } else {
-            request.setAttribute("grupos", new ArrayList<>());
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AddMemberServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AddMemberServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

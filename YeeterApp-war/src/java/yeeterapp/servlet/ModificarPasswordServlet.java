@@ -6,8 +6,8 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,18 +15,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.entity.Grupo;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author jesus
+ * @author leonardobruno
  */
-@WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
-public class PrePostServlet extends HttpServlet {
+@WebServlet(name = "ModificarPasswordServlet", urlPatterns = {"/ModificarPasswordServlet"})
+public class ModificarPasswordServlet extends HttpServlet {
 
-    
-    
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,18 +41,51 @@ public class PrePostServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
+        RequestDispatcher rd;
+        String fieldsThatFail = "";
+        boolean error = false;
+        Usuario user=null;
         
-        List<Grupo> grupos = usuario.getGrupoList();
-        if (grupos != null){
-            request.setAttribute("grupos", grupos);
-        } else {
-            request.setAttribute("grupos", new ArrayList<>());
+        try{
+            int str=Integer.valueOf(request.getParameter("id"));
+            user=this.usuarioFacade.find(str);
+            String oldPassword = request.getParameter("oldPassword");
+            
+            if(!oldPassword.equals(user.getPassword())){
+               error=true; 
+               fieldsThatFail += "oldPass";
+            }
+            
+            String password1 = request.getParameter("password1");
+            String password2 = request.getParameter("password2");
+
+            if(!password1.equals(password2) || password1.length() < 6) {
+                error = true;
+                fieldsThatFail += "pass";
+            }
+            
+            if(error){
+                request.setAttribute("fields", fieldsThatFail);
+                rd = this.getServletContext().getRequestDispatcher("/modificarPassword.jsp");
+                rd.forward(request, response);
+            }else{
+                user.setPassword(password2);
+                usuarioFacade.edit(user);
+                session.setAttribute("loggedUser", user);
+                request.setAttribute("usuario", user);
+                rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
+                rd.forward(request, response);
+            }
+            
+            
+            
+        }catch(Exception ex){
+            user=(Usuario)session.getAttribute("loggedUser");
+            session.setAttribute("loggedUser", user);
+            rd = this.getServletContext().getRequestDispatcher("/modificarPassword.jsp");
+            rd.forward(request, response);
         }
         
-        RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -26,15 +26,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author jugr9
  */
 @Entity
-@Table(name = "notificaciones")
+@Table(name = "comentario")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Notificaciones.findAll", query = "SELECT n FROM Notificaciones n")
-    , @NamedQuery(name = "Notificaciones.findById", query = "SELECT n FROM Notificaciones n WHERE n.id = :id")
-    , @NamedQuery(name = "Notificaciones.findByContenido", query = "SELECT n FROM Notificaciones n WHERE n.contenido = :contenido")
-    , @NamedQuery(name = "Notificaciones.findByLink", query = "SELECT n FROM Notificaciones n WHERE n.link = :link")
-    , @NamedQuery(name = "Notificaciones.findByNotificacionLeida", query = "SELECT n FROM Notificaciones n WHERE n.notificacionLeida = :notificacionLeida")})
-public class Notificaciones implements Serializable {
+    @NamedQuery(name = "Comentario.findAll", query = "SELECT c FROM Comentario c")
+    , @NamedQuery(name = "Comentario.findById", query = "SELECT c FROM Comentario c WHERE c.id = :id")
+    , @NamedQuery(name = "Comentario.findByContenido", query = "SELECT c FROM Comentario c WHERE c.contenido = :contenido")})
+public class Comentario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,34 +42,26 @@ public class Notificaciones implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 1024)
     @Column(name = "contenido")
     private String contenido;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "link")
-    private String link;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "notificacionLeida")
-    private boolean notificacionLeida;
-    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
+    @JoinColumn(name = "post", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Usuario idUsuario;
+    private Post post;
+    @JoinColumn(name = "autor", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario autor;
 
-    public Notificaciones() {
+    public Comentario() {
     }
 
-    public Notificaciones(Integer id) {
+    public Comentario(Integer id) {
         this.id = id;
     }
 
-    public Notificaciones(Integer id, String contenido, String link, boolean notificacionLeida) {
+    public Comentario(Integer id, String contenido) {
         this.id = id;
         this.contenido = contenido;
-        this.link = link;
-        this.notificacionLeida = notificacionLeida;
     }
 
     public Integer getId() {
@@ -90,28 +80,20 @@ public class Notificaciones implements Serializable {
         this.contenido = contenido;
     }
 
-    public String getLink() {
-        return link;
+    public Post getPost() {
+        return post;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
-    public boolean getNotificacionLeida() {
-        return notificacionLeida;
+    public Usuario getAutor() {
+        return autor;
     }
 
-    public void setNotificacionLeida(boolean notificacionLeida) {
-        this.notificacionLeida = notificacionLeida;
-    }
-
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
     }
 
     @Override
@@ -124,10 +106,10 @@ public class Notificaciones implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Notificaciones)) {
+        if (!(object instanceof Comentario)) {
             return false;
         }
-        Notificaciones other = (Notificaciones) object;
+        Comentario other = (Comentario) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -136,7 +118,7 @@ public class Notificaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "yeeterapp.entity.Notificaciones[ id=" + id + " ]";
+        return "yeeterapp.entity.Comentario[ id=" + id + " ]";
     }
     
 }

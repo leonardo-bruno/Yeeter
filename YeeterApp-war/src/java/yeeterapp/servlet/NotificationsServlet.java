@@ -6,8 +6,8 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,17 +15,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.entity.Grupo;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Usuario;
+import yeeterapp.entity.Notificaciones;
 
 /**
  *
- * @author jesus
+ * @author alec
  */
-@WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
-public class PrePostServlet extends HttpServlet {
+@WebServlet(name = "NotificationsServlet", urlPatterns = {"/NotificationsServlet"})
+public class NotificationsServlet extends HttpServlet {
 
-    
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,17 +43,28 @@ public class PrePostServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
-        
-        List<Grupo> grupos = usuario.getGrupoList();
-        if (grupos != null){
-            request.setAttribute("grupos", grupos);
-        } else {
-            request.setAttribute("grupos", new ArrayList<>());
-        }
-        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        
+        
+        List<Notificaciones> notificaciones = loggedUser.getNotificacionesList();
+        request.setAttribute("notifications", notificaciones);
+        long noLeidas;
+        noLeidas = notificaciones.stream().filter(notificacion -> !notificacion.getNotificacionLeida()).count();
+        // easy win programación funcional gracias por tanto.
+        /*for(Notificaciones n : notificaciones) 
+            if(!n.getNotificacionLeida())
+                noLeidas++;*/
+        request.setAttribute("noLeidas", noLeidas);
+        
+        rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
         rd.forward(request, response);
     }
 

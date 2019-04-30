@@ -12,7 +12,7 @@ import yeeterapp.entity.Notificaciones;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Stateless
 public class NotificacionesFacade extends AbstractFacade<Notificaciones> {

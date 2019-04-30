@@ -8,14 +8,14 @@ package yeeterapp.ejb;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import yeeterapp.entity.UsuarioPerteneceGrupo;
+import yeeterapp.entity.Comentario;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Stateless
-public class UsuarioPerteneceGrupoFacade extends AbstractFacade<UsuarioPerteneceGrupo> {
+public class ComentarioFacade extends AbstractFacade<Comentario> {
 
     @PersistenceContext(unitName = "YeeterApp-ejbPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class UsuarioPerteneceGrupoFacade extends AbstractFacade<UsuarioPertenece
         return em;
     }
 
-    public UsuarioPerteneceGrupoFacade() {
-        super(UsuarioPerteneceGrupo.class);
+    public ComentarioFacade() {
+        super(Comentario.class);
     }
     
 }

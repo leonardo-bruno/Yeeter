@@ -53,12 +53,18 @@ public class WelcomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        List<Post> posts =  usuarioFacade.queryUserFeed(loggedUser.getId());
         Map<Post,Usuario> feed = new HashMap<>();
         Map<Map<Post,Usuario>,Grupo> userGroup = new HashMap<>();
 
@@ -69,9 +75,9 @@ public class WelcomeServlet extends HttpServlet {
               Grupo g = grupoFacade.queryById(post.getIdGrupo());
               userGroup.put(feed, g);
           }
-          
-          
-          
+
+
+
         }
         request.setAttribute("feed",feed);
         request.setAttribute("userGroup",userGroup );

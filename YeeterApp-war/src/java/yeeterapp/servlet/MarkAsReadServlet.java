@@ -6,27 +6,35 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.RequestDispatcher;
+import java.util.stream.Collectors;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.entity.Grupo;
+import yeeterapp.ejb.NotificacionesFacade;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author jesus
+ * @author alec
  */
-@WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
-public class PrePostServlet extends HttpServlet {
+@WebServlet(name = "MarkAsReadServlet", urlPatterns = {"/MarkAsReadServlet"})
+public class MarkAsReadServlet extends HttpServlet {
 
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private NotificacionesFacade notificacionesFacade;
     
     
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,19 +47,27 @@ public class PrePostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
-        
-        List<Grupo> grupos = usuario.getGrupoList();
-        if (grupos != null){
-            request.setAttribute("grupos", grupos);
+        String strId =  request.getParameter("idNotification");
+        Notificaciones notificacion;
+        if(strId == null) {
+            HttpSession session = request.getSession();
+            Integer idValueUser = (Integer) session.getAttribute("loggedUserID");
+            Usuario user = usuarioFacade.find(idValueUser);
+            List<Notificaciones> notificaciones = 
+                    user.getNotificacionesList().stream().filter(x -> !x.getNotificacionLeida()).collect(Collectors.toList());
+            notificaciones.forEach((not) -> {
+                not.setNotificacionLeida(true);
+                notificacionesFacade.edit(not);
+            });
         } else {
-            request.setAttribute("grupos", new ArrayList<>());
+            int idNotificacion = Integer.parseInt(strId);
+            notificacion = notificacionesFacade.find(idNotificacion);
+            notificacion.setNotificacionLeida(true);
+            notificacionesFacade.edit(notificacion);
         }
         
-        RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
-        rd.forward(request, response);
+        request.setAttribute("success", "Notificación marcada como leída");
+        response.sendRedirect("NotificationsServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

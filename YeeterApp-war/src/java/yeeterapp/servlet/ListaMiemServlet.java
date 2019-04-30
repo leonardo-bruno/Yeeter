@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -19,10 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.ejb.UsuarioPerteneceGrupoFacade;
 import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
-import yeeterapp.entity.UsuarioPerteneceGrupo;
 
 /**
  *
@@ -34,8 +31,6 @@ public class ListaMiemServlet extends HttpServlet {
     @EJB
     private UsuarioFacade usuarioFacade;
 
-    @EJB
-    private UsuarioPerteneceGrupoFacade usuarioPerteneceGrupoFacade;
 
     @EJB
     private GrupoFacade grupoFacade;
@@ -53,28 +48,26 @@ public class ListaMiemServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            RequestDispatcher rd;
-            HttpSession session = request.getSession();
-            
-            
-            int str=Integer.valueOf(request.getParameter("id"));
-            Grupo grupo=this.grupoFacade.find(str);
-            List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
-            List<Usuario> listaUsuarios=new ArrayList<Usuario>();
-            for(UsuarioPerteneceGrupo upg : usGrupo){
-                if(upg.getUsuarioPerteneceGrupoPK().getIdGrupo()==grupo.getId())listaUsuarios.add(this.usuarioFacade.find(upg.getUsuarioPerteneceGrupoPK().getIdUsuario()));
-   
-            }
-            
-            Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
-            
-            session.setAttribute("loggedUser", usLogeado);
-            request.setAttribute("usuarios", listaUsuarios);
-            
-            rd = this.getServletContext().getRequestDispatcher("/listaMiem.jsp");
+        HttpSession session = request.getSession();
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+
+        int str = Integer.valueOf(request.getParameter("id"));
+        Grupo grupo=this.grupoFacade.find(str);
+        List<Usuario> listaUsuarios = grupo.getUsuarioList();
+        
+        request.setAttribute("grupo", grupo);
+        request.setAttribute("usuarios", listaUsuarios);
+
+        rd = this.getServletContext().getRequestDispatcher("/listaMiem.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

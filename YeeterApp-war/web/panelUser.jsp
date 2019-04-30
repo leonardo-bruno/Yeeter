@@ -4,6 +4,8 @@
     Author     : leonardobruno
 --%>
 
+<%@page import="java.text.Format"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
@@ -13,24 +15,7 @@
     <%
         Usuario us=(Usuario)request.getAttribute("usuario");
         boolean mismoUsuario=false;
-        String userName,nombre, apellidos,email,fechaNacimiento,biografia;
-        if(usuario.getId()==us.getId()){
-            mismoUsuario=true;
-            userName= usuario.getUsername();
-            nombre=usuario.getNombre();
-            apellidos=usuario.getApellidos();
-            email=usuario.getCorreo();
-
-            biografia=usuario.getBiografia();
-        }else{
-            userName= us.getUsername();
-            nombre=us.getNombre();
-            apellidos=us.getApellidos();
-            email=us.getCorreo();
-
-            biografia=us.getBiografia();
-        }
-
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         %>
     <head>
        <title>Yeeter</title>
@@ -45,7 +30,7 @@
         <div class="content">
             <div class="top">
                 <p>Perfil<% if(mismoUsuario) { %>
-                    <a href="#" class="btn btn-primary" role="button" > Modificar Contraseña</a></p>
+                    <a href="ModificarPasswordServlet" class="btn btn-primary" role="button" > Modificar Contraseña</a></p>
                 <% } else{ %>
                     </p>
                     <% } %> 
@@ -55,37 +40,39 @@
                   <div class="form-group row">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Usuario</label>
                     <div class="col-sm-7">
-                        <input readonly="true" type="usuario" class="form-control" id="usuario" value="<%= userName %>">
+                        <input readonly="true" type="usuario" class="form-control" id="usuario" value="<%= us.getUsername() %>">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Nombre</label>
                     <div class="col-sm-7">
-                      <input readonly="true" type="nombre" class="form-control" id="nombre" value="<%= nombre %>">
+                      <input readonly="true" type="nombre" class="form-control" id="nombre" value="<%= us.getNombre() %>">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Apellidos</label>
                     <div class="col-sm-7">
-                      <input readonly="true" type="apellidos" class="form-control" id="apellidos" value="<%= apellidos %>">
+                      <input readonly="true" type="apellidos" class="form-control" id="apellidos" value="<%= us.getApellidos() %>">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-7">
-                      <input readonly="true" type="email" class="form-control" id="email" value="<%= email %>">
+                      <input readonly="true" type="email" class="form-control" id="email" value="<%= us.getCorreo() %>">
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
-                    <div class="col-sm-7">
-                      <input readonly="true" type="fechaNacimiento" class="form-control" id="fechaNacimiento" value="<%= usuario.getUsername() %>">
-                    </div>
+                      
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha Nacimiento</label>
+                        <div class="col-sm-7">
+                        <input id="fechaNacimiento" readonly="true" type="date" class="form-control" value="<%= us.getFechaNacimiento() %>" format="DD-MM-YYYY">
+                        <span class="result"></span>
+                        </div>
                   </div>    
                   <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Biografia</label>
                     <div class="col-sm-7">
-                      <textarea readonly="true" class="form-control" aria-label="biografia" ><%= biografia %></textarea>
+                      <textarea readonly="true" class="form-control" aria-label="biografia" ><%= us.getBiografia() %></textarea>
                     </div>
                   </div>
                   <div class="form-group row">

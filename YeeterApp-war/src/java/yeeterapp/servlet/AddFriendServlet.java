@@ -6,8 +6,8 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,16 +15,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.entity.Grupo;
+import yeeterapp.ejb.PeticionAmistadFacade;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.PeticionAmistad;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author jesus
+ * @author jugr9
  */
-@WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
-public class PrePostServlet extends HttpServlet {
+@WebServlet(name = "AddFriendServlet", urlPatterns = {"/PeticionAmigo"})
+public class AddFriendServlet extends HttpServlet {
 
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private PeticionAmistadFacade peticionFacade;
+    
     
     
     /**
@@ -38,20 +46,26 @@ public class PrePostServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
+        
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
-        
-        List<Grupo> grupos = usuario.getGrupoList();
-        if (grupos != null){
-            request.setAttribute("grupos", grupos);
-        } else {
-            request.setAttribute("grupos", new ArrayList<>());
-        }
-        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
-        rd.forward(request, response);
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        } 
+        else{
+            loggedUser = usuarioFacade.find(idLoggedUser);
+            int dest = Integer.valueOf(request.getParameter("destID"));
+            peticionFacade.create(new PeticionAmistad(loggedUser.getId(), dest));
+            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+            request.setAttribute("message", "La solicitud se ha enviado con exito.");
+            rd.forward(request, response);
+        }   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

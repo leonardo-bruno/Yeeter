@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
 
@@ -27,7 +27,12 @@ import yeeterapp.entity.Usuario;
 public class GrupoServlet extends HttpServlet {
 
     @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
     private GrupoFacade grupoFacade;
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,23 +46,35 @@ public class GrupoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            RequestDispatcher rd;
-            HttpSession session = request.getSession();
-            
-            
-            int str=Integer.valueOf(request.getParameter("id"));
-            Grupo grupo=this.grupoFacade.find(str);
-            
-            Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
-            
-            session.setAttribute("loggedUser", usLogeado);
-            request.setAttribute("grupo", grupo);
-            
-            rd = this.getServletContext().getRequestDispatcher("/grupo.jsp");
+        RequestDispatcher rd;
+        HttpSession session = request.getSession();
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+
+
+        String idGroupValue = request.getParameter("id");
+        int str;
+        if(idGroupValue == null) {
+            str = (Integer) request.getAttribute("id");
+        } else {
+            str = Integer.valueOf(idGroupValue);
         }
+        Grupo grupo=this.grupoFacade.find(str);
+        String strEditingValue = request.getParameter("editing");
+        if(strEditingValue != null) {
+            request.setAttribute("editing", Boolean.parseBoolean(strEditingValue));
+        }
+        request.setAttribute("grupo", grupo);
+
+        
+        rd = this.getServletContext().getRequestDispatcher("/grupo.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

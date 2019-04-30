@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -42,16 +41,25 @@ public class panelUserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
-        int str=Integer.valueOf(request.getParameter("id"));
-        Usuario us=this.usuarioFacade.find(str);
-        Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
-        request.setAttribute("usuario", us);
+        String idString = request.getParameter("id");
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);    
+        if(idString != null) {
+            int str=Integer.valueOf(idString);
+            loggedUser=this.usuarioFacade.find(str);
+        }
         
         
-        session.setAttribute("loggedUser", usLogeado);
-        request.setAttribute("usuario", us);
+        request.setAttribute("usuario", loggedUser);
+        
+        
         request.setAttribute("currentPage", "perfil");
 
         rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");

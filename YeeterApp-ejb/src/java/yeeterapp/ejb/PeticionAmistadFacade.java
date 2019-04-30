@@ -12,7 +12,7 @@ import yeeterapp.entity.PeticionAmistad;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Stateless
 public class PeticionAmistadFacade extends AbstractFacade<PeticionAmistad> {
