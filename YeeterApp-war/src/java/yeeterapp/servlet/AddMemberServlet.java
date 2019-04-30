@@ -62,22 +62,16 @@ public class AddMemberServlet extends HttpServlet {
         Usuario loggedUser = usuarioFacade.find(loggedID);
         
         Grupo currentGroup = grupoFacade.find(new Integer(idValue));
-        List<Usuario> amigos = 
-        List<Usuario> amigosUser = 
-        for(int i = 0; i < amigos.size(); i++) {
-            Usuario temp = this.usuarioFacade.find(amigos.get(i).getAmigosPK().getIdAmigo());
-            if(!usuarioFacade.queryGroups(temp.getId()).contains(currentGroup)) {
-                amigosUser.add(temp);
-            }
-        }
+        
+        List<Usuario> amigos = loggedUser.getUsuarioList1();
+        
+        List<Usuario> amigosNoEnGrupo = new ArrayList<>();
+        
         amigos.forEach(amigo -> {
-            Usuario temp = this.usuarioFacade.find(amigo.getAmigosPK().getIdAmigo());
-            if(!usuarioFacade.queryGroups(temp.getId()).contains(currentGroup)) {
-                amigosUser.add(temp);
-            }
+            if(!currentGroup.getUsuarioList().contains(amigo)) amigosNoEnGrupo.add(amigo);
         });
         
-        request.setAttribute("amigos", amigosUser);
+        request.setAttribute("amigos", amigosNoEnGrupo);
         
         rd = this.getServletContext().getRequestDispatcher("/addUser.jsp");
         rd.forward(request, response);
