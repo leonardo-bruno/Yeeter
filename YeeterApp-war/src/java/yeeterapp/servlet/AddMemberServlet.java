@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,10 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.AmigosFacade;
 import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Amigos;
 import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
 
@@ -36,9 +33,6 @@ public class AddMemberServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
-    @EJB
-    private AmigosFacade amigosFacade;
 
     
     
@@ -57,17 +51,19 @@ public class AddMemberServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario logged = (Usuario) session.getAttribute("loggedUser");
+        Integer loggedID = (Integer) session.getAttribute("loggedUserID");
         String idValue = request.getParameter("id");
         RequestDispatcher rd;
-        if(logged == null) {
+        if(idValue == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         }
+        Usuario loggedUser = usuarioFacade.find(loggedID);
+        
         Grupo currentGroup = grupoFacade.find(new Integer(idValue));
-        List<Amigos> amigos = this.amigosFacade.queryFriendsList(logged.getId());
-        List<Usuario> amigosUser = new ArrayList<>();
+        List<Usuario> amigos = 
+        List<Usuario> amigosUser = 
         for(int i = 0; i < amigos.size(); i++) {
             Usuario temp = this.usuarioFacade.find(amigos.get(i).getAmigosPK().getIdAmigo());
             if(!usuarioFacade.queryGroups(temp.getId()).contains(currentGroup)) {
