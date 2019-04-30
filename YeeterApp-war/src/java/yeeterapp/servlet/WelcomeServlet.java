@@ -65,24 +65,15 @@ public class WelcomeServlet extends HttpServlet {
         }
         loggedUser = usuarioFacade.find(idLoggedUser);
         List<Post> posts =  usuarioFacade.queryUserFeed(loggedUser.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-        Map<Map<Post,Usuario>,Grupo> userGroup = new HashMap<>();
+       
 
-        for(Post post: posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
-          if(post.getIdGrupo() != null){
-              Grupo g = grupoFacade.queryById(post.getIdGrupo());
-              userGroup.put(feed, g);
-          }
+       
 
 
+        
+        request.setAttribute("posts",posts);
+       
 
-        }
-        request.setAttribute("feed",feed);
-        request.setAttribute("userGroup",userGroup );
-
-        RequestDispatcher rd;
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
         rd.forward(request, response);
     }

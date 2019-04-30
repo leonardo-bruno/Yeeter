@@ -14,11 +14,9 @@
 <%@include file="navbar.jsp" %>
 
 <%
-Map<Post,Usuario> feed = (Map) request.getAttribute("feed");
+List<Post> posts = (List) request.getAttribute("posts");
 %>
-<% 
-Map<Map<Post,Usuario>,Grupo> userGroup = (Map) request.getAttribute("userGroup");
-%>
+
 <!DOCTYPE html>
 
 <html>
@@ -29,32 +27,32 @@ Map<Map<Post,Usuario>,Grupo> userGroup = (Map) request.getAttribute("userGroup")
 </head>
 
 <body>
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
 
             <div class="col-3">
                 <button type="button" class="btn btn-secondary">Boton Panel de Control</button>
             </div>
             <div class="col-7">
-                <% for(Entry<Post,Usuario> post: feed.entrySet()){  
-                    for(Entry<Map<Post,Usuario>,Grupo> userG: userGroup.entrySet()){
+                <% for(Post p: posts){  
+                    
                 %>
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><%
-                            if(post.getKey().getIdGrupo()!=null){
+                            if(p.getIdGrupo()!= null){
                                %> 
-                               Posted in group <%=userG.getValue().getNombre()%> by @<%= post.getValue().getUsername() %>     
+                               Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername() %>     
                             
                                <% }else{  %>
-                               @<%= post.getValue().getUsername() %> 
+                               @<%= p.getIdAutor().getUsername() %> 
                                
                                <% }%> 
                         </h5>
-                        <p class="card-text"><%=post.getKey().getContenido()%></p>
+                        <p class="card-text"><%= p.getContenido()%></p>
                     </div>
                 </div>
-                <% }}  %>
+                <% }  %>
             </div>
         </div>
     </div>

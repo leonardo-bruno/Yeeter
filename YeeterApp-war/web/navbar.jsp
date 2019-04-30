@@ -32,7 +32,7 @@
                         <a class="nav-link" href="NotificationsServlet"><i class="fas fa-bell"></i> Notificaciones<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item d-flex align-items-center <%=("mensajes".equals(path) ? "active" : "")%>">
-                        <a class="nav-link" href="ConversacionesServlet?id=<%= usuario.getId() %>"><i class="fas fa-envelope"></i> Mensajes</a>
+                        <a class="nav-link" href="ConversacionesServlet?id=<%= usuario %>"><i class="fas fa-envelope"></i> Mensajes</a>
                     </li>
                     <li class="nav-item d-flex align-items-center <%=("grupos".equals(path) ? "active" : "")%>">
                         <a class="nav-link" href="ListaGruposServlet?id=<%= usuario %>"><i class="fas fa-users"></i> Grupos</a>

@@ -58,7 +58,7 @@ public class ConversacionesServlet extends HttpServlet {
         Map<Usuario,Mensaje> userCover = new HashMap<>();
        
         for(Mensaje mens: listaMensajes){
-           Usuario u = usuarioFacade.queryUserByID(mens.getIdReceptor());
+           Usuario u = mens.getIdReceptor();
            userCover.put(u, mens);
         } 
         request.setAttribute("userCover", userCover);

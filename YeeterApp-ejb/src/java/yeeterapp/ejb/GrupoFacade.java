@@ -29,23 +29,5 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         super(Grupo.class);
     }
 
-    public Grupo queryByName(String name) {
-        Query q = this.em.createNamedQuery("Grupo.findByNombre");
-        q.setParameter("nombre", name);
-        try {
-            return (Grupo) q.getSingleResult();
-        } catch(NoResultException e) {
-            return null;
-        }
-    }
     
-    public Grupo queryById(int grupoID) {
-        Query q = this.em.createNamedQuery("Grupo.findById");
-        q.setParameter("id", grupoID);
-        try {
-            return (Grupo) q.getSingleResult();
-        } catch(NoResultException e) {
-            return null;
-        }
-    }
 }
