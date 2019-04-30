@@ -5,9 +5,12 @@
  */
 package yeeterapp.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import yeeterapp.entity.Mensaje;
 
 /**
@@ -28,5 +31,14 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
     public MensajeFacade() {
         super(Mensaje.class);
     }
+    public List<Mensaje> queryByEmisor(int emisor) {
+       Query q = this.em.createNamedQuery("Mensaje.findByIdEmisor");
+       q.setParameter("emisor", emisor);
+       try {
+           return q.getResultList();
+       } catch(NoResultException e) {
+           return null;
+       }
+   }
     
 }
