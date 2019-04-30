@@ -18,10 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.ejb.UsuarioPerteneceGrupoFacade;
 import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
-import yeeterapp.entity.UsuarioPerteneceGrupo;
+
 
 /**
  *
@@ -33,8 +32,6 @@ public class ListaGruposServlet extends HttpServlet {
     @EJB
     private GrupoFacade grupoFacade;
 
-    @EJB
-    private UsuarioPerteneceGrupoFacade usuarioPerteneceGrupoFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -63,17 +60,17 @@ public class ListaGruposServlet extends HttpServlet {
             int str=0;
             Usuario us=null;
 
-                str=Integer.valueOf(request.getParameter("id"));
-                us=this.usuarioFacade.find(str);
+            str = Integer.valueOf(request.getParameter("id"));
+            us = this.usuarioFacade.find(str);
             
             Usuario usLogeado=(Usuario)session.getAttribute("loggedUser");
             
-            List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
-            List<Grupo> grupos=this.grupoFacade.findAll();
+            
+            List<Grupo> usGrupo = usLogeado.getGrupoList();
+            List<Grupo> grupos = this.grupoFacade.findAll();
             
             
             
-            session.setAttribute("loggedUser", usLogeado);
             request.setAttribute("usuario", us);
             request.setAttribute("usuariosGrupos", usGrupo);
             request.setAttribute("grupos", grupos);

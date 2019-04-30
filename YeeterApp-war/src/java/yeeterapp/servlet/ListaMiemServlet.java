@@ -18,10 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.ejb.UsuarioPerteneceGrupoFacade;
 import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
-import yeeterapp.entity.UsuarioPerteneceGrupo;
 
 /**
  *
@@ -33,8 +31,6 @@ public class ListaMiemServlet extends HttpServlet {
     @EJB
     private UsuarioFacade usuarioFacade;
 
-    @EJB
-    private UsuarioPerteneceGrupoFacade usuarioPerteneceGrupoFacade;
 
     @EJB
     private GrupoFacade grupoFacade;
@@ -63,12 +59,8 @@ public class ListaMiemServlet extends HttpServlet {
 
         int str = Integer.valueOf(request.getParameter("id"));
         Grupo grupo=this.grupoFacade.find(str);
-        List<UsuarioPerteneceGrupo> usGrupo=this.usuarioPerteneceGrupoFacade.findAll();
-        List<Usuario> listaUsuarios=new ArrayList<>();
-        usGrupo.stream().filter((upg) -> (upg.getUsuarioPerteneceGrupoPK().getIdGrupo()==grupo.getId())).forEachOrdered((upg) -> {
-            listaUsuarios.add(this.usuarioFacade.find(upg.getUsuarioPerteneceGrupoPK().getIdUsuario()));
-        });
-
+        List<Usuario> listaUsuarios = grupo.getUsuarioList();
+        
         request.setAttribute("grupo", grupo);
         request.setAttribute("usuarios", listaUsuarios);
 

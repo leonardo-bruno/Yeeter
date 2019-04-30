@@ -26,8 +26,6 @@ import yeeterapp.entity.Notificaciones;
 @WebServlet(name = "NotificationsServlet", urlPatterns = {"/NotificationsServlet"})
 public class NotificationsServlet extends HttpServlet {
 
-    @EJB
-    private NotificacionesFacade notificacionesFacade;
 
     
     /**
@@ -52,7 +50,7 @@ public class NotificationsServlet extends HttpServlet {
             rd.forward(request, response);
         }
         
-        List<Notificaciones> notificaciones = notificacionesFacade.queryByUsername(loggedUser.getId());
+        List<Notificaciones> notificaciones = loggedUser.getNotificacionesList();
         request.setAttribute("notifications", notificaciones);
         long noLeidas;
         noLeidas = notificaciones.stream().filter(notificacion -> !notificacion.getNotificacionLeida()).count();

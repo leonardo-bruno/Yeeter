@@ -27,8 +27,6 @@ import yeeterapp.entity.Usuario;
 @WebServlet(name = "PrePostServlet", urlPatterns = {"/PrePostServlet"})
 public class PrePostServlet extends HttpServlet {
 
-    @EJB
-    private UsuarioFacade usuarioFacade;
     
     
     /**
@@ -46,7 +44,7 @@ public class PrePostServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("loggedUser");
         
-        List<Grupo> grupos = usuarioFacade.queryGroups(usuario.getId());
+        List<Grupo> grupos = usuario.getGrupoList();
         if (grupos != null){
             request.setAttribute("grupos", grupos);
         } else {
