@@ -43,22 +43,16 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        Integer idUser = usuarioFacade.queryUserByEmail(email);
+        Usuario user = usuarioFacade.queryUserByEmail(email);
         RequestDispatcher rd;
-        if(idUser != null) {
-            Usuario user = usuarioFacade.find(idUser);
-            HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user);
-            response.sendRedirect("WelcomeServlet");
-            if(!user.getPassword().equals(password)) {
-                rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-                request.setAttribute("error", "La combinación de usuario y contraseña no es correcta");
-                rd.forward(request, response);
-            }
-        } else {
+        if(user == null || !user.getPassword().equals(password)) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "La combinación de usuario y contraseña no es correcta");
             rd.forward(request, response);
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute("loggedUser", user);
+            response.sendRedirect("WelcomeServlet");
         }
     }
 

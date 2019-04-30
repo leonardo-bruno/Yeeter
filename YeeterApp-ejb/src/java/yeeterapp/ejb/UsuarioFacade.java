@@ -33,11 +33,11 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
 
-    public Integer queryUserByEmail(String email) {
+    public Usuario queryUserByEmail(String email) {
         Query q = this.em.createNamedQuery("Usuario.findByCorreo");
         q.setParameter("correo", email);
         try {
-            return q.getFirstResult();
+            return (Usuario) q.getSingleResult();
         } catch(NoResultException e) {
             return null;
         }
