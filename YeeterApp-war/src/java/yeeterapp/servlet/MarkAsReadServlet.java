@@ -7,6 +7,7 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,7 +49,7 @@ public class MarkAsReadServlet extends HttpServlet {
             HttpSession session = request.getSession();
             Usuario user = (Usuario) session.getAttribute("loggedUser");
             List<Notificaciones> notificaciones = 
-                    notificacionesFacade.queryNonReadNotificationsByUsername(user.getId());
+                    user.getNotificacionesList().stream().filter(x -> !x.getNotificacionLeida()).collect(Collectors.toList());
             notificaciones.forEach((not) -> {
                 not.setNotificacionLeida(true);
                 notificacionesFacade.edit(not);

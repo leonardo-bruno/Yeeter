@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -17,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.ejb.AmigosFacade;
-import yeeterapp.entity.Amigos;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -30,8 +27,7 @@ public class SearchFriendsServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-    @EJB
-    private AmigosFacade amigosFacade;
+
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,7 +54,7 @@ public class SearchFriendsServlet extends HttpServlet {
         }else{
             String input = request.getParameter("busqueda");
             List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
-            List<Amigos> friends = amigosFacade.queryFriendsList(us.getId());
+            List<Usuario> friends = us.getUsuarioList();
         
             if(users.isEmpty()){
                 rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");

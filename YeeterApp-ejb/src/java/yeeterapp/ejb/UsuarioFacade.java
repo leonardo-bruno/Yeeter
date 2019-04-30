@@ -33,12 +33,11 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
 
-    public Usuario queryUserByEmail(String email) {
+    public Integer queryUserByEmail(String email) {
         Query q = this.em.createNamedQuery("Usuario.findByCorreo");
         q.setParameter("correo", email);
         try {
-            int id = q.getFirstResult();
-            return new Usuario(id);
+            return q.getFirstResult();
         } catch(NoResultException e) {
             return null;
         }
@@ -57,6 +56,17 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public List<Post> queryUserFeed(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Usuario> queryUserByUsernameOrName(String input) {
+        Query q = this.em.createNamedQuery("Usuario.findByNameOrUsername");
+        input = "%" + input + "%"; // Esta linea no estoy seguro de si habría que ponerla o no la verdad
+        q.setParameter("input", input);
+        try {
+            return (List<Usuario>) q.getResultList();
+        } catch(NoResultException r) {
+            return null;
+        }
     }
     
 }
