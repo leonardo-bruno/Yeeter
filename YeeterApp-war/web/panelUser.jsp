@@ -80,7 +80,7 @@
                         <% if(mismoUsuario) { %>
                         <a href="ModificarPerfilServlet"  class="btn btn-primary">Modificar</a>
                         <% } else { %>
-                        <a href="#" class="btn btn-primary" >Enviar Mensaje</a>
+                        <a href="ChatServlet?idAmigo=<%= us.getId() %>" class="btn btn-primary" >Enviar Mensaje</a>
                         <a href="#" class="btn btn-primary" >Añadir Amigo</a>
                         <% } %>
                     </div>

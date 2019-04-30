@@ -55,6 +55,7 @@ public class ChatServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         } 
         loggedUser = usuarioFacade.find(idLoggedUser);
         
