@@ -6,6 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,22 +16,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Grupo;
+import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author leonardobruno
+ * @author alec
  */
-@WebServlet(name = "GrupoServlet", urlPatterns = {"/GrupoServlet"})
-public class GrupoServlet extends HttpServlet {
+@WebServlet(name = "AddToGroupServlet", urlPatterns = {"/AddToGroupServlet"})
+public class AddToGroupServlet extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
+    private NotificacionesFacade notificacionesFacade;
 
     @EJB
     private GrupoFacade grupoFacade;
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
+    
+    
+    
     
     
 
@@ -46,33 +55,40 @@ public class GrupoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd;
         HttpSession session = request.getSession();
-        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
-        Usuario loggedUser;
-        if(idLoggedUser == null) {
+        Integer loggedID = (Integer) session.getAttribute("loggedUserID");
+        String idValue = request.getParameter("id");
+        RequestDispatcher rd;
+        if(loggedID == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
             return;
-        } 
-        loggedUser = usuarioFacade.find(idLoggedUser);
-
-
-        String idGroupValue = request.getParameter("id");
-        request.setAttribute("mensaje", request.getParameter("mensaje"));
-        int str;
-        str = Integer.valueOf(idGroupValue);
-        Grupo grupo=this.grupoFacade.find(str);
-        String strEditingValue = request.getParameter("editing");
-        if(strEditingValue != null) {
-            request.setAttribute("editing", Boolean.parseBoolean(strEditingValue));
         }
-        request.setAttribute("grupo", grupo);
-
+        String grupoId = request.getParameter("idGrupo");
+        String idUsuarioInvitar = request.getParameter("idAmigo");
         
-        rd = this.getServletContext().getRequestDispatcher("/grupo.jsp");
-        rd.forward(request, response);
+        Grupo grupo = grupoFacade.find(new Integer(grupoId));
+        Usuario loggedUser = usuarioFacade.find(loggedID);
+        Usuario usuarioAInvitar = usuarioFacade.find(new Integer(idUsuarioInvitar));
+        
+        
+        List<Usuario> usuarioList = grupo.getUsuarioList();
+        usuarioList.add(usuarioAInvitar);
+        
+        grupo.setUsuarioList(usuarioList);
+        
+        grupoFacade.edit(grupo);
+        
+        
+        Notificaciones notificacion = new Notificaciones();
+        notificacion.setContenido(loggedUser.getNombre() + " te ha añadido al grupo " + grupo.getNombre());
+        notificacion.setLink("GrupoServlet?id=" + grupo.getId());
+        notificacion.setIdUsuario(usuarioAInvitar);
+        
+        notificacionesFacade.create(notificacion);
+        
+        response.sendRedirect("GrupoServlet?id=" + grupo.getId()+"&mensaje=" + "Se ha invitado correctamente al usuario!");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <% 
     List<Usuario> amigos = (List) request.getAttribute("amigos");
+    int idGrupo = (Integer) request.getAttribute("idGrupo");
 %>
 <html>
     <head>
@@ -36,8 +37,9 @@
                                 <%= amigo.getApellidos() %>
                             </div>
                             <div class="col-1">
-                                <form name="markAsReadNotification" action="InviteToGroup" method="POST" class="w-100">
+                                <form name="addToGroup" action="AddToGroupServlet" method="POST" class="w-100">
                                     <input value="<%= amigo.getId() %>" type="hidden" name="idAmigo"/>
+                                    <input value="<%= idGrupo %>" type="hidden" name="idGrupo"/>
                                     <button type="submit" class="btn btn-outline-info btn-sm"><i class="fas fa-user-plus"></i></button>
                                 </form>
                             </div>

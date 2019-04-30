@@ -58,6 +58,7 @@ public class AddMemberServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         }
         Usuario loggedUser = usuarioFacade.find(loggedID);
         
@@ -72,6 +73,7 @@ public class AddMemberServlet extends HttpServlet {
         });
         
         request.setAttribute("amigos", amigosNoEnGrupo);
+        request.setAttribute("idGrupo", currentGroup.getId());
         
         rd = this.getServletContext().getRequestDispatcher("/addUser.jsp");
         rd.forward(request, response);
