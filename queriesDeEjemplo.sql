@@ -39,12 +39,13 @@ Select * from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERT
 
  select * from Post where idAutor in (select idAmigo from Amigos where (select id from Usuarios where email like 'alkasete%') = Usuario.id);
 
-  select * from Amigos inner join usuario on amigos.idAmigo = Usuario.id where amigos.idUsuario = (select id from usuario where correo like 'alkasete%'); # amigos de Leonardo
+  select * from Amigos inner join Usuario on Amigos.idUsuario = Usuario.id;
+  select * from Amigos inner join Usuario on Amigos.idAmigo = Usuario.id;
 
 
 
 
-  select * from Notificaciones inner join usuario on Notificaciones.idUsuario = usuario.id where not Notificaciones.notificacionLeida;
+  select * from Notificaciones inner join usuario on Notificaciones.idUsuario = usuario.id;
 
 
   select * from Mensaje where (idEmisor = 5 and idReceptor = 3) or (idReceptor = 5 and idEmisor = 3);

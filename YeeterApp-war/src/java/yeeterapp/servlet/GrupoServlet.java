@@ -54,11 +54,13 @@ public class GrupoServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         } 
         loggedUser = usuarioFacade.find(idLoggedUser);
 
 
         String idGroupValue = request.getParameter("id");
+        request.setAttribute("mensaje", request.getParameter("mensaje"));
         int str;
         if(idGroupValue == null) {
             str = (Integer) request.getAttribute("id");
