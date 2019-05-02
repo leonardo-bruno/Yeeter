@@ -48,7 +48,9 @@
                                 }%>
                 </div>
                 <div class="col-3">
-                    <button type="button" class="btn btn-info btn-lg" onclick="ChatServlet" >Nuevo Mensaje</button>
+                    <form action="PreNewChatServlet">
+                        <input type="submit" value="Nueva Conversacion" class="btn btn-info btn-lg">
+                    </form>
                 </div>
             </div>
 

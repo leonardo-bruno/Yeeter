@@ -63,7 +63,7 @@
                         }
                     %>
                 </div>
-                <form method="post" action="EnviarMensaje">
+                <form method="post" action="EnviarMensajeServlet">
                     <textarea name="mensaje" rows="5" cols="160"></textarea><br/>
                     <div class="btn-group" role="group">
                         <button class="btn btn-lg btn-outline-info btn-block" type="submit">
