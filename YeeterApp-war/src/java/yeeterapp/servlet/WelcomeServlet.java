@@ -72,6 +72,7 @@ public class WelcomeServlet extends HttpServlet {
 
         
         request.setAttribute("posts",posts);
+        request.setAttribute("loggedUser", loggedUser);
        
 
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
