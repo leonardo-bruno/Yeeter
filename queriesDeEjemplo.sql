@@ -49,3 +49,4 @@ Select * from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERT
 
 
   select * from Mensaje where (idEmisor = 5 and idReceptor = 3) or (idReceptor = 5 and idEmisor = 3);
+select * from Usuario where username like '%qwAEWRSTDR5T67Y8%';
