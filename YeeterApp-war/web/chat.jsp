@@ -26,25 +26,43 @@
                 <nav class="navbar navbar-dark bg-dark mb-5">
                     <span class="navbar-brand">Chat con <%= amigo.getNombre() + " " + amigo.getApellidos() %> </span>
                 </nav>
-                <%
-                    if (!mensajes.isEmpty()) {
-                        for(Mensaje mensaje : mensajes) {
-                %>
-                <div class="card w-100 mt-1 mb-1" style="cursor: pointer;" data-href="ChatServlet">
-                    <div class="card-body row align-items-center">
-                        <div class="col-11">
-                            <%= mensaje.getContenido() %>
+                <div class="container">
+                    <%
+                        if (!mensajes.isEmpty()) {
+                            for(Mensaje mensaje : mensajes) {
+                    %>
+                    <div class="row">
+                        <% if(!mensaje.getIdEmisor().equals(amigo) ) { %>
+                        <div class="col-6"></div>
+                        <% 
+                            }
+                        %>
+                        <div class="card col-6 w-100 mt-1 mb-1">
+                            <div class="card-body">
+
+                                <h5 class="card-title">
+                                    <% if(!mensaje.getIdEmisor().equals(amigo) ) { %>
+                                        Yo:
+                                    <% } else { %>
+                                        <%= amigo.getNombre() %>:
+                                    <% } %>
+                                </h5>
+                                <p class="card-text">
+                                    <%= mensaje.getContenido() %>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <%
+                                <div class="mb-3"></div>                                
+                    <%
+                            }
+                        } else {
+                    %>
+                    <div class="alert alert-warning mb-4">No hay mensajes con este usuario</div>
+                    <%
                         }
-                    } else {
-                %>
-                <div class="alert alert-warning mb-4">No hay mensajes con este usuario</div>
-                <%
-                    }
-                %>
+                    %>
+                </div>
                 <form method="post" action="EnviarMensaje">
                     <textarea name="mensaje" rows="5" cols="160"></textarea><br/>
                     <div class="btn-group" role="group">
