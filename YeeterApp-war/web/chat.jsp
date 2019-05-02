@@ -26,8 +26,9 @@
                 <nav class="navbar navbar-dark bg-dark mb-5">
                     <span class="navbar-brand">Chat con <%= amigo.getNombre() + " " + amigo.getApellidos() %> </span>
                 </nav>
-                <% 
-                for(Mensaje mensaje : mensajes) {
+                <%
+                    if (!mensajes.isEmpty()) {
+                        for(Mensaje mensaje : mensajes) {
                 %>
                 <div class="card w-100 mt-1 mb-1" style="cursor: pointer;" data-href="ChatServlet">
                     <div class="card-body row align-items-center">
@@ -37,7 +38,12 @@
                     </div>
                 </div>
                 <%
-                }
+                        }
+                    } else {
+                %>
+                <div class="alert alert-warning mb-4">No hay mensajes con este usuario</div>
+                <%
+                    }
                 %>
                 <form method="post" action="EnviarMensaje">
                     <textarea name="mensaje" rows="5" cols="160"></textarea><br/>
