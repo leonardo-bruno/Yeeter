@@ -14,6 +14,7 @@
 <%
     Post post = (Post) request.getAttribute("post");
     Usuario autor = (Usuario) request.getAttribute("autor");
+    String error = request.getParameter("error");
     Map<Comentario,Usuario> postFeed = (Map) request.getAttribute("postFeed");
 %>
 <!DOCTYPE html>
@@ -30,6 +31,7 @@
             </div>
         </div>
         <form class="form-inline" action="CrearComentario">
+            <input name = "postID" type = "hidden" value = <%=post.getId()%>>
             <input name = "comentario" class="form-control mr-sm-2" type="text" placeholder="Comenta esta publicacion" aria-label="Comentario">
             <div class="input-group-append">
                 <button class="btn btn-outline-light" style="height: 38px; width: 50px;" type="submit" >
@@ -37,6 +39,15 @@
                         <i class="fas fa-comment"></i>
                     </span>
                 </button>
+            </div>
+            <div class="checkbox mb-3 mt-3">
+                <% if (error != null) {
+                %>
+                <div class="alert alert-warning"><%=error%></div>
+                <%
+                    }
+                %>
+                <a class="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a>
             </div>
         </form>
         <div class="col-7">

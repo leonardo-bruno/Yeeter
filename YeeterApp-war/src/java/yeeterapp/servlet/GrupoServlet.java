@@ -73,7 +73,7 @@ public class GrupoServlet extends HttpServlet {
         }
         request.setAttribute("grupo", grupo);
 
-        List<Post> groupPosts = postFacade.queryGroupFeed(str);
+        List<Post> groupPosts = postFacade.queryGroupFeed(grupo.getId());
         Map<Post,Usuario> groupFeed = new HashMap<>();
 
         for(Post p: groupPosts){

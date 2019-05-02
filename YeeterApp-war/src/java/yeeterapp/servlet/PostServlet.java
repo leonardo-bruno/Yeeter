@@ -60,13 +60,16 @@ public class PostServlet extends HttpServlet {
             rd.forward(request, response);
         }
         
-        String idPostValue = request.getParameter("id");
+        String idPostValue = request.getParameter("postID");
         int idP;
         if(idPostValue == null) {
-            idP = (Integer) request.getAttribute("id");
+            idP = (Integer) request.getAttribute("postID");
         } else {
             idP = Integer.valueOf(idPostValue);
         }
+        
+        String error = request.getParameter("error");
+        request.setAttribute("error", error);
         
         Post post = postFacade.find(idP);
         request.setAttribute("post", post);

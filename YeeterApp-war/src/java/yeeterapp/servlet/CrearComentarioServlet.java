@@ -15,19 +15,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.PeticionAmistadFacade;
-import yeeterapp.entity.PeticionAmistad;
+import yeeterapp.ejb.ComentarioFacade;
+import yeeterapp.ejb.PostFacade;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Comentario;
+import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
 /**
  *
  * @author jugr9
  */
-@WebServlet(name = "AddFriendServlet", urlPatterns = {"/PeticionAmigo"})
-public class AddFriendServlet extends HttpServlet {
-
+@WebServlet(name = "CrearComentarioServlet", urlPatterns = {"/CrearComentarioServlet"})
+public class CrearComentarioServlet extends HttpServlet {
+    
     @EJB
-    private PeticionAmistadFacade peticionFacade;
+    UsuarioFacade usuarioFacade;
+    @EJB
+    PostFacade postFacade;
+    @EJB
+    ComentarioFacade comentarioFacade;
+    
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,8 +48,9 @@ public class AddFriendServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         response.setContentType("text/html;charset=UTF-8");
+        Post post = postFacade.find((Integer)request.getAttribute("postID"));
+        String comentario = request.getParameter("comentario");
         
         HttpSession session = request.getSession();
         Usuario us = (Usuario)session.getAttribute("loggedUser");
@@ -51,13 +60,18 @@ public class AddFriendServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión.");
             rd.forward(request, response);
-        }else{
-            int dest = (Integer)request.getAttribute("destID");
-            peticionFacade.create(new PeticionAmistad(us.getId(), dest));
-            rd = this.getServletContext().getRequestDispatcher("/BuscarAmigos");
-            request.setAttribute("message", "La solicitud se ha enviado con exito.");
+        }else if(comentario.isEmpty()){
+            rd = this.getServletContext().getRequestDispatcher("/PostServlet");
+            request.setAttribute("error", "El comentario no puede estar vacío.");
+            request.setAttribute("postID", post.getId());
             rd.forward(request, response);
-        }   
+        }else{
+            rd = this.getServletContext().getRequestDispatcher("/PostServlet");
+            /*comentarioFacade.create(new Comentario(comentario, us.getId(), post.getId()));*/
+            request.setAttribute("message", "La solicitud se ha enviado con exito.");
+            request.setAttribute("message", "Has comentado con éxito esta publicación");
+            rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
