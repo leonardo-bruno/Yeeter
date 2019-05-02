@@ -27,18 +27,24 @@
                 <nav class="navbar navbar-dark bg-dark mb-5">
                     <span class="navbar-brand">Nuevo Chat</span>
                 </nav>
-                <% 
-                for(Usuario amigo : amigos) {
-                %>
-                <div class="card w-100 mt-1 mb-1" style="cursor: pointer;" data-href="ChatServlet?idAmigo=<%= amigo.getId() %>">
-                    <div class="card-body row align-items-center">
-                        <div class="col-11 ">
-                            <%= amigo.getNombre() + " " + amigo.getApellidos() %>
-                        </div>
-                    </div>
-                </div>
                 <%
-                }
+                    if(!amigos.isEmpty()){
+                        for(Usuario amigo : amigos) {
+                %>
+                            <div class="card w-100 mt-1 mb-1" style="cursor: pointer;" data-href="ChatServlet?idAmigo=<%= amigo.getId() %>">
+                                <div class="card-body row align-items-center">
+                                    <div class="col-11 ">
+                                        <%= amigo.getNombre() + " " + amigo.getApellidos() %>
+                                    </div>
+                                </div>
+                            </div>
+                <%
+                        }
+                    } else {
+                %>
+                <div class="alert alert-warning mb-4">No tienes ning&uacute;n amigo</div>
+                <%
+                    }
                 %>
             </div>
         </div>
