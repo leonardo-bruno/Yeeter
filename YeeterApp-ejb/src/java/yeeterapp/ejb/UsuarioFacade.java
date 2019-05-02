@@ -47,8 +47,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         Query q = this.em.createNamedQuery("Usuario.findByUsername");
         q.setParameter("username", username);
         try {
-            int id = q.getFirstResult();
-            return new Usuario(id);
+            return (Usuario) q.getSingleResult();
         } catch(NoResultException e) {
             return null;
         }

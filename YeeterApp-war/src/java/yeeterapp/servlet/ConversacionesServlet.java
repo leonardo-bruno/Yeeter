@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,6 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,29 +18,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.MensajeFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Post;
+import yeeterapp.entity.Mensaje;
 import yeeterapp.entity.Usuario;
-import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Grupo;
-
 
 /**
  *
- * @author alec
+ * @author pedro
  */
-@WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(name = "ConversacionesServlet", urlPatterns = {"/ConversacionesServlet"})
+public class ConversacionesServlet extends HttpServlet {
 
     @EJB
-    private GrupoFacade grupoFacade;
+    private MensajeFacade mensajeFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
+    
+    
 
-
-
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,31 +51,21 @@ public class WelcomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
         Usuario loggedUser;
-        if(idLoggedUser == null) {
-            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "Por favor inicie sesión primero.");
-            rd.forward(request, response);
-        }
+       
         loggedUser = usuarioFacade.find(idLoggedUser);
-        List<Post> posts =  usuarioFacade.queryUserFeed(loggedUser.getId());
+        List<Mensaje> listaMensajes = mensajeFacade.queryByID(loggedUser.getId());
+        List<Usuario> listaAmigos =loggedUser.getUsuarioList1();
        
-
-       
-
-
+        request.setAttribute("listaMensajes",listaMensajes);
+        request.setAttribute("listaAmigos",listaAmigos);
         
-        request.setAttribute("posts",posts);
-        request.setAttribute("loggedUser", loggedUser);
-       
-
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
+        
+        rd = this.getServletContext().getRequestDispatcher("/Conversaciones.jsp");
         rd.forward(request, response);
     }
 
