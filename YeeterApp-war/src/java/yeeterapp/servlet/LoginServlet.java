@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
             rd.forward(request, response);
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user);
+            session.setAttribute("loggedUserID", user.getId());
             response.sendRedirect("WelcomeServlet");
         }
     }

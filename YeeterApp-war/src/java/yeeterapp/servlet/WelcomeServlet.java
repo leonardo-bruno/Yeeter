@@ -17,10 +17,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Grupo;
 
 
 /**
@@ -29,6 +31,9 @@ import yeeterapp.ejb.UsuarioFacade;
  */
 @WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
 public class WelcomeServlet extends HttpServlet {
+
+    @EJB
+    private GrupoFacade grupoFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -48,21 +53,28 @@ public class WelcomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String username = request.getParameter("username");
-
-
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        Usuario user=(Usuario) session.getAttribute("loggedUser");
-        List<Post> posts =  usuarioFacade.queryUserFeed(user.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-
-        for(Post post : posts){
-          Usuario u= usuarioFacade.queryUserByID(post.getIdAutor());
-          feed.put(post,u);
-        }
-        request.setAttribute("feed",feed);
-
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        List<Post> posts =  usuarioFacade.queryUserFeed(loggedUser.getId());
+       
+
+       
+
+
+        
+        request.setAttribute("posts",posts);
+        request.setAttribute("loggedUser", loggedUser);
+       
+
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
         rd.forward(request, response);
     }

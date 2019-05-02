@@ -29,8 +29,9 @@ public class PrePostServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-    
-    
+
+
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,17 +44,25 @@ public class PrePostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("loggedUser");
-        
-        List<Grupo> grupos = usuarioFacade.queryGroups(usuario.getId());
+        HttpSession session = request.getSession();        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+            return;
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+
+        List<Grupo> grupos = loggedUser.getGrupoList();
         if (grupos != null){
             request.setAttribute("grupos", grupos);
         } else {
             request.setAttribute("grupos", new ArrayList<>());
         }
-        
-        RequestDispatcher rd;
+
         rd = this.getServletContext().getRequestDispatcher("/creacionposts.jsp");
         rd.forward(request, response);
     }

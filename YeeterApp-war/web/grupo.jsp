@@ -12,7 +12,8 @@
 <%@include file="navbar.jsp" %>
 <%
     Grupo grupo = (Grupo)request.getAttribute("grupo");
-    boolean esAdmin= usuario.getId() == grupo.getIdCreador();
+    boolean esAdmin= usuario.equals(grupo.getIdCreador().getId());
+    String message = (String) request.getAttribute("mensaje");
     boolean editing = (Boolean) request.getAttribute("editing") != null && (Boolean) request.getAttribute("editing");
     Map<Post,Usuario> groupFeed = (Map) request.getAttribute("groupFeed");
     %>
@@ -21,11 +22,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="assets/css/estilos.css"/>
-        <title>Yeeter - Grupo</title>
+        <title>Yeeter - <%= grupo.getDescripcion() %></title>
     </head>
     <body>
         <div class="content">
             <div class="bot-grupos">
+                <% 
+                    if(message != null) {
+                %>
+                <div class="alert alert-success"> <%= message %> </div>
+                <%
+                    }
+                %>
                 <% if(!editing) {%>
                     <nav class="navbar navbar-dark bg-dark">
                         <span class="navbar-brand"><%= grupo.getNombre() %></span>

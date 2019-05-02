@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.PeticionAmistadFacade;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.PeticionAmistad;
 import yeeterapp.entity.Usuario;
 
@@ -27,8 +28,13 @@ import yeeterapp.entity.Usuario;
 public class AddFriendServlet extends HttpServlet {
 
     @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
     private PeticionAmistadFacade peticionFacade;
-    
+
+
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,24 +46,26 @@ public class AddFriendServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
-        
+
         HttpSession session = request.getSession();
-        Usuario us = (Usuario)session.getAttribute("loggedUser");
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        
-        if(us == null){
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "Por favor inicie sesión.");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        }else{
-            int dest = (Integer)request.getAttribute("destID");
-            peticionFacade.create(new PeticionAmistad(us.getId(), dest));
-            rd = this.getServletContext().getRequestDispatcher("/BuscarAmigos");
+        }
+        else{
+            loggedUser = usuarioFacade.find(idLoggedUser);
+            int dest = Integer.valueOf(request.getParameter("destID"));
+            peticionFacade.create(new PeticionAmistad(loggedUser.getId(), dest));
+            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
             request.setAttribute("message", "La solicitud se ha enviado con exito.");
             rd.forward(request, response);
-        }   
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

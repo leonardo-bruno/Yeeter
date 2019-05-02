@@ -8,14 +8,12 @@ package yeeterapp.ejb;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import yeeterapp.entity.Post;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Stateless
 public class PostFacade extends AbstractFacade<Post> {
@@ -40,7 +38,7 @@ public class PostFacade extends AbstractFacade<Post> {
             return null;
         }
     }
-     
+
     public List<Post> queryGroupFeed(int idGroup){
         Query q = this.em.createNamedQuery("Post.findByIdGrupo");
         q.setParameter("idGroup", idGroup);

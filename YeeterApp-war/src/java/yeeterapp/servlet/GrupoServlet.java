@@ -31,6 +31,9 @@ import yeeterapp.entity.Usuario;
 public class GrupoServlet extends HttpServlet {
 
     @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
     private GrupoFacade grupoFacade;
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -51,15 +54,19 @@ public class GrupoServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher rd;
         HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("loggedUser");
-        if(user == null) {
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         }
+        loggedUser = usuarioFacade.find(idLoggedUser);
 
 
         String idGroupValue = request.getParameter("id");
+        request.setAttribute("mensaje", request.getParameter("mensaje"));
         int str;
         if(idGroupValue == null) {
             str = (Integer) request.getAttribute("id");

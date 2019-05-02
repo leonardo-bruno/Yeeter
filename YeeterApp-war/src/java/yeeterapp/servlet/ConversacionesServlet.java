@@ -6,35 +6,40 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.NotificacionesFacade;
+import yeeterapp.ejb.MensajeFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Notificaciones;
+import yeeterapp.entity.Mensaje;
 import yeeterapp.entity.Usuario;
 
 /**
  *
- * @author alec
+ * @author pedro
  */
-@WebServlet(name = "MarkAsReadServlet", urlPatterns = {"/MarkAsReadServlet"})
-public class MarkAsReadServlet extends HttpServlet {
+@WebServlet(name = "ConversacionesServlet", urlPatterns = {"/ConversacionesServlet"})
+public class ConversacionesServlet extends HttpServlet {
+
+    @EJB
+    private MensajeFacade mensajeFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
-    @EJB
-    private NotificacionesFacade notificacionesFacade;
     
     
 
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,27 +52,21 @@ public class MarkAsReadServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String strId =  request.getParameter("idNotification");
-        Notificaciones notificacion;
-        if(strId == null) {
-            HttpSession session = request.getSession();
-            Integer idValueUser = (Integer) session.getAttribute("loggedUserID");
-            Usuario user = usuarioFacade.find(idValueUser);
-            List<Notificaciones> notificaciones = 
-                    user.getNotificacionesList().stream().filter(x -> !x.getNotificacionLeida()).collect(Collectors.toList());
-            notificaciones.forEach((not) -> {
-                not.setNotificacionLeida(true);
-                notificacionesFacade.edit(not);
-            });
-        } else {
-            int idNotificacion = Integer.parseInt(strId);
-            notificacion = notificacionesFacade.find(idNotificacion);
-            notificacion.setNotificacionLeida(true);
-            notificacionesFacade.edit(notificacion);
-        }
+        HttpSession session = request.getSession();
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+       
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        List<Mensaje> listaMensajes = mensajeFacade.queryByID(loggedUser.getId());
+        List<Usuario> listaAmigos =loggedUser.getUsuarioList1();
+       
+        request.setAttribute("listaMensajes",listaMensajes);
+        request.setAttribute("listaAmigos",listaAmigos);
         
-        request.setAttribute("success", "Notificación marcada como leída");
-        response.sendRedirect("NotificationsServlet");
+        
+        rd = this.getServletContext().getRequestDispatcher("/Conversaciones.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

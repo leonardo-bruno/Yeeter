@@ -25,17 +25,17 @@
                 <nav class="navbar navbar-dark bg-dark">
                     <span class="navbar-brand">Miembros de <%= grupo.getNombre() %></span>
                     <ul class="navbar-nav ml-3"> 
-                        <a class="btn btn-outline-info" href="AddMemberServlet">
+                        <a class="btn btn-outline-info" href="AddMemberServlet?id=<%= grupo.getId() %>">
                             Add Member
                         </a>
                     </ul>
                 </nav>
-                    <div class="list-group">
-                        <% for(int i=0;i<lista.size();i++){
-                        %>
-                        <a type="button" href="panelUserServlet?id=<%= lista.get(i).getId()%>" class="list-group-item list-group-item-action"><%= lista.get(i).getNombre()%></a>
-                        <% } %>
-                    </div>
+                <div class="list-group">
+                    <% for(int i=0;i<lista.size();i++){
+                    %>
+                    <a type="button" href="panelUserServlet?id=<%= lista.get(i).getId()%>" class="list-group-item list-group-item-action"><%= lista.get(i).getNombre()%></a>
+                    <% } %>
+                </div>
             </div>
         </div>
     </body>

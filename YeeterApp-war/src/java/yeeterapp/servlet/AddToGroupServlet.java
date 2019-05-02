@@ -7,16 +7,18 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.Usuario;
 
@@ -24,14 +26,20 @@ import yeeterapp.entity.Usuario;
  *
  * @author alec
  */
-@WebServlet(name = "MarkAsReadServlet", urlPatterns = {"/MarkAsReadServlet"})
-public class MarkAsReadServlet extends HttpServlet {
-
-    @EJB
-    private UsuarioFacade usuarioFacade;
+@WebServlet(name = "AddToGroupServlet", urlPatterns = {"/AddToGroupServlet"})
+public class AddToGroupServlet extends HttpServlet {
 
     @EJB
     private NotificacionesFacade notificacionesFacade;
+
+    @EJB
+    private GrupoFacade grupoFacade;
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
+    
+    
+    
     
     
 
@@ -47,27 +55,40 @@ public class MarkAsReadServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String strId =  request.getParameter("idNotification");
-        Notificaciones notificacion;
-        if(strId == null) {
-            HttpSession session = request.getSession();
-            Integer idValueUser = (Integer) session.getAttribute("loggedUserID");
-            Usuario user = usuarioFacade.find(idValueUser);
-            List<Notificaciones> notificaciones = 
-                    user.getNotificacionesList().stream().filter(x -> !x.getNotificacionLeida()).collect(Collectors.toList());
-            notificaciones.forEach((not) -> {
-                not.setNotificacionLeida(true);
-                notificacionesFacade.edit(not);
-            });
-        } else {
-            int idNotificacion = Integer.parseInt(strId);
-            notificacion = notificacionesFacade.find(idNotificacion);
-            notificacion.setNotificacionLeida(true);
-            notificacionesFacade.edit(notificacion);
+        HttpSession session = request.getSession();
+        Integer loggedID = (Integer) session.getAttribute("loggedUserID");
+        String idValue = request.getParameter("id");
+        RequestDispatcher rd;
+        if(loggedID == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+            return;
         }
+        String grupoId = request.getParameter("idGrupo");
+        String idUsuarioInvitar = request.getParameter("idAmigo");
         
-        request.setAttribute("success", "Notificación marcada como leída");
-        response.sendRedirect("NotificationsServlet");
+        Grupo grupo = grupoFacade.find(new Integer(grupoId));
+        Usuario loggedUser = usuarioFacade.find(loggedID);
+        Usuario usuarioAInvitar = usuarioFacade.find(new Integer(idUsuarioInvitar));
+        
+        
+        List<Usuario> usuarioList = grupo.getUsuarioList();
+        usuarioList.add(usuarioAInvitar);
+        
+        grupo.setUsuarioList(usuarioList);
+        
+        grupoFacade.edit(grupo);
+        
+        
+        Notificaciones notificacion = new Notificaciones();
+        notificacion.setContenido(loggedUser.getNombre() + " te ha añadido al grupo " + grupo.getNombre());
+        notificacion.setLink("GrupoServlet?id=" + grupo.getId());
+        notificacion.setIdUsuario(usuarioAInvitar);
+        
+        notificacionesFacade.create(notificacion);
+        
+        response.sendRedirect("GrupoServlet?id=" + grupo.getId()+"&mensaje=" + "Se ha invitado correctamente al usuario!");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

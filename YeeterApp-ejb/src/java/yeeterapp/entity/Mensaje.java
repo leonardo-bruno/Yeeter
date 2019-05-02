@@ -13,8 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,10 +26,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author leonardobruno
+ * @author jugr9
  */
 @Entity
-@Table(name = "MENSAJE")
+@Table(name = "mensaje")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Mensaje.findAll", query = "SELECT m FROM Mensaje m")
@@ -35,7 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mensaje.findByContenido", query = "SELECT m FROM Mensaje m WHERE m.contenido = :contenido")
     , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")
     , @NamedQuery(name = "Mensaje.findByIdEmisor", query = "SELECT m FROM Mensaje m WHERE m.idEmisor = :idEmisor")
-    , @NamedQuery(name = "Mensaje.findByIdReceptor", query = "SELECT m FROM Mensaje m WHERE m.idReceptor = :idReceptor")})
+    , @NamedQuery(name = "Mensaje.findByIdReceptor", query = "SELECT m FROM Mensaje m WHERE m.idReceptor = :idReceptor")
+    , @NamedQuery(name = "Mensaje.findByIdEmisorIdReceptor", query = "SELECT m FROM Mensaje m WHERE (m.idEmisor.id = :idEmisor AND m.idReceptor.id = :idReceptor) OR (m.idReceptor.id = :idEmisor AND m.idEmisor.id = :idReceptor) order by m.fecha")
+})
 public class Mensaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,14 +58,12 @@ public class Mensaje implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idEmisor")
-    private int idEmisor;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idReceptor")
-    private int idReceptor;
+    @JoinColumn(name = "idEmisor", referencedColumnName = "id")
+    @OneToOne(optional = false)
+    private Usuario idEmisor;
+    @JoinColumn(name = "idReceptor", referencedColumnName = "id")
+    @OneToOne(optional = false)
+    private Usuario idReceptor;
 
     public Mensaje() {
     }
@@ -70,12 +72,10 @@ public class Mensaje implements Serializable {
         this.id = id;
     }
 
-    public Mensaje(Integer id, String contenido, Date fecha, int idEmisor, int idReceptor) {
+    public Mensaje(Integer id, String contenido, Date fecha) {
         this.id = id;
         this.contenido = contenido;
         this.fecha = fecha;
-        this.idEmisor = idEmisor;
-        this.idReceptor = idReceptor;
     }
 
     public Integer getId() {
@@ -102,19 +102,19 @@ public class Mensaje implements Serializable {
         this.fecha = fecha;
     }
 
-    public int getIdEmisor() {
+    public Usuario getIdEmisor() {
         return idEmisor;
     }
 
-    public void setIdEmisor(int idEmisor) {
+    public void setIdEmisor(Usuario idEmisor) {
         this.idEmisor = idEmisor;
     }
 
-    public int getIdReceptor() {
+    public Usuario getIdReceptor() {
         return idReceptor;
     }
 
-    public void setIdReceptor(int idReceptor) {
+    public void setIdReceptor(Usuario idReceptor) {
         this.idReceptor = idReceptor;
     }
 
@@ -142,5 +142,5 @@ public class Mensaje implements Serializable {
     public String toString() {
         return "yeeterapp.entity.Mensaje[ id=" + id + " ]";
     }
-    
+
 }

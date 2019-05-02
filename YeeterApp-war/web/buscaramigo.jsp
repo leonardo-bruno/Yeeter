@@ -1,10 +1,10 @@
-<%-- 
+<%--
     Document   : buscaramigo
     Created on : 18-abr-2019, 11:55:45
     Author     : Juan Garcia Ruiz
 --%>
 
-<%@page import="yeeterapp.entity.Amigos"%>
+<%@page import="yeeterapp.entity.Usuario"%>
 <%@page import="java.util.*"%>
 <%@page import="yeeterapp.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +16,7 @@
     Usuario logUs=(Usuario) session.getAttribute("loggedUser");
     String message = (String) request.getAttribute("message");
     List<Usuario> users = (List<Usuario>)request.getAttribute("users");
-    List<Integer> amigosId = (List<Integer>)request.getAttribute("friends");
+    List<Usuario> amigos = (List<Usuario>)request.getAttribute("friends");
 %>
 
 <html>
@@ -27,9 +27,9 @@
     <body class = "text-center">
         <% if (message != null) {
         %>
-        
+
         <div class="alert alert-success"><%=message%></div>
-        
+
         <%
            }
         %>
@@ -40,21 +40,21 @@
                 <th>USERNAME</th>
                 <th></th>
             </tr>
-            
+
             <%
                 for(Usuario u: users){
                     int idReceptor = u.getId();
             %>
-            
+
             <tr class='clickable-row' data-href='url://'>
                 <th><%=u.getNombre()%></th>
                 <th><%=u.getApellidos()%></th>
                 <th><%=u.getUsername()%></th>
                 <th>
                     <%
-                        if(!amigosId.contains(u.getId()) && !u.equals(logUs)){    
+                        if(!amigosId.contains(u.getId()) && !u.equals(logUs)){
                     %>
-                    
+
                     <form method = "post" action = "PeticionAmigo">
                         <input type = "hidden" name = "destID" value = <%=idReceptor%>>
                         <div class="input-group-append">
@@ -65,13 +65,13 @@
                             </button>
                         </div>
                     </form>
-                    
+
                     <%
                         }
                     %>
                 </th>
             </tr>
-            
+
             <%
                 }
             %>

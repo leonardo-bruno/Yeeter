@@ -6,7 +6,6 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -17,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.ejb.AmigosFacade;
-import yeeterapp.entity.Amigos;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -30,9 +27,8 @@ public class SearchFriendsServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-    @EJB
-    private AmigosFacade amigosFacade;
-    
+
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,33 +40,33 @@ public class SearchFriendsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
-        
+
         HttpSession session = request.getSession();
-        Usuario us = (Usuario) session.getAttribute("loggedUser");
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        
-        if(us == null){
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+        }
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        String input = request.getParameter("busqueda");
+        List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
+        List<Usuario> friends = loggedUser.getUsuarioList();
+
+        if(users.isEmpty()){
+            rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
+            request.setAttribute("error", "No existe ningún usuario que coincida con esos datos.");
+            rd.forward(request, response);
         }else{
-            String input = request.getParameter("busqueda");
-            List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
-            List<Integer> friends = amigosFacade.queryFriendsList(us.getId());
-        
-            if(users.isEmpty()){
-                rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-                request.setAttribute("error", "No existe ningún usuario que coincida con esos datos.");
-                rd.forward(request, response);
-            }else{
-                request.setAttribute("users", users);
-                request.setAttribute("friends", friends);
-                rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
-                rd.forward(request, response);
-            }
-        } 
+            request.setAttribute("users", users);
+            request.setAttribute("friends", friends);
+            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+            rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
