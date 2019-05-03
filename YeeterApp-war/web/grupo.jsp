@@ -15,7 +15,6 @@
     boolean esAdmin= usuario.equals(grupo.getIdCreador().getId());
     String message = (String) request.getAttribute("mensaje");
     boolean editing = (Boolean) request.getAttribute("editing") != null && (Boolean) request.getAttribute("editing");
-    Map<Post,Usuario> groupFeed = (Map) request.getAttribute("groupFeed");
     %>
 <!DOCTYPE html>
 <html>
@@ -61,7 +60,7 @@
                 %>
                 <% if(!editing){ %>
                     <nav class="nav nav-pills flex-column flex-sm-row">
-                        <a class="btn btn-lg btn-outline-info" href="ListaMiemServlet?id=<%= grupo.getId() %>">Miembros</a>
+                        <a class="btn btn-lg btn-outline-info" href="ListaMiemServlet?id=<%=grupo.getId()%>">Miembros</a>
                         <% if(esAdmin){ %>
                             <form action="GrupoServlet" method="post">
                                 <input type="hidden" value="true" name="editing">
@@ -71,12 +70,12 @@
                         <% } %>
                     </nav>
             </div>
-            <div class="col-7">
-                <% for(Entry<Post,Usuario> post: groupFeed.entrySet()){   %>
-                <div class="card" style="cursor: pointer" data-href="PostServlet?postID=<%= post.getKey().getId() %>" >
+            <div class="col-7 mt-5">
+                <% for(Post post: grupo.getPostList()){   %>
+                <div class="card" style="cursor: pointer" data-href="PostServlet?postID=<%= post.getId() %>" >
                     <div class="card-body">
-                        <h5 class="card-title"><%=post.getValue().getUsername()%></h5>
-                        <p class="card-text"><%=post.getKey().getContenido()%></p>
+                        <h5 class="card-title"><%=post.getIdAutor().getUsername()%></h5>
+                        <p class="card-text"><%=post.getContenido()%></p>
                     </div>
                 </div>
                 <% }

@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.ejb.PeticionAmistadFacade;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.PeticionAmistad;
 import yeeterapp.entity.Usuario;
 
@@ -32,7 +34,8 @@ public class AddFriendServlet extends HttpServlet {
 
     @EJB
     private PeticionAmistadFacade peticionFacade;
-
+    @EJB
+    private NotificacionesFacade notificacionesFacade;
 
 
     /**
@@ -57,15 +60,28 @@ public class AddFriendServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         }
-        else{
-            loggedUser = usuarioFacade.find(idLoggedUser);
-            int dest = Integer.valueOf(request.getParameter("destID"));
-            peticionFacade.create(new PeticionAmistad(loggedUser.getId(), dest));
-            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
-            request.setAttribute("message", "La solicitud se ha enviado con exito.");
-            rd.forward(request, response);
-        }
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        
+        Integer dest = Integer.valueOf(request.getParameter("destID"));
+        PeticionAmistad pa = new PeticionAmistad();
+        pa.setUsuario(loggedUser);
+        pa.setUsuario1(usuarioFacade.find(dest));
+        
+        peticionFacade.create(pa);
+        
+        Notificaciones notificacion = new Notificaciones();
+        notificacion.setContenido("El usuario " + loggedUser.getUsername() + " quiere añadirte como amigo.");
+        notificacion.setId(dest);
+        notificacion.setNotificacionLeida(false);
+        notificacion.setLink("UsuarioPanelServlet?id" + loggedUser.getId());
+        
+        notificacionesFacade.create(notificacion);
+        
+        rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+        request.setAttribute("message", "La solicitud se ha enviado con exito.");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

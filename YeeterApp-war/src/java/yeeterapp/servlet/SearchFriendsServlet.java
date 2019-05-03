@@ -60,16 +60,12 @@ public class SearchFriendsServlet extends HttpServlet {
 
         if(users.isEmpty()){
             request.setAttribute("error","No existe ningún usuario que coincida con esos datos.");
-            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
-            rd.forward(request, response);
-            return;
-        }else{
-            request.setAttribute("users", users);
-            request.setAttribute("friends", friends);
-            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
-            rd.forward(request, response);
-            return;
         }
+        
+        request.setAttribute("users", users);
+        request.setAttribute("friends", friends);
+        rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

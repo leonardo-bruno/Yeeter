@@ -15,6 +15,7 @@
     session = request.getSession();
     Usuario logUs=(Usuario) session.getAttribute("loggedUser");
     String message = (String) request.getAttribute("message");
+    String error = (String) request.getAttribute("error");
     List<Usuario> users = (List<Usuario>)request.getAttribute("users");
     List<Usuario> amigos = (List<Usuario>)request.getAttribute("friends");
 %>
@@ -25,7 +26,15 @@
         <title>Yeeter</title>
     </head>
     <body class = "text-center">
-        <% if (message != null) {
+        <% 
+            if (error != null){
+                
+        %>
+        
+        <div class="alert alert-warning"><%=error%></div>
+        
+        <%     
+            }else if (message != null) {
         %>
 
         <div class="alert alert-success"><%=message%></div>
@@ -52,7 +61,7 @@
                 <th><%=u.getUsername()%></th>
                 <th>
                     <%
-                        if(!amigosId.contains(u.getId()) && !u.equals(logUs)){
+                        if(!amigos.contains(u) && !u.equals(logUs)){
                     %>
 
                     <form method = "post" action = "PeticionAmigo">

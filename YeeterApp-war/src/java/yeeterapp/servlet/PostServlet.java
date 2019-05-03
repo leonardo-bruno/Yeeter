@@ -65,7 +65,7 @@ public class PostServlet extends HttpServlet {
         String idPostValue = request.getParameter("postID");
         int idP;
         if(idPostValue == null) {
-            idP = (Integer) request.getAttribute("postID");
+            idP = Integer.valueOf(request.getParameter("postID"));
         } else {
             idP = Integer.valueOf(idPostValue);
         }
@@ -78,16 +78,6 @@ public class PostServlet extends HttpServlet {
         
         Usuario autor = usuarioFacade.find(post.getIdAutor().getId());
         request.setAttribute("autor", autor);
-        
-        List<Comentario> postComments = post.getComentarioList();
-        Map<Comentario,Usuario> postFeed = new HashMap<>();
-        
-        for(Comentario c: postComments){
-            Usuario u = usuarioFacade.find(c.getAutor());
-            postFeed.put(c, u);
-        }
-        
-        request.setAttribute("postFeed", postFeed);
 
         rd = this.getServletContext().getRequestDispatcher("/post.jsp");
         rd.forward(request, response);
