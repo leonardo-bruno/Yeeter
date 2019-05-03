@@ -30,11 +30,12 @@
                 <p class="card-text"><%=post.getContenido()%></p>
             </div>
         </div>
-        <form class="form-inline" action="CrearComentario">
-            <input name = "postID" type = "hidden" value = <%=post.getId()%>>
-            <input name = "comentario" class="form-control mr-sm-2" type="text" placeholder="Comenta esta publicacion" aria-label="Comentario">
+        <form class="form-inline" action="CrearComentarioServlet" method="post">
+            <input name = "postID" type = "hidden" value = "<%=post.getId()%>">
+            Comentario:
+            <textarea class="form-control" name="comentario"></textarea>
             <div class="input-group-append">
-                <button class="btn btn-outline-light" style="height: 38px; width: 50px;" type="submit" >
+                <button class="btn btn-outline-black" style="height: 38px; width: 50px;" type="submit" >
                     <span style="width: 25px; height: 25px; display:inline-block;">
                         <i class="fas fa-comment"></i>
                     </span>
@@ -47,7 +48,6 @@
                 <%
                     }
                 %>
-                <a class="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a>
             </div>
         </form>
         <div class="col-7">

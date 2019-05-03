@@ -13,7 +13,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 
-<%    List<Post> posts = (List) request.getAttribute("posts");
+<%    
+    List<Post> posts = (List) request.getAttribute("posts");
     Usuario userLog = (Usuario) request.getAttribute("loggedUser");
 %>
 
@@ -55,24 +56,24 @@
 
                 </div>
                 <div class="col-7">
-                    <% for (Post p : posts) {
+                        <% for (Post p : posts) {
 
-                    %>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><%                            if (p.getIdGrupo() != null) {
-                                %> 
-                                Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername()%>     
+                        %>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><%                            if (p.getIdGrupo() != null) {
+                                    %> 
+                                    Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername()%>     
 
-                                <% } else {%>
-                                @<%= p.getIdAutor().getUsername()%> 
+                                    <% } else {%>
+                                    @<%= p.getIdAutor().getUsername()%> 
 
-                                <% }%> 
-                            </h5>
-                            <p class="card-text"><%= p.getContenido()%></p>
+                                    <% }%> 
+                                </h5>
+                                <p class="card-text"><%= p.getContenido()%></p>
+                            </div>
                         </div>
-                    </div>
-                    <% }%>
+                        <% }%>
                 </div>
             </div>
         </div>

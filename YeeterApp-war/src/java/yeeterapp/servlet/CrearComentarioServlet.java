@@ -49,11 +49,12 @@ public class CrearComentarioServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Post post = postFacade.find((Integer)request.getAttribute("postID"));
+        Post post = postFacade.find(new Integer(request.getParameter("postID")));
         String comentario = request.getParameter("comentario");
         
         HttpSession session = request.getSession();
-        Usuario us = (Usuario)session.getAttribute("loggedUser");
+        int idUsuario = (Integer) session.getAttribute("loggedUserID");
+        Usuario us = usuarioFacade.find(idUsuario);
         RequestDispatcher rd;
         
         if(us == null){
@@ -66,11 +67,10 @@ public class CrearComentarioServlet extends HttpServlet {
             request.setAttribute("postID", post.getId());
             rd.forward(request, response);
         }else{
-            rd = this.getServletContext().getRequestDispatcher("/PostServlet");
             Comentario com = new Comentario();
             request.setAttribute("message", "La solicitud se ha enviado con exito.");
             request.setAttribute("message", "Has comentado con éxito esta publicación");
-            rd.forward(request, response);
+            response.sendRedirect("PostServlet");
         }
     }
 

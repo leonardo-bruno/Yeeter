@@ -53,7 +53,8 @@ public class PostServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher rd;
         HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("loggedUser");
+        int idUsuario = (Integer) session.getAttribute("loggedUserID");
+        Usuario user = usuarioFacade.find(idUsuario);
         if(user == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
@@ -75,7 +76,7 @@ public class PostServlet extends HttpServlet {
         Post post = postFacade.find(idP);
         request.setAttribute("post", post);
         
-        Usuario autor = usuarioFacade.find(post.getIdAutor());
+        Usuario autor = usuarioFacade.find(post.getIdAutor().getId());
         request.setAttribute("autor", autor);
         
         List<Comentario> postComments = post.getComentarioList();

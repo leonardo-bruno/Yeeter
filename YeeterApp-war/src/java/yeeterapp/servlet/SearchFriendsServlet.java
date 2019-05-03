@@ -51,6 +51,7 @@ public class SearchFriendsServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         }
         loggedUser = usuarioFacade.find(idLoggedUser);
         String input = request.getParameter("busqueda");
@@ -58,14 +59,16 @@ public class SearchFriendsServlet extends HttpServlet {
         List<Usuario> friends = loggedUser.getUsuarioList();
 
         if(users.isEmpty()){
-            rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
-            request.setAttribute("error", "No existe ningún usuario que coincida con esos datos.");
+            request.setAttribute("error","No existe ningún usuario que coincida con esos datos.");
+            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
             rd.forward(request, response);
+            return;
         }else{
             request.setAttribute("users", users);
             request.setAttribute("friends", friends);
             rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
             rd.forward(request, response);
+            return;
         }
     }
 

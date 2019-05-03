@@ -67,10 +67,6 @@ public class WelcomeServlet extends HttpServlet {
         List<Post> posts =  usuarioFacade.queryUserFeed(loggedUser.getId());
        
 
-       
-
-
-        
         request.setAttribute("posts",posts);
         request.setAttribute("loggedUser", loggedUser);
        
