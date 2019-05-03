@@ -11,8 +11,7 @@
 <%@include file="navbar.jsp" %>
 <!DOCTYPE html>
 
-<%    List<Mensaje> listaMensajes = (List) request.getAttribute("listaMensajes");
-    List<Usuario> listaAmigos = (List) request.getAttribute("listaAmigos");
+<%    List<Usuario> listaUsuarios = (List) request.getAttribute("listaUsuarios");
 %>
 <html>
     <head>
@@ -25,7 +24,7 @@
             <div class="row">
 
                 <div class="col-7">
-                    <% if (listaMensajes.isEmpty()) {
+                    <% if (listaUsuarios.isEmpty()) {
 
                     %>
                     <div class="alert alert-secondary" role="alert">
@@ -33,12 +32,12 @@
                     </div>
 
                     <% } else {
-                    for (Mensaje mens : listaMensajes) {%>
+                    for (Usuario users : listaUsuarios) {%>
 
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
-                                @<%= mens.getIdReceptor().getUsername()%>
+                                @<%=  users.getUsername()  %>
                             </h5>
                             <p class="card-text"></p>
                             <button type="button" class="btn btn-outline-secondary">Acceder a Conversación</button>

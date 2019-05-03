@@ -7,39 +7,19 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import yeeterapp.ejb.MensajeFacade;
-import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Mensaje;
-import yeeterapp.entity.Usuario;
 
 /**
  *
  * @author pedro
  */
-@WebServlet(name = "ConversacionesServlet", urlPatterns = {"/ConversacionesServlet"})
-public class ConversacionesServlet extends HttpServlet {
+@WebServlet(name = "EnviarMensaje", urlPatterns = {"/EnviarMensaje"})
+public class EnviarMensaje extends HttpServlet {
 
-    @EJB
-    private MensajeFacade mensajeFacade;
-
-    @EJB
-    private UsuarioFacade usuarioFacade;
-    
-    
-
-    
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -52,22 +32,8 @@ public class ConversacionesServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
-        RequestDispatcher rd;
-        Usuario loggedUser;
        
-        loggedUser = usuarioFacade.find(idLoggedUser);
-        List<Usuario> listaUsuarios = usuarioFacade.queryUserByMensajes(loggedUser.getId());
-        
-        List<Usuario> listaAmigos =loggedUser.getUsuarioList1();
-       
-        request.setAttribute("listaUsuarios",listaUsuarios);
-        request.setAttribute("listaAmigos",listaAmigos);
-        
-        
-        rd = this.getServletContext().getRequestDispatcher("/Conversaciones.jsp");
-        rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
