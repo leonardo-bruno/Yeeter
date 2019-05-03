@@ -6,19 +6,32 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Date;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.MensajeFacade;
+import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Mensaje;
+import yeeterapp.entity.Usuario;
 
 /**
  *
  * @author pedro
  */
-@WebServlet(name = "EnviarMensaje", urlPatterns = {"/EnviarMensaje"})
-public class EnviarMensaje extends HttpServlet {
+@WebServlet(name = "EnviarMensajeServlet", urlPatterns = {"/EnviarMensajeServlet"})
+public class EnviarMensajeServlet extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private MensajeFacade mensajeFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,8 +45,31 @@ public class EnviarMensaje extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       
-        }
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+            return;
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        String mensaje = request.getParameter("mensaje");
+        String amigoId = request.getParameter("amigo");
+        Usuario amigo = usuarioFacade.find(new Integer(amigoId));
+        Mensaje message = new Mensaje();
+        message.setContenido(mensaje);
+        message.setIdEmisor(loggedUser);
+        message.setIdReceptor(amigo);
+        Date fecha = new Date(System.currentTimeMillis());
+        message.setFecha(fecha);
+        
+        mensajeFacade.create(message);
+        
+        response.sendRedirect("ChatServlet?idAmigo=" + amigoId);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
