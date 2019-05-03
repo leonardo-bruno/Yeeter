@@ -58,6 +58,7 @@ public class PostServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         }
         
         String idPostValue = request.getParameter("postID");
@@ -77,7 +78,7 @@ public class PostServlet extends HttpServlet {
         Usuario autor = usuarioFacade.find(post.getIdAutor());
         request.setAttribute("autor", autor);
         
-        List<Comentario> postComments = comentarioFacade.queryPostFeed(post);
+        List<Comentario> postComments = post.getComentarioList();
         Map<Comentario,Usuario> postFeed = new HashMap<>();
         
         for(Comentario c: postComments){

@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Post.findById", query = "SELECT p FROM Post p WHERE p.id = :id")
     , @NamedQuery(name = "Post.findByContenido", query = "SELECT p FROM Post p WHERE p.contenido = :contenido")
     , @NamedQuery(name = "Post.findByFechaPublicacion", query = "SELECT p FROM Post p WHERE p.fechaPublicacion = :fechaPublicacion")
-    , @NamedQuery(name = "Post.findByIdGrupo", query = "SELECT p FROM Post p WHERE p.idGrupo = :idGroup")})
+    , @NamedQuery(name = "Post.findByIdGrupo", query = "SELECT p FROM Post p WHERE p.idGrupo.id = :idGroup")})
 
 public class Post implements Serializable {
 

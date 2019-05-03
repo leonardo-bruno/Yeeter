@@ -78,7 +78,7 @@ public class GrupoServlet extends HttpServlet {
         Map<Post,Usuario> groupFeed = new HashMap<>();
 
         for(Post p: groupPosts){
-            Usuario u = usuarioFacade.find(p.getIdAutor());
+            Usuario u = usuarioFacade.find(p.getIdAutor().getId());
             groupFeed.put(p, u);
         }
 

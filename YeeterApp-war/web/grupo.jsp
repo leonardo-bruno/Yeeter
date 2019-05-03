@@ -23,6 +23,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="assets/css/estilos.css"/>
         <title>Yeeter - <%= grupo.getDescripcion() %></title>
+        <script src="assets/js/rowSelecter.js"></script>
     </head>
     <body>
         <div class="content">
@@ -72,7 +73,7 @@
             </div>
             <div class="col-7">
                 <% for(Entry<Post,Usuario> post: groupFeed.entrySet()){   %>
-                <div class="card">
+                <div class="card" style="cursor: pointer" data-href="PostServlet?postID=<%= post.getKey().getId() %>" >
                     <div class="card-body">
                         <h5 class="card-title"><%=post.getValue().getUsername()%></h5>
                         <p class="card-text"><%=post.getKey().getContenido()%></p>
