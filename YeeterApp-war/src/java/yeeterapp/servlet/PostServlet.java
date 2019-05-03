@@ -74,14 +74,14 @@ public class PostServlet extends HttpServlet {
         Post post = postFacade.find(idP);
         request.setAttribute("post", post);
         
-        Usuario autor = usuarioFacade.queryUserByID(post.getIdAutor());
+        Usuario autor = usuarioFacade.find(post.getIdAutor());
         request.setAttribute("autor", autor);
         
         List<Comentario> postComments = comentarioFacade.queryPostFeed(post);
         Map<Comentario,Usuario> postFeed = new HashMap<>();
         
         for(Comentario c: postComments){
-            Usuario u = usuarioFacade.queryUserByID(c.getAutor());
+            Usuario u = usuarioFacade.find(c.getAutor());
             postFeed.put(c, u);
         }
         

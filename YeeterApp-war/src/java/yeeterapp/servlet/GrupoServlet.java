@@ -32,11 +32,8 @@ public class GrupoServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
     @EJB
     private GrupoFacade grupoFacade;
-    @EJB
-    private UsuarioFacade usuarioFacade;
     @EJB
     private PostFacade postFacade;
 
@@ -55,15 +52,12 @@ public class GrupoServlet extends HttpServlet {
         RequestDispatcher rd;
         HttpSession session = request.getSession();
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
-        Usuario loggedUser;
         if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
             return;
         }
-        loggedUser = usuarioFacade.find(idLoggedUser);
-
 
         String idGroupValue = request.getParameter("id");
         request.setAttribute("mensaje", request.getParameter("mensaje"));
@@ -84,7 +78,7 @@ public class GrupoServlet extends HttpServlet {
         Map<Post,Usuario> groupFeed = new HashMap<>();
 
         for(Post p: groupPosts){
-            Usuario u = usuarioFacade.queryUserByID(p.getIdAutor());
+            Usuario u = usuarioFacade.find(p.getIdAutor());
             groupFeed.put(p, u);
         }
 

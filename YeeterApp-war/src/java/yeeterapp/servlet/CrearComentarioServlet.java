@@ -67,7 +67,7 @@ public class CrearComentarioServlet extends HttpServlet {
             rd.forward(request, response);
         }else{
             rd = this.getServletContext().getRequestDispatcher("/PostServlet");
-            /*comentarioFacade.create(new Comentario(comentario, us.getId(), post.getId()));*/
+            Comentario com = new Comentario();
             request.setAttribute("message", "La solicitud se ha enviado con exito.");
             request.setAttribute("message", "Has comentado con éxito esta publicación");
             rd.forward(request, response);
