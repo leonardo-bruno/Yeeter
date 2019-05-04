@@ -78,7 +78,7 @@ public class AddFriendServlet extends HttpServlet {
         peticionFacade.create(pa);
         
         request.setAttribute("message", "La solicitud se ha enviado con exito.");
-        rd = this.getServletContext().getRequestDispatcher("/SearchFriendsServlet");
+        rd = this.getServletContext().getRequestDispatcher("/SearchFriendsServlet ");
         rd.forward(request, response);
     }
 
