@@ -71,21 +71,14 @@ public class AddFriendServlet extends HttpServlet {
         PeticionAmistadPK pAPK = new PeticionAmistadPK(idLoggedUser, dest);
         PeticionAmistad pa = new PeticionAmistad();
         pa.setPeticionAmistadPK(pAPK);
+        pa.setMensaje("El usuario " + loggedUser.getUsername() + " quiere añadirte como amigo.");
         pa.setUsuario(loggedUser);
         pa.setUsuario1(destUser);
         
         peticionFacade.create(pa);
         
-        Notificaciones notificacion = new Notificaciones();
-        notificacion.setContenido("El usuario " + loggedUser.getUsername() + " quiere añadirte como amigo.");
-        notificacion.setIdUsuario(destUser);
-        notificacion.setNotificacionLeida(false);
-        notificacion.setLink("UsuarioPanelServlet?id" + loggedUser.getId());
-        
-        notificacionesFacade.create(notificacion);
-        
-        rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
         request.setAttribute("message", "La solicitud se ha enviado con exito.");
+        rd = this.getServletContext().getRequestDispatcher("/SearchFriendsServlet");
         rd.forward(request, response);
     }
 

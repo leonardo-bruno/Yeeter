@@ -4,6 +4,7 @@
     Author     : alec
 --%>
 
+<%@page import="yeeterapp.entity.PeticionAmistad"%>
 <%@page import="yeeterapp.entity.Notificaciones"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,6 +12,7 @@
 <% 
     List<Notificaciones> notificaciones = (List) request.getAttribute("notifications");
     long noLeidas = (Long) request.getAttribute("noLeidas");
+    List<PeticionAmistad> peticiones = (List) request.getAttribute("peticiones");
 %>
 <!DOCTYPE html>
 <html>
@@ -33,6 +35,27 @@
                     </form>
 
                 </nav>
+                <% 
+                    for(PeticionAmistad pet : peticiones) {
+                %>
+                    <div class="not-read card w-100 mt-1 mb-1" data-href="panelUserServlet?id=<%= pet.getUsuario().getId() %>&from=friendRequest" style="cursor: pointer;">
+                    <div class="card-body row align-items-center">
+                        <div class="col-11 ">
+                            <%= pet.getMensaje() %>
+                        </div>
+                        <div class="col-1">
+                            <form name="markAsReadNotification" action="AceptarPeticionServlet" method="POST" class="w-100">
+                            <input value="<%= pet.getPeticionAmistadPK() %>" type="hidden" name="peticionID"/>
+                                <button type="submit" class="btn btn-outline-info btn-sm"><i class="fas fa-check"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                    <%= pet.getMensaje() %>
+                    <%= pet.getPeticionAmistadPK().toString() %>
+                <%
+                    }
+                %>
                 <% 
                 for(Notificaciones not : notificaciones) {
                 %>
