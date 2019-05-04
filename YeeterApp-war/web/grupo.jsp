@@ -72,7 +72,7 @@
             </div>
             <div class="col-7 mt-5">
                 <% for(Post post: grupo.getPostList()){   %>
-                <div class="card" style="cursor: pointer" data-href="PostServlet?postID=<%= post.getId() %>" >
+                <div class="card" style="cursor: pointer" data-href="PostServlet?postID=<%=post.getId()%>" >
                     <div class="card-body">
                         <h5 class="card-title"><%=post.getIdAutor().getUsername()%></h5>
                         <p class="card-text"><%=post.getContenido()%></p>

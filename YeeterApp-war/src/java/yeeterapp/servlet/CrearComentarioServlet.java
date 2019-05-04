@@ -61,17 +61,16 @@ public class CrearComentarioServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión.");
             rd.forward(request, response);
-        }else if(comentario.isEmpty()){
-            rd = this.getServletContext().getRequestDispatcher("/PostServlet");
-            request.setAttribute("error", "El comentario no puede estar vacío.");
-            request.setAttribute("postID", post.getId());
-            rd.forward(request, response);
-        }else{
-            Comentario com = new Comentario();
-            request.setAttribute("message", "La solicitud se ha enviado con exito.");
-            request.setAttribute("message", "Has comentado con éxito esta publicación");
-            response.sendRedirect("PostServlet");
         }
+        
+        Comentario com = new Comentario();
+        com.setAutor(us);
+        com.setContenido(comentario);
+        com.setPost(post);
+        comentarioFacade.create(com);
+        
+        request.setAttribute("message", "Has comentado con éxito esta publicación");
+        response.sendRedirect("PostServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

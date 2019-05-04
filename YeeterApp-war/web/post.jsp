@@ -33,7 +33,7 @@
             <form class="form-inline" action="CrearComentarioServlet" method="post">
                 <input name = "postID" type = "hidden" value = "<%=post.getId()%>">
                 Comentario:
-                <textarea class="form-control" name="comentario"></textarea>
+                <textarea class="form-control" name="comentario" rows="5" cols="50" required="true"></textarea>
                 <div class="input-group-append">
                     <button class="btn btn-outline-dark" style="height: 38px; width: 50px;" type="submit" >
                         <span style="width: 25px; height: 25px; display:inline-block;">
