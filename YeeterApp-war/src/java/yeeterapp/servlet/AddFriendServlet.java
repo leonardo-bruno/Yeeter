@@ -20,6 +20,7 @@ import yeeterapp.ejb.PeticionAmistadFacade;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.PeticionAmistad;
+import yeeterapp.entity.PeticionAmistadPK;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -63,17 +64,21 @@ public class AddFriendServlet extends HttpServlet {
             return;
         }
         loggedUser = usuarioFacade.find(idLoggedUser);
-        
         Integer dest = Integer.valueOf(request.getParameter("destID"));
+        
+        
+        Usuario destUser = usuarioFacade.find(dest);
+        PeticionAmistadPK pAPK = new PeticionAmistadPK(idLoggedUser, dest);
         PeticionAmistad pa = new PeticionAmistad();
+        pa.setPeticionAmistadPK(pAPK);
         pa.setUsuario(loggedUser);
-        pa.setUsuario1(usuarioFacade.find(dest));
+        pa.setUsuario1(destUser);
         
         peticionFacade.create(pa);
         
         Notificaciones notificacion = new Notificaciones();
         notificacion.setContenido("El usuario " + loggedUser.getUsername() + " quiere añadirte como amigo.");
-        notificacion.setId(dest);
+        notificacion.setIdUsuario(destUser);
         notificacion.setNotificacionLeida(false);
         notificacion.setLink("UsuarioPanelServlet?id" + loggedUser.getId());
         
