@@ -11,15 +11,22 @@ insert into Usuario(correo, password, nombre, apellidos, fecha_nacimiento, usern
 
  insert into Amigos(idUsuario, idAmigo) values
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'wan%')),
+ ((select id from Usuario where correo like 'wan%'), (select id from Usuario where correo like 'leo%')),
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'pedro%')),
+ ((select id from Usuario where correo like 'pedro%'), (select id from Usuario where correo like 'leo%')),
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'parejo%')),
+ ((select id from Usuario where correo like 'parejo%'), (select id from Usuario where correo like 'leo%')),
  ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'alkasete%')),
- ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'pumuky%'));
+ ((select id from Usuario where correo like 'leo%'), (select id from Usuario where correo like 'pumuky%')),
+ ((select id from Usuario where correo like 'pumuky%'), (select id from Usuario where correo like 'leo%'));
 insert into Amigos(idUsuario, idAmigo) values
 ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'wan%')),
+((select id from Usuario where correo like 'wan%'), (select id from Usuario where correo like 'alkasete%')),
  ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'leo%')),
  ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'parejo%')),
- ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'pumuky%'));
+ ((select id from Usuario where correo like 'parejo%'), (select id from Usuario where correo like 'alkasete%')),
+ ((select id from Usuario where correo like 'alkasete%'), (select id from Usuario where correo like 'pumuky%')),
+ ((select id from Usuario where correo like 'pumuky%'), (select id from Usuario where correo like 'alkasete%'));
 
 insert into Amigos(idUsuario, idAmigo) values
 	((select id from Usuario where correo like 'alkasete%'),(select id from Usuario where correo like 'pedro%'));
