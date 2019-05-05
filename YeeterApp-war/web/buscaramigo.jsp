@@ -65,7 +65,7 @@
                     %>
 
                     <form method = "post" action = "PeticionAmigo">
-                        <input type = "hidden" name = "destID" value = <%=idReceptor%>>
+                        <input type = "hidden" name = "destID" value ="<%=idReceptor%>">
                         <div class="input-group-append">
                             <button class="btn btn-outline-dark" style="height: 38px; width: 50px;" type="submit" >
                                 <span style="width: 25px; height: 25px; display:inline-block;">

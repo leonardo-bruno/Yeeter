@@ -63,7 +63,7 @@ public class AceptarPeticionServlet extends HttpServlet {
         PeticionAmistadPK pk = new PeticionAmistadPK();
         pk.setUsuarioEmisor(id);
         pk.setUsuarioReceptor(idLoggedUser);
-        peticionAmistadFacade.remove(new PeticionAmistad(pk));
+        peticionAmistadFacade.remove(peticionAmistadFacade.find(pk));
         
         profileUser = usuarioFacade.find(id);
         
@@ -74,6 +74,7 @@ public class AceptarPeticionServlet extends HttpServlet {
         amigos.add(loggedUser);
         usuarioFacade.edit(profileUser);
         
+        request.setAttribute("message", "petición aceptada");
         request.setAttribute("id", id);
         rd = this.getServletContext().getRequestDispatcher("/panelUserServlet");
         rd.forward(request, response);

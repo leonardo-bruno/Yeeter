@@ -17,6 +17,7 @@
         boolean mismoUsuario=false;
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         String from = (String) request.getAttribute("from");
+        String mensaje = (String) request.getAttribute("message");
     %>
     <head>
        <title>Yeeter</title>
@@ -28,6 +29,13 @@
         <link rel="stylesheet" href="assets/css/estilos.css"/>
     </head>
     <body>
+        <%
+            if(mensaje != null) {
+        %>
+            <div class="alert alert-success"><%=mensaje%></div>
+        <% 
+            }
+        %>
         <div class="content">
             <div class="top">
                 <p>Perfil<% if(mismoUsuario) { %>

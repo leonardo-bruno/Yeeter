@@ -88,3 +88,4 @@ Select *  from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PER
      ('Holaaa!!!', '2012-01-20', (select id from Usuario where correo like 'alkasete%'), ((select id from Usuario where correo like 'parejo%'))),
      ('Holaaa!!!', '2013-01-20', (select id from Usuario where correo like 'alkasete%'), ((select id from Usuario where correo like 'leo%'))),
      ('Holaaa!!!', '2014-01-20', (select id from Usuario where correo like 'alkasete%'), ((select id from Usuario where correo like 'wan%')));
+

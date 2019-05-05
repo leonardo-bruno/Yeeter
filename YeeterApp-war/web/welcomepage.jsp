@@ -16,6 +16,7 @@
 <%    
     List<Post> posts = (List) request.getAttribute("posts");
     Usuario userLog = (Usuario) request.getAttribute("loggedUser");
+    String mensaje = (String) request.getAttribute("message");
 %>
 
 <!DOCTYPE html>
@@ -28,6 +29,13 @@
     </head>
 
     <body>
+        <%
+            if(mensaje != null) {
+        %>
+            <div class="alert alert-success"><%=mensaje%></div>
+        <% 
+            }
+        %>
         <div class="container mb-5">
             <div class="row">
 

@@ -45,14 +45,12 @@
                         </div>
                         <div class="col-1">
                             <form name="markAsReadNotification" action="AceptarPeticionServlet" method="POST" class="w-100">
-                            <input value="<%= pet.getPeticionAmistadPK() %>" type="hidden" name="peticionID"/>
+                            <input value="<%= pet.getPeticionAmistadPK().getUsuarioEmisor()%>" type="hidden" name="id"/>
                                 <button type="submit" class="btn btn-outline-info btn-sm"><i class="fas fa-check"></i></button>
                             </form>
                         </div>
                     </div>
                     </div>
-                    <%= pet.getMensaje() %>
-                    <%= pet.getPeticionAmistadPK().toString() %>
                 <%
                     }
                 %>
