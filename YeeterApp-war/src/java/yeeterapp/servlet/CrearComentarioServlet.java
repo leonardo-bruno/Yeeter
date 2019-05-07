@@ -6,6 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -68,8 +69,14 @@ public class CrearComentarioServlet extends HttpServlet {
         com.setPost(post);
         comentarioFacade.create(com);
         
+        List<Comentario> listaComentarios = post.getComentarioList();
+        listaComentarios.add(com);
+        post.setComentarioList(listaComentarios);
+        
+        postFacade.edit(post);
+        
         request.setAttribute("message", "Has comentado con éxito esta publicación");
-        response.sendRedirect("PostServlet");
+        response.sendRedirect("PostServlet?postID=" + post.getId());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

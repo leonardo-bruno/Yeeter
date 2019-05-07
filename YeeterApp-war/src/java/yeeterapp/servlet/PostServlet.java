@@ -63,17 +63,11 @@ public class PostServlet extends HttpServlet {
         }
         
         String idPostValue = request.getParameter("postID");
-        int idP;
-        if(idPostValue == null) {
-            idP = Integer.valueOf(request.getParameter("postID"));
-        } else {
-            idP = Integer.valueOf(idPostValue);
-        }
         
         String error = request.getParameter("error");
         request.setAttribute("error", error);
         
-        Post post = postFacade.find(idP);
+        Post post = postFacade.find(new Integer(idPostValue));
         request.setAttribute("post", post);
         
         Usuario autor = usuarioFacade.find(post.getIdAutor().getId());
