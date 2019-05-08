@@ -50,15 +50,16 @@ public class panelUserServlet extends HttpServlet {
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
         } 
-        loggedUser = usuarioFacade.find(idLoggedUser);
-        boolean mismoUser = true;
+        loggedUser = usuarioFacade.find(idLoggedUser);    
         if(idString != null) {
             int str=Integer.valueOf(idString);
             loggedUser=this.usuarioFacade.find(str);
-            mismoUser = false;
         }
         
-        request.setAttribute("mismoUser", mismoUser);
+        String from = request.getParameter("from");
+        request.setAttribute("from", from);
+        
+        
         request.setAttribute("usuario", loggedUser);
         
         

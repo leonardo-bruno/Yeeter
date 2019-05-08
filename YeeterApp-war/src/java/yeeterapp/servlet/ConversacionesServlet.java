@@ -6,7 +6,10 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,21 +18,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.MensajeFacade;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Mensaje;
 import yeeterapp.entity.Usuario;
-import yeeterapp.entity.Notificaciones;
-import yeeterapp.entity.PeticionAmistad;
 
 /**
  *
- * @author alec
+ * @author pedro
  */
-@WebServlet(name = "NotificationsServlet", urlPatterns = {"/NotificationsServlet"})
-public class NotificationsServlet extends HttpServlet {
+@WebServlet(name = "ConversacionesServlet", urlPatterns = {"/ConversacionesServlet"})
+public class ConversacionesServlet extends HttpServlet {
+
+    @EJB
+    private MensajeFacade mensajeFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
+    
+    
 
+    
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,28 +56,16 @@ public class NotificationsServlet extends HttpServlet {
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
         Usuario loggedUser;
-        if(idLoggedUser == null) {
-            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "Por favor inicie sesión primero.");
-            rd.forward(request, response);
-        } 
+       
         loggedUser = usuarioFacade.find(idLoggedUser);
+        List<Mensaje> listaMensajes = mensajeFacade.queryByID(loggedUser.getId());
+        List<Usuario> listaAmigos =loggedUser.getUsuarioList1();
+       
+        request.setAttribute("listaMensajes",listaMensajes);
+        request.setAttribute("listaAmigos",listaAmigos);
         
         
-        
-        List<PeticionAmistad> peticiones = loggedUser.getPeticionAmistadList1();
-        List<Notificaciones> notificaciones = loggedUser.getNotificacionesList();
-        request.setAttribute("notifications", notificaciones);
-        long noLeidas;
-        noLeidas = notificaciones.stream().filter(notificacion -> !notificacion.getNotificacionLeida()).count() +
-                peticiones.size();
-        // easy win programación funcional gracias por tanto.
-        /*for(Notificaciones n : notificaciones) 
-            if(!n.getNotificacionLeida())
-                noLeidas++;*/
-        request.setAttribute("noLeidas", noLeidas);
-        request.setAttribute("peticiones", peticiones);
-        rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
+        rd = this.getServletContext().getRequestDispatcher("/Conversaciones.jsp");
         rd.forward(request, response);
     }
 

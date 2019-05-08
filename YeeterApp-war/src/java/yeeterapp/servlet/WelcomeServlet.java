@@ -17,9 +17,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.GrupoFacade;
+import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Grupo;
 
 
 /**
@@ -28,6 +31,9 @@ import yeeterapp.ejb.UsuarioFacade;
  */
 @WebServlet(name = "Welcome", urlPatterns = {"/WelcomeServlet"})
 public class WelcomeServlet extends HttpServlet {
+
+    @EJB
+    private GrupoFacade grupoFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -56,20 +62,19 @@ public class WelcomeServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        } 
+        }
         loggedUser = usuarioFacade.find(idLoggedUser);
         List<Post> posts =  usuarioFacade.queryUserFeed(loggedUser.getId());
-        Map<Post,Usuario> feed = new HashMap<>();
-        
-        posts.forEach((post) -> {
-            feed.put(post,post.getIdAutor());
-        });
-        request.setAttribute("feed", feed);
+       
 
-        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp"); 
+        request.setAttribute("posts",posts);
+        request.setAttribute("loggedUser", loggedUser);
+       
+
+        rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
         rd.forward(request, response);
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

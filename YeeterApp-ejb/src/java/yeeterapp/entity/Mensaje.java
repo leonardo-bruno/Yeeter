@@ -35,7 +35,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mensaje.findAll", query = "SELECT m FROM Mensaje m")
     , @NamedQuery(name = "Mensaje.findById", query = "SELECT m FROM Mensaje m WHERE m.id = :id")
     , @NamedQuery(name = "Mensaje.findByContenido", query = "SELECT m FROM Mensaje m WHERE m.contenido = :contenido")
-    , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")})
+    , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")
+    , @NamedQuery(name = "Mensaje.findByIdEmisor", query = "SELECT m FROM Mensaje m WHERE m.idEmisor = :idEmisor")
+    , @NamedQuery(name = "Mensaje.findByIdReceptor", query = "SELECT m FROM Mensaje m WHERE m.idReceptor = :idReceptor")
+    , @NamedQuery(name = "Mensaje.findByIdEmisorIdReceptor", query = "SELECT m FROM Mensaje m WHERE (m.idEmisor.id = :idEmisor AND m.idReceptor.id = :idReceptor) OR (m.idReceptor.id = :idEmisor AND m.idEmisor.id = :idReceptor) order by m.fecha")
+})
 public class Mensaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -138,5 +142,5 @@ public class Mensaje implements Serializable {
     public String toString() {
         return "yeeterapp.entity.Mensaje[ id=" + id + " ]";
     }
-    
+
 }

@@ -6,6 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -15,20 +16,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.MensajeFacade;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Mensaje;
 import yeeterapp.entity.Usuario;
-import yeeterapp.entity.Notificaciones;
-import yeeterapp.entity.PeticionAmistad;
 
 /**
  *
- * @author alec
+ * @author jesus
  */
-@WebServlet(name = "NotificationsServlet", urlPatterns = {"/NotificationsServlet"})
-public class NotificationsServlet extends HttpServlet {
+@WebServlet(name = "ChatServlet", urlPatterns = {"/ChatServlet"})
+public class ChatServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private MensajeFacade mensajeFacade;
 
     
     /**
@@ -43,7 +47,7 @@ public class NotificationsServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession();        
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
         Usuario loggedUser;
@@ -51,24 +55,23 @@ public class NotificationsServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
+            return;
         } 
         loggedUser = usuarioFacade.find(idLoggedUser);
         
+        String idAmigo = request.getParameter("idAmigo");
+        Usuario amigo = this.usuarioFacade.find(new Integer(idAmigo));
+        request.setAttribute("amigo", amigo);
         
+        List<Mensaje> mensajes = this.mensajeFacade.queryMensajesAmigos(loggedUser.getId(), amigo.getId());
         
-        List<PeticionAmistad> peticiones = loggedUser.getPeticionAmistadList1();
-        List<Notificaciones> notificaciones = loggedUser.getNotificacionesList();
-        request.setAttribute("notifications", notificaciones);
-        long noLeidas;
-        noLeidas = notificaciones.stream().filter(notificacion -> !notificacion.getNotificacionLeida()).count() +
-                peticiones.size();
-        // easy win programación funcional gracias por tanto.
-        /*for(Notificaciones n : notificaciones) 
-            if(!n.getNotificacionLeida())
-                noLeidas++;*/
-        request.setAttribute("noLeidas", noLeidas);
-        request.setAttribute("peticiones", peticiones);
-        rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
+        if(mensajes != null) {
+            request.setAttribute("mensajes", mensajes);
+        } else {
+            request.setAttribute("mensajes", new ArrayList<>());
+        }
+        
+        rd = this.getServletContext().getRequestDispatcher("/chat.jsp");
         rd.forward(request, response);
     }
 

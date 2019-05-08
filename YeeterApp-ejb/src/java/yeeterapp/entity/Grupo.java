@@ -41,7 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id")
     , @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")
     , @NamedQuery(name = "Grupo.findByDescripcion", query = "SELECT g FROM Grupo g WHERE g.descripcion = :descripcion")
-    , @NamedQuery(name = "Grupo.findByFechaCreacion", query = "SELECT g FROM Grupo g WHERE g.fechaCreacion = :fechaCreacion")})
+    , @NamedQuery(name = "Grupo.findByFechaCreacion", query = "SELECT g FROM Grupo g WHERE g.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "Grupo.findByIdCreador", query = "SELECT g FROM Grupo g WHERE g.idCreador = :idCreador")})
+
 public class Grupo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -169,5 +171,5 @@ public class Grupo implements Serializable {
     public String toString() {
         return "yeeterapp.entity.Grupo[ id=" + id + " ]";
     }
-    
+
 }

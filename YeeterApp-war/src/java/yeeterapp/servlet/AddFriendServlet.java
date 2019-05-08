@@ -15,9 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.ejb.PeticionAmistadFacade;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.PeticionAmistad;
+import yeeterapp.entity.PeticionAmistadPK;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -32,9 +35,10 @@ public class AddFriendServlet extends HttpServlet {
 
     @EJB
     private PeticionAmistadFacade peticionFacade;
-    
-    
-    
+    @EJB
+    private NotificacionesFacade notificacionesFacade;
+
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,9 +50,9 @@ public class AddFriendServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
-        
+
         HttpSession session = request.getSession();
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
@@ -57,15 +61,25 @@ public class AddFriendServlet extends HttpServlet {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        } 
-        else{
-            loggedUser = usuarioFacade.find(idLoggedUser);
-            int dest = Integer.valueOf(request.getParameter("destID"));
-            peticionFacade.create(new PeticionAmistad(loggedUser.getId(), dest));
-            rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
-            request.setAttribute("message", "La solicitud se ha enviado con exito.");
-            rd.forward(request, response);
-        }   
+            return;
+        }
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        Integer dest = Integer.valueOf(request.getParameter("destID"));
+        
+        
+        Usuario destUser = usuarioFacade.find(dest);
+        PeticionAmistadPK pAPK = new PeticionAmistadPK(idLoggedUser, dest);
+        PeticionAmistad pa = new PeticionAmistad();
+        pa.setPeticionAmistadPK(pAPK);
+        pa.setMensaje("El usuario " + loggedUser.getUsername() + " quiere añadirte como amigo.");
+        pa.setUsuario(loggedUser);
+        pa.setUsuario1(destUser);
+        
+        peticionFacade.create(pa);
+        
+        request.setAttribute("message", "La solicitud se ha enviado con exito.");
+        rd = this.getServletContext().getRequestDispatcher("/WelcomeServlet");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

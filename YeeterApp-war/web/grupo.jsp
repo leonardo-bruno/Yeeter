@@ -1,9 +1,12 @@
-<%-- 
+<%--
     Document   : grupo
     Created on : 22-abr-2019, 9:25:39
     Author     : leonardobruno
 --%>
 
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
+<%@page import="yeeterapp.entity.Post"%>
 <%@page import="yeeterapp.entity.Grupo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
@@ -19,6 +22,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="assets/css/estilos.css"/>
         <title>Yeeter - <%= grupo.getDescripcion() %></title>
+        <script src="assets/js/rowSelecter.js"></script>
     </head>
     <body>
         <div class="content">
@@ -35,7 +39,7 @@
                         <span class="navbar-brand"><%= grupo.getNombre() %></span>
                     </nav>
                     <p><%= grupo.getDescripcion() %></p>
-                <% 
+                <%
                 } else {
                 %>
                     <form action="EditarGrupoServlet" method="post">
@@ -56,7 +60,7 @@
                 %>
                 <% if(!editing){ %>
                     <nav class="nav nav-pills flex-column flex-sm-row">
-                        <a class="btn btn-lg btn-outline-info" href="ListaMiemServlet?id=<%= grupo.getId() %>">Miembros</a>
+                        <a class="btn btn-lg btn-outline-info" href="ListaMiemServlet?id=<%=grupo.getId()%>">Miembros</a>
                         <% if(esAdmin){ %>
                             <form action="GrupoServlet" method="post">
                                 <input type="hidden" value="true" name="editing">
@@ -65,7 +69,17 @@
                             </form>
                         <% } %>
                     </nav>
-                <% } 
+            </div>
+            <div class="col-7 mt-5">
+                <% for(Post post: grupo.getPostList()){   %>
+                <div class="card" style="cursor: pointer" data-href="PostServlet?postID=<%=post.getId()%>" >
+                    <div class="card-body">
+                        <h5 class="card-title"><%=post.getIdAutor().getUsername()%></h5>
+                        <p class="card-text"><%=post.getContenido()%></p>
+                    </div>
+                </div>
+                <% }
+                   }
                 %>
             </div>
         </div>

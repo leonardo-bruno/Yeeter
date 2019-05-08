@@ -26,7 +26,6 @@
                 <nav class="navbar navbar-dark bg-dark mb-5">
                     <span class="navbar-brand">Crear un nuevo Post</span>
                 </nav>
-                <!--div class="card w-100 mt-1 mb-1"  style="cursor: pointer;"-->
                     <div class="card-body row align-items-center" align="center">
                         <div class="col-11">
                             <form method="post" action="CrearPost">
@@ -54,7 +53,6 @@
                             </form>
                         </div>
                     </div>
-                <!--/div-->
             </div>
         </div>
     </body>

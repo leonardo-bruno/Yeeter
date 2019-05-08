@@ -6,7 +6,10 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,21 +18,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.ComentarioFacade;
+import yeeterapp.ejb.PostFacade;
 import yeeterapp.ejb.UsuarioFacade;
+import yeeterapp.entity.Comentario;
+import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
-import yeeterapp.entity.Notificaciones;
-import yeeterapp.entity.PeticionAmistad;
 
 /**
  *
- * @author alec
+ * @author jugr9
  */
-@WebServlet(name = "NotificationsServlet", urlPatterns = {"/NotificationsServlet"})
-public class NotificationsServlet extends HttpServlet {
-
+@WebServlet(name = "PostServlet", urlPatterns = {"/PostServlet"})
+public class PostServlet extends HttpServlet {
+    
     @EJB
-    private UsuarioFacade usuarioFacade;
-
+    private PostFacade postFacade;
+    @EJB
+    private ComentarioFacade comentarioFacade;
+    @EJB
+    private UsuarioFacade usuarioFacade; 
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,32 +51,29 @@ public class NotificationsServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        Usuario loggedUser;
-        if(idLoggedUser == null) {
+        HttpSession session = request.getSession();
+        int idUsuario = (Integer) session.getAttribute("loggedUserID");
+        Usuario user = usuarioFacade.find(idUsuario);
+        if(user == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-        } 
-        loggedUser = usuarioFacade.find(idLoggedUser);
+            return;
+        }
         
+        String idPostValue = request.getParameter("postID");
         
+        String error = request.getParameter("error");
+        request.setAttribute("error", error);
         
-        List<PeticionAmistad> peticiones = loggedUser.getPeticionAmistadList1();
-        List<Notificaciones> notificaciones = loggedUser.getNotificacionesList();
-        request.setAttribute("notifications", notificaciones);
-        long noLeidas;
-        noLeidas = notificaciones.stream().filter(notificacion -> !notificacion.getNotificacionLeida()).count() +
-                peticiones.size();
-        // easy win programación funcional gracias por tanto.
-        /*for(Notificaciones n : notificaciones) 
-            if(!n.getNotificacionLeida())
-                noLeidas++;*/
-        request.setAttribute("noLeidas", noLeidas);
-        request.setAttribute("peticiones", peticiones);
-        rd = this.getServletContext().getRequestDispatcher("/notificaciones.jsp");
+        Post post = postFacade.find(new Integer(idPostValue));
+        request.setAttribute("post", post);
+        
+        Usuario autor = usuarioFacade.find(post.getIdAutor().getId());
+        request.setAttribute("autor", autor);
+
+        rd = this.getServletContext().getRequestDispatcher("/post.jsp");
         rd.forward(request, response);
     }
 
