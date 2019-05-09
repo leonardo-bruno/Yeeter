@@ -56,6 +56,9 @@ public class panelUserServlet extends HttpServlet {
             loggedUser=this.usuarioFacade.find(str);
         }
         
+        String from = request.getParameter("from");
+        request.setAttribute("from", from);
+        
         
         request.setAttribute("usuario", loggedUser);
         

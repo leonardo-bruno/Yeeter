@@ -16,7 +16,9 @@
         Usuario us=(Usuario)request.getAttribute("usuario");
         boolean mismoUsuario=false;
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-        %>
+        String from = (String) request.getAttribute("from");
+        String mensaje = (String) request.getAttribute("message");
+    %>
     <head>
        <title>Yeeter</title>
         <meta charset="UTF-8">
@@ -27,6 +29,13 @@
         <link rel="stylesheet" href="assets/css/estilos.css"/>
     </head>
     <body>
+        <%
+            if(mensaje != null) {
+        %>
+            <div class="alert alert-success"><%=mensaje%></div>
+        <% 
+            }
+        %>
         <div class="content">
             <div class="top">
                 <p>Perfil<% if(mismoUsuario) { %>
@@ -81,7 +90,17 @@
                         <a href="ModificarPerfilServlet"  class="btn btn-primary">Modificar</a>
                         <% } else { %>
                         <a href="ChatServlet?idAmigo=<%= us.getId() %>" class="btn btn-primary" >Enviar Mensaje</a>
-                        <a href="#" class="btn btn-primary" >Añadir Amigo</a>
+                        <%
+                            if(from == null) {
+                        %>
+                            <a href="#" class="btn btn-primary" >Añadir Amigo</a>
+                        <%
+                            } else {
+                        %>
+                            <a href="AceptarPeticionServlet?id=<%= us.getId() %>" class="btn btn-primary">Aceptar peticion</a>
+                        <% 
+                            }
+                        %>
                         <% } %>
                     </div>
                   </div>
