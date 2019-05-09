@@ -65,6 +65,7 @@
                 </div>
                 <form method="post" action="EnviarMensajeServlet">
                     <textarea name="mensaje" rows="5" cols="160"></textarea><br/>
+                    <input type="hidden" name="amigo" value="<%= amigo.getId() %>">
                     <div class="btn-group" role="group">
                         <button class="btn btn-lg btn-outline-info btn-block" type="submit">
                             Enviar

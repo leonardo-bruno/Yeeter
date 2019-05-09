@@ -48,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByBiografia", query = "SELECT u FROM Usuario u WHERE u.biografia = :biografia")
     , @NamedQuery(name = "Usuario.findByNameOrUsername", query = "SELECT u FROM Usuario u where concat(u.nombre, u.apellidos) like :input or u.username like :input")
+     
 })
 public class Usuario implements Serializable {
 

@@ -6,13 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,19 +24,15 @@ import yeeterapp.entity.Usuario;
  *
  * @author pedro
  */
-@WebServlet(name = "ConversacionesServlet", urlPatterns = {"/ConversacionesServlet"})
-public class ConversacionesServlet extends HttpServlet {
+@WebServlet(name = "EnviarMensajeServlet", urlPatterns = {"/EnviarMensajeServlet"})
+public class EnviarMensajeServlet extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
     @EJB
     private MensajeFacade mensajeFacade;
 
-    @EJB
-    private UsuarioFacade usuarioFacade;
-    
-    
-
-    
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -55,41 +45,31 @@ public class ConversacionesServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();        
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
         Usuario loggedUser;
-       
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+            return;
+        } 
         loggedUser = usuarioFacade.find(idLoggedUser);
-    
-        List<Mensaje> listaMensajesSiendoEmisor = mensajeFacade.queryfindByEmisor(loggedUser);
-        List<Mensaje> listaMensajesSiendoReceptor = mensajeFacade.queryfindByReceptor(loggedUser);
+        String mensaje = request.getParameter("mensaje");
+        String amigoId = request.getParameter("amigo");
+        Usuario amigo = usuarioFacade.find(new Integer(amigoId));
+        Mensaje message = new Mensaje();
+        message.setContenido(mensaje);
+        message.setIdEmisor(loggedUser);
+        message.setIdReceptor(amigo);
+        Date fecha = new Date(System.currentTimeMillis());
+        message.setFecha(fecha);
         
-
+        mensajeFacade.create(message);
         
-        Set<Usuario> listaConversaciones = new HashSet<>();
-        
-        for(Mensaje lista: listaMensajesSiendoEmisor){
-                listaConversaciones.add(lista.getIdReceptor());
-            
-        }
-        
-        for(Mensaje lista: listaMensajesSiendoReceptor){
-                listaConversaciones.add(lista.getIdEmisor());
-            
-        }
-        
-        
-        
-        List<Usuario> listaAmigos =loggedUser.getUsuarioList1();
-       
-        request.setAttribute("listaConversaciones", listaConversaciones);
-     
-        request.setAttribute("listaAmigos",listaAmigos);
-        
-        
-        rd = this.getServletContext().getRequestDispatcher("/Conversaciones.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("ChatServlet?idAmigo=" + amigoId);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
