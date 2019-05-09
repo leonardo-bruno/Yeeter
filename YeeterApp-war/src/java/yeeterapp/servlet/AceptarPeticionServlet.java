@@ -67,10 +67,10 @@ public class AceptarPeticionServlet extends HttpServlet {
         
         profileUser = usuarioFacade.find(id);
         
-        List<Usuario> amigos = loggedUser.getUsuarioList();
+        List<Usuario> amigos = loggedUser.getUsuarioList1();
         amigos.add(profileUser);
         usuarioFacade.edit(loggedUser);
-        amigos = profileUser.getUsuarioList();
+        amigos = profileUser.getUsuarioList1();
         amigos.add(loggedUser);
         usuarioFacade.edit(profileUser);
         
