@@ -79,6 +79,8 @@
                                     <% }%> 
                                 </h5>
                                 <p class="card-text"><%= p.getContenido()%></p>
+                                
+                                <footer > <%= p.getFechaPublicacion() %> </footer>
                             </div>
                         </div>
                         <% }%>
