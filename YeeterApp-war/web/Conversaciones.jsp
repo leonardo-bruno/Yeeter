@@ -42,7 +42,7 @@
                                 @<%=  users.getUsername()%>
                             </h5>
                             <p class="card-text"></p>
-                            <form action="ChatServlet?idAmigo=<%= users.getId()%>">
+                            <form action="ChatServlet?idAmigo=<%= users.getId()%>" method="post">
                                 <input type="submit" value="Acceder a Conversación" class="btn btn-outline-secondary float-right">
                             </form>
                         </div>
