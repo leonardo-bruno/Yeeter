@@ -86,15 +86,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         }
     }
     
-    public List<Usuario> queryUserByMensajes(Integer id) {
-        Query q = this.em.createNamedQuery("Usuario.findByUsername");
-       
-        q.setParameter("id", id);
-        try {
-            return (List<Usuario>) q.getResultList();
-        } catch(NoResultException r) {
-            return null;
-        }
-    }
+    
+    
+    
     
 }

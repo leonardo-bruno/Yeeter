@@ -5,13 +5,15 @@
 --%>
 
 
+<%@page import="java.util.Set"%>
 <%@page import="yeeterapp.entity.Mensaje"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 <!DOCTYPE html>
 
-<%    List<Usuario> listaUsuarios = (List) request.getAttribute("listaUsuarios");
+<%    Set<Usuario> listaConversaciones = (Set) request.getAttribute("listaConversaciones");
+
 %>
 <html>
     <head>
@@ -24,7 +26,7 @@
             <div class="row">
 
                 <div class="col-7">
-                    <% if (listaUsuarios.isEmpty()) {
+                    <% if (listaConversaciones.isEmpty()) {
 
                     %>
                     <div class="alert alert-secondary" role="alert">
@@ -32,19 +34,21 @@
                     </div>
 
                     <% } else {
-                    for (Usuario users : listaUsuarios) {%>
+                        for (Usuario users : listaConversaciones) {%>
 
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
-                                @<%=  users.getUsername()  %>
+                                @<%=  users.getUsername()%>
                             </h5>
                             <p class="card-text"></p>
-                            <button type="button" class="btn btn-outline-secondary">Acceder a Conversación</button>
+                            <form action="ChatServlet?idAmigo=<%= users.getId()%>">
+                                <input type="submit" value="Acceder a Conversación" class="btn btn-outline-secondary float-right">
+                            </form>
                         </div>
                     </div>
                     <% }
-                                }%>
+                        }%>
                 </div>
                 <div class="col-3">
                     <form action="PreNewChatServlet">
@@ -54,8 +58,8 @@
             </div>
 
         </div>
-  
-</body>
+
+    </body>
 </html>
 
 

@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import yeeterapp.entity.Mensaje;
+import yeeterapp.entity.Usuario;
 
 /**
  *
@@ -45,6 +46,36 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
         Query q = this.em.createNamedQuery("Mensaje.findByIdEmisorIdReceptor");
         q.setParameter("idReceptor", idReceptor);
         q.setParameter("idEmisor", idEmisor);
+        try {
+            return (List) q.getResultList();
+        } catch(NoResultException e) {
+            return null;
+        }
+    }
+    public List<Mensaje> queryfindByUserMensageList(int userID) {
+        Query q = this.em.createNamedQuery("Mensaje.findByUserMensageList");
+        
+        q.setParameter("userID",userID );
+        try {
+            return (List) q.getResultList();
+        } catch(NoResultException e) {
+            return null;
+        }
+    }
+    public List<Mensaje> queryfindByEmisor(Usuario idEmisor) {
+        Query q = this.em.createNamedQuery("Mensaje.findByIdEmisor");
+        
+        q.setParameter("idEmisor",idEmisor );
+        try {
+            return (List) q.getResultList();
+        } catch(NoResultException e) {
+            return null;
+        }
+    }
+     public List<Mensaje> queryfindByReceptor(Usuario idReceptor) {
+        Query q = this.em.createNamedQuery("Mensaje.findByIdReceptor");
+        
+        q.setParameter("idReceptor",idReceptor );
         try {
             return (List) q.getResultList();
         } catch(NoResultException e) {

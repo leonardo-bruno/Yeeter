@@ -7,9 +7,12 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,11 +61,30 @@ public class ConversacionesServlet extends HttpServlet {
         Usuario loggedUser;
        
         loggedUser = usuarioFacade.find(idLoggedUser);
-        List<Usuario> listaUsuarios = usuarioFacade.queryUserByMensajes(loggedUser.getId());
+    
+        List<Mensaje> listaMensajesSiendoEmisor = mensajeFacade.queryfindByEmisor(loggedUser);
+        List<Mensaje> listaMensajesSiendoReceptor = mensajeFacade.queryfindByReceptor(loggedUser);
+        
+
+        
+        Set<Usuario> listaConversaciones = new HashSet<>();
+        
+        for(Mensaje lista: listaMensajesSiendoEmisor){
+                listaConversaciones.add(lista.getIdReceptor());
+            
+        }
+        
+        for(Mensaje lista: listaMensajesSiendoReceptor){
+                listaConversaciones.add(lista.getIdEmisor());
+            
+        }
+        
+        
         
         List<Usuario> listaAmigos =loggedUser.getUsuarioList1();
        
-        request.setAttribute("listaUsuarios",listaUsuarios);
+        request.setAttribute("listaConversaciones", listaConversaciones);
+     
         request.setAttribute("listaAmigos",listaAmigos);
         
         
