@@ -25,9 +25,8 @@
     </head>
     <body>
         <div class="container">
+            <a href="nuevoGrupo.jsp"><button class="btn btn-outline-dark">Nuevo Grupo</button></a>
             <div class="bot-grupos">
-
-                    
                 <div class="list-group">
                     <% for(int i=0;i<usGruposTodo.size();i++){
                     %>
