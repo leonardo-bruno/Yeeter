@@ -26,12 +26,7 @@
     <body>
         <div class="content">
             <div class="bot-grupos">
-                <nav class="navbar navbar-dark bg-dark">
-                    <span class="navbar-brand">Grupos</span>
-                    <form class="form-inline my-2 my-lg-0" action="ListaGruposServlet">
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" id="todos" value="1">Todos</button>
-                    </form>
-                </nav>
+
                     
                 <div class="list-group">
                     <% for(int i=0;i<usGruposTodo.size();i++){

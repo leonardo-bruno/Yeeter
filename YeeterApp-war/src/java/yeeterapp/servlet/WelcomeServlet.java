@@ -52,7 +52,6 @@ public class WelcomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
@@ -69,7 +68,7 @@ public class WelcomeServlet extends HttpServlet {
 
         request.setAttribute("posts",posts);
         request.setAttribute("loggedUser", loggedUser);
-       
+        
 
         rd = this.getServletContext().getRequestDispatcher("/welcomepage.jsp");
         rd.forward(request, response);

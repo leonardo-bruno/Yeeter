@@ -45,7 +45,7 @@
             <h1 class="mt-5 justify-content-center">Modificar Perfil</h1>
         </div>
         <div class="body-container">
-            <form method="post" action="ModificarPerfilServlet?id=<%= usuario.getId()%>">
+            <form method="post" action="ModificarPerfilServlet?id=<%= usuario %>" >
                 <input type="hidden" name="pass" value="<%= lastPass %>"/>
                 <div style="align-items: center;">
                     <%

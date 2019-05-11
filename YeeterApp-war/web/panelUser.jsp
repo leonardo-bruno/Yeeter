@@ -15,7 +15,7 @@
     <%
         Usuario us=(Usuario)request.getAttribute("usuario");
         boolean mismoUsuario=us.getId() == usuario;
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         String dateString = formatter.format(us.getFechaNacimiento());
         String from = (String) request.getAttribute("from");
         String mensaje = (String) request.getAttribute("message");

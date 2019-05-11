@@ -41,19 +41,30 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        Usuario user = usuarioFacade.queryUserByEmail(email);
         RequestDispatcher rd;
-        if(user == null || !user.getPassword().equals(password)) {
+        HttpSession session=request.getSession();
+        String logout=request.getParameter("logout");
+        
+        if(logout!=null){
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-            request.setAttribute("error", "La combinación de usuario y contraseña no es correcta");
+            session.invalidate();
             rd.forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("loggedUserID", user.getId());
-            response.sendRedirect("WelcomeServlet");
+        }else{
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            Usuario user = usuarioFacade.queryUserByEmail(email);
+            
+            if(user == null || !user.getPassword().equals(password)) {
+                rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+                request.setAttribute("error", "La combinación de usuario y contraseña no es correcta");
+                rd.forward(request, response);
+            } else {
+                session = request.getSession();
+                session.setAttribute("loggedUserID", user.getId());
+                response.sendRedirect("WelcomeServlet");
+            }
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

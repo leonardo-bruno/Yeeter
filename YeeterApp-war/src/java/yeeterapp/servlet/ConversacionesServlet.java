@@ -62,7 +62,7 @@ public class ConversacionesServlet extends HttpServlet {
        
         loggedUser = usuarioFacade.find(idLoggedUser);
     
-        List<Mensaje> listaMensajesSiendoEmisor = mensajeFacade.queryfindByEmisor(loggedUser);
+        List<Mensaje> listaMensajesSiendoEmisor = mensajeFacade.queryfindByEmisor(loggedUser); 
         List<Mensaje> listaMensajesSiendoReceptor = mensajeFacade.queryfindByReceptor(loggedUser);
         
 

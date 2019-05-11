@@ -66,7 +66,13 @@
                         </a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ml-3">
+	          <li class="nav-item">
+	          	<a href="Login?logout=1">logout</a>
+	          </li>
+                </ul>
             </div>
         </nav>
+                        
     </body>
 </html>

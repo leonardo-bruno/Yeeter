@@ -53,6 +53,14 @@ public class ModificarPerfilServlet extends HttpServlet {
         boolean error = false;
         Usuario user=null;
         
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }
+        
         try{
             int str=Integer.valueOf(request.getParameter("id"));
             String userName=request.getParameter("username");
@@ -115,13 +123,12 @@ public class ModificarPerfilServlet extends HttpServlet {
                 usuarioFacade.edit(user);
             }
 
-            session.setAttribute("loggedUser", user);
             request.setAttribute("usuario", user);
             rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
             rd.forward(request, response);
             
         }catch(Exception e){
-            user=(Usuario)session.getAttribute("loggedUser");
+            user=usuarioFacade.find(idLoggedUser);
             request.setAttribute("lastUsername", user.getUsername());
             request.setAttribute("lastEmail", user.getCorreo());
             request.setAttribute("lastBio", user.getBiografia());
