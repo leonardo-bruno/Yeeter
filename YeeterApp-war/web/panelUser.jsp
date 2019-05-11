@@ -34,7 +34,7 @@
         <% 
             }
         %>
-        <div class="content">
+        <div class="container">
             <div class="top">
                 <p>Perfil<% if(mismoUsuario) { %>
                     <a href="ModificarPasswordServlet" class="btn btn-primary" role="button" > Modificar Contraseña</a></p>

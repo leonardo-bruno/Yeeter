@@ -23,17 +23,29 @@
         <title>Yeeter - Post</title>
     </head>
     <body>
-        <div class="col-7 mt-5">
-            <div class="card">
+        <div class="container">
+            <div class="card mt-5">
                 <div class="card-body">
                     <h2 class="card-title"><%=autor.getNombre() + " " + autor.getApellidos() + " (" + autor.getUsername() + ")"%></h2>
                     <p class="card-text"><%=post.getContenido()%></p>
                 </div>
             </div>
+            <div class="mt-1 mb-1">
+                <% for(Comentario com: post.getComentarioList()){   %>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%=com.getAutor().getUsername()%></h5>
+                        <p class="card-text"><%=com.getContenido()%></p>
+                    </div>
+                </div>
+                <% 
+                    }
+                %>
+            </div>
             <form class="form-inline" action="CrearComentarioServlet" method="post">
                 <input name = "postID" type = "hidden" value = "<%=post.getId()%>">
                 Comentario:
-                <textarea class="form-control" name="comentario" rows="5" cols="50" required="true"></textarea>
+                <textarea class="form-control mt-2" name="comentario" rows="5" cols="50" required></textarea>
                 <div class="input-group-append">
                     <button class="btn btn-outline-dark" style="height: 38px; width: 50px;" type="submit" >
                         <span style="width: 25px; height: 25px; display:inline-block;">
@@ -50,18 +62,6 @@
                     %>
                 </div>
             </form>
-            <div class="col-7 mt-5">
-                <% for(Comentario com: post.getComentarioList()){   %>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><%=com.getAutor().getUsername()%></h5>
-                        <p class="card-text"><%=com.getContenido()%></p>
-                    </div>
-                </div>
-                <% 
-                    }
-                %>
-            </div>
         </div>
     </body>
 </html>

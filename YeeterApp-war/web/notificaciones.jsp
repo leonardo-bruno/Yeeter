@@ -24,7 +24,7 @@
         <script src="assets/js/rowSelecter.js"></script>
     </head>
     <body>
-        <div class="content">
+        <div class="container">
             <div class="bot-grupos">
                 <nav class="navbar navbar-dark bg-dark mb-5">
                     <span class="navbar-brand">Notificaciones</span>

@@ -24,7 +24,7 @@
         <title>Yeeter - Grupos</title>
     </head>
     <body>
-        <div class="content">
+        <div class="container">
             <div class="bot-grupos">
 
                     

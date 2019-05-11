@@ -22,12 +22,11 @@
 <!DOCTYPE html>
 
 <html>
-
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Yeeter</title>
+        <script src="assets/js/rowSelecter.js"></script>
     </head>
-
     <body>
         <%
             if(mensaje != null) {
@@ -67,22 +66,21 @@
                         <% for (Post p : posts) {
 
                         %>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title"><%                            if (p.getIdGrupo() != null) {
-                                    %> 
-                                    Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername()%>     
+                            <div class="card mt-1 mb-1" data-href="PostServlet?postID=<%= p.getId() %>" style="cursor: pointer;">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%                            if (p.getIdGrupo() != null) {
+                                        %> 
+                                        Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername()%>     
 
-                                    <% } else {%>
-                                    @<%= p.getIdAutor().getUsername()%> 
+                                        <% } else {%>
+                                        @<%= p.getIdAutor().getUsername()%> 
 
-                                    <% }%> 
-                                </h5>
-                                <p class="card-text"><%= p.getContenido()%></p>
-                                
-                                <footer > <%= p.getFechaPublicacion() %> </footer>
+                                        <% }%> 
+                                    </h5>
+                                    <p class="card-text"><%= p.getContenido()%></p>
+                                    <footer > <%= p.getFechaPublicacion() %> </footer>
+                                </div>
                             </div>
-                        </div>
                         <% }%>
                 </div>
             </div>
@@ -90,3 +88,5 @@
     </body>
 
 </html>
+
+ 
