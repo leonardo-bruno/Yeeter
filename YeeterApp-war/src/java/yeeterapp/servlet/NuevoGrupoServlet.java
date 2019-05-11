@@ -6,8 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,27 +17,24 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.Grupo;
 import yeeterapp.entity.Usuario;
-
+import yeeterapp.entity.Grupo;
 
 /**
  *
- * @author leonardobruno
+ * @author jesus
  */
-@WebServlet(name = "ListaGruposServlet", urlPatterns = {"/ListaGruposServlet"})
-public class ListaGruposServlet extends HttpServlet {
+@WebServlet(name = "NuevoGrupoServlet", urlPatterns = {"/NuevoGrupoServlet"})
+public class NuevoGrupoServlet extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
     @EJB
     private GrupoFacade grupoFacade;
 
-
-    @EJB
-    private UsuarioFacade usuarioFacade;
     
     
-
-   
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,42 +47,31 @@ public class ListaGruposServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            RequestDispatcher rd;
-            HttpSession session = request.getSession();
-
-            int todos=0;
-            int str=0;
-            Usuario us=null;
-
-            str = Integer.valueOf(request.getParameter("id"));
-            us = this.usuarioFacade.find(str);
-            
-            Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
-            Usuario loggedUser;
-            if(idLoggedUser == null) {
-                rd = this.getServletContext().getRequestDispatcher("/login.jsp");
-                request.setAttribute("error", "Por favor inicie sesión primero.");
-                rd.forward(request, response);
-            } 
-            loggedUser = usuarioFacade.find(idLoggedUser);
-            
-            request.setAttribute("mensaje", request.getAttribute("mensaje"));
-            List<Grupo> usGrupo = loggedUser.getGrupoList();
-            List<Grupo> grupos = this.grupoFacade.findAll();
-            
-            
-            
-            request.setAttribute("usuario", us);
-            request.setAttribute("usuariosGrupos", usGrupo);
-            request.setAttribute("grupos", grupos);
-            request.setAttribute("todos", todos);
-            
-            rd = this.getServletContext().getRequestDispatcher("/listaGrupos.jsp");
+        HttpSession session = request.getSession();        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        RequestDispatcher rd;
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
-            
-        }
+            return;
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
+        
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        
+        Grupo grupo = new Grupo();
+        grupo.setNombre(nombre);
+        grupo.setIdCreador(loggedUser);
+        grupo.setDescripcion(descripcion);
+        Date date = new java.util.Date(System.currentTimeMillis());
+        grupo.setFechaCreacion(date);
+        
+        grupoFacade.create(grupo);
+               
+        response.sendRedirect("ListaGruposServlet?mensaje=Grupo creado correctamente");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

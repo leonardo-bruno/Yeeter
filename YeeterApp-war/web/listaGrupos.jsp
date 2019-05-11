@@ -15,7 +15,8 @@
     List<Grupo> usGruposTodo=(List)request.getAttribute("usuariosGrupos");
     List<Grupo> gruposTodos=(List)request.getAttribute("grupos");
     int todos=0;
-    todos=(Integer)request.getAttribute("todos");    
+    todos=(Integer)request.getAttribute("todos"); 
+    String mensaje = (String)request.getAttribute("mensaje");
     %>
 <html>
     <head>
@@ -25,6 +26,15 @@
     </head>
     <body>
         <div class="container">
+            <div class="checkbox mb-3 mt-3">
+                <% if (mensaje != null) {
+                %>
+                <div class="alert alert-success"><%=mensaje%></div>
+                <%
+                    }
+                %>
+                <!--a class="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a-->
+            </div>
             <a href="nuevoGrupo.jsp"><button class="btn btn-outline-dark">Nuevo Grupo</button></a>
             <div class="bot-grupos">
                 <div class="list-group">
