@@ -7,6 +7,7 @@ package yeeterapp.servlet;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,8 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.MensajeFacade;
+import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Mensaje;
+import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.Usuario;
 
 /**
@@ -26,6 +29,9 @@ import yeeterapp.entity.Usuario;
  */
 @WebServlet(name = "EnviarMensajeServlet", urlPatterns = {"/EnviarMensajeServlet"})
 public class EnviarMensajeServlet extends HttpServlet {
+
+    @EJB
+    private NotificacionesFacade notificacionesFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -67,6 +73,11 @@ public class EnviarMensajeServlet extends HttpServlet {
         Date fecha = new Date(System.currentTimeMillis());
         message.setFecha(fecha);
         
+       
+        Notificaciones n = new Notificaciones();
+        n.setContenido("El usaurio" + loggedUser.getNombre()+ "te ha enviado un mensaje");
+        List<Notificaciones> amigoN = message.getIdReceptor().getNotificacionesList();
+        amigoN.add(n);
         mensajeFacade.create(message);
         
         response.sendRedirect("ChatServlet?idAmigo=" + amigoId);
