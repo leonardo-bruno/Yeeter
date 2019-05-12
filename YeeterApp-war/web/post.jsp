@@ -23,19 +23,31 @@
         <title>Yeeter - Post</title>
     </head>
     <body>
-        <div class="container">
+        <div class="container mb-5">
             <div class="card mt-5">
                 <div class="card-body">
-                    <h2 class="card-title"><%=autor.getNombre() + " " + autor.getApellidos() + " (" + autor.getUsername() + ")"%></h2>
-                    <p class="card-text"><%=post.getContenido()%></p>
+                    <div class="card-body">
+                        <h3 class="card-title"><%                            if (post.getIdGrupo() != null) {
+                            %> 
+                            Posted in group <%=post.getIdGrupo().getNombre()%> by @<%= post.getIdAutor().getUsername()%>     
+
+                            <% } else {%>
+                            @<%= post.getIdAutor().getUsername()%> 
+
+                            <% }%> 
+                        </h3>
+                        <p class="card-text"><%= post.getContenido()%></p>
+                        <footer > <%= post.getFechaPublicacion() %> </footer>
+                    </div>
                 </div>
             </div>
             <div class="mt-1 mb-1">
                 <% for(Comentario com: post.getComentarioList()){   %>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><%=com.getAutor().getUsername()%></h5>
+                        <h5 class="card-title">@<%=com.getAutor().getUsername()%></h5>
                         <p class="card-text"><%=com.getContenido()%></p>
+                        <footer><%=com.getFechaPublicacion()%></footer>
                     </div>
                 </div>
                 <% 

@@ -12,8 +12,7 @@
 
 <!DOCTYPE html>
 <%
-    session = request.getSession();
-    Usuario logUs=(Usuario) session.getAttribute("loggedUser");
+    Usuario logUs=(Usuario) request.getAttribute("loggedUser");
     String message = (String) request.getAttribute("message");
     String error = (String) request.getAttribute("error");
     List<Usuario> users = (List<Usuario>)request.getAttribute("users");
@@ -23,6 +22,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="assets/js/rowSelecter.js"></script>
         <title>Yeeter</title>
     </head>
     <body class = "text-center">
@@ -55,13 +55,13 @@
                     int idReceptor = u.getId();
             %>
 
-            <tr class='clickable-row' data-href='url://'>
+            <tr class='clickable-row' data-href="panelUserServlet?id=<%=u.getId()%>" style="cursor: pointer;">
                 <th><%=u.getNombre()%></th>
                 <th><%=u.getApellidos()%></th>
                 <th><%=u.getUsername()%></th>
                 <th>
                     <%
-                        if(!amigos.contains(u) && !u.equals(logUs)){
+                        if(!amigos.contains(u) && !logUs.equals(u)){
                     %>
 
                     <form method = "post" action = "PeticionAmigo">

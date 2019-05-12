@@ -63,6 +63,7 @@ public class SearchFriendsServlet extends HttpServlet {
             request.setAttribute("error","No existe ningún usuario que coincida con esos datos.");
         }
         
+        request.setAttribute("loggedUser", loggedUser);
         request.setAttribute("users", users);
         request.setAttribute("friends", friends);
         rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");

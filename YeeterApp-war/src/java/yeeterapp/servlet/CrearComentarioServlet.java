@@ -6,6 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -16,9 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import yeeterapp.ejb.ComentarioFacade;
+import yeeterapp.ejb.NotificacionesFacade;
 import yeeterapp.ejb.PostFacade;
 import yeeterapp.ejb.UsuarioFacade;
 import yeeterapp.entity.Comentario;
+import yeeterapp.entity.Notificaciones;
 import yeeterapp.entity.Post;
 import yeeterapp.entity.Usuario;
 
@@ -35,6 +38,8 @@ public class CrearComentarioServlet extends HttpServlet {
     PostFacade postFacade;
     @EJB
     ComentarioFacade comentarioFacade;
+    @EJB
+    NotificacionesFacade notificacionesFacade;
     
     
     /**
@@ -67,6 +72,7 @@ public class CrearComentarioServlet extends HttpServlet {
         com.setAutor(us);
         com.setContenido(comentario);
         com.setPost(post);
+        com.setFechaPublicacion(new java.util.Date(System.currentTimeMillis()));
         comentarioFacade.create(com);
         
         List<Comentario> listaComentarios = post.getComentarioList();
@@ -74,6 +80,20 @@ public class CrearComentarioServlet extends HttpServlet {
         post.setComentarioList(listaComentarios);
         
         postFacade.edit(post);
+        
+        Notificaciones not = new Notificaciones();
+        not.setContenido("@" + us.getUsername() + " ha comentado un post tuyo.");
+        not.setLink("PostServlet?postID=" + post.getId());
+        not.setIdUsuario(post.getIdAutor());
+        not.setNotificacionLeida(false);
+        
+        notificacionesFacade.create(not);
+        
+        List<Notificaciones> listaNotificaciones = post.getIdAutor().getNotificacionesList();
+        listaNotificaciones.add(not);
+        post.getIdAutor().setNotificacionesList(listaNotificaciones);
+        
+        usuarioFacade.edit(post.getIdAutor());
         
         request.setAttribute("message", "Has comentado con éxito esta publicación");
         response.sendRedirect("PostServlet?postID=" + post.getId());

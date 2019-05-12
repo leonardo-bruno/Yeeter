@@ -63,6 +63,7 @@ create table COMENTARIO (
     contenido varchar(1024) not null,
     autor int not null,
     post int not null,
+    fecha_publicacion timestamp not null,
     constraint Comentario_Autor_FK
     foreign key (autor) references USUARIO(id),
     constraint Post_FK
