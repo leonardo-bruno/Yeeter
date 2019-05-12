@@ -101,4 +101,6 @@ insert into POST(contenido, fecha_publicacion, idAutor, idGrupo) values
 insert into COMENTARIO(contenido, post, autor, fecha_publicacion) values 
 	('Definitivamente, vivimos en una sociedad....',  (select id from Post where contenido like '%Literalmente vivimos...%'), 5, '2019-01-20'),
     ('Madre mía qué razón tienes... Fijo que se lleva un anillo!!!', (select id from Post where contenido like '%Atenascumpo%'), 5, '2019-01-20'),
-    ('borra borra XD', (select id from post where contenido like 'POETWEET'), 5, '2018-03-20');
+    ('borra borra XD', (select id from post where contenido like 'POETWEET'), 5, '2018-03-20'),
+    ('WEEDNESDAY lml', 2009, 5, '2018-03-20'),
+    ('ASí es jefa, practico el ASMR', 2001, 5, '2019-02-02');
