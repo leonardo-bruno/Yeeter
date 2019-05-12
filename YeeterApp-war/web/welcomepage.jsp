@@ -67,6 +67,7 @@
                         <% for (Post p : posts) {
 
                         %>
+                        <form action="viewPost?idPost=<%= p.getId() %>" method="post">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title"><%                            if (p.getIdGrupo() != null) {
@@ -83,6 +84,7 @@
                                 <footer > <%= p.getFechaPublicacion() %> </footer>
                             </div>
                         </div>
+                            </form>
                         <% }%>
                 </div>
             </div>
@@ -90,3 +92,5 @@
     </body>
 
 </html>
+
+ 
