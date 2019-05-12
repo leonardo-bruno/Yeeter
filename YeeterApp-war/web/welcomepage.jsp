@@ -26,6 +26,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Yeeter</title>
+        <script src="assets/js/rowSelecter.js"></script>
     </head>
 
     <body>
@@ -67,10 +68,10 @@
                         <% for (Post p : posts) {
 
                         %>
-                        <form action="viewPost?idPost=<%= p.getId() %>" method="post">
-                        <div class="card">
+                        <div class="card" data-href="PostServlet?postID=<%= p.getId() %>" style="cursor: pointer;">
                             <div class="card-body">
-                                <h5 class="card-title"><%                            if (p.getIdGrupo() != null) {
+                                <h5 class="card-title">
+                                    <%                            if (p.getIdGrupo() != null) {
                                     %>
                                     Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername()%>
 
@@ -84,7 +85,6 @@
                                 <footer > <%= p.getFechaPublicacion() %> </footer>
                             </div>
                         </div>
-                            </form>
                         <% }%>
                 </div>
             </div>

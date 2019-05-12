@@ -52,6 +52,7 @@ public class EnviarMensajeServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        
         HttpSession session = request.getSession();        
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
@@ -73,13 +74,17 @@ public class EnviarMensajeServlet extends HttpServlet {
         Date fecha = new Date(System.currentTimeMillis());
         message.setFecha(fecha);
         
-       
+        List<Notificaciones> not = amigo.getNotificacionesList();
         Notificaciones n = new Notificaciones();
-         n.setContenido("El usuario " + loggedUser.getUsername() + " te ha enviado un mensaje");     
+        n.setContenido("El usuario " + loggedUser.getUsername() + " te ha enviado un mensaje");     
         n.setLink("ChatServlet?idAmigo=" + loggedUser.getId());
         n.setIdUsuario(amigo);
         
         notificacionesFacade.create(n);
+        not.add(n);
+        
+        usuarioFacade.edit(amigo);
+        
         mensajeFacade.create(message);
         
         response.sendRedirect("ChatServlet?idAmigo=" + amigoId);
