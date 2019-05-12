@@ -52,3 +52,5 @@ Select * from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERT
   
   
   select * from Usuario;
+
+select * from Peticion_amistad;

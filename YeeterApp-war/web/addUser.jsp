@@ -20,11 +20,10 @@
         <link rel="stylesheet" href="assets/css/estilos.css"/>
     </head>
     <body>
-        
-        <div class="content">
+        <div class="container">
             <div class="bot-grupos">
                 <nav class="navbar navbar-dark bg-dark mb-5">
-                    <span class="navbar-brand">Notificaciones</span>
+                    <span class="navbar-brand">Añadir miembro</span>
                 </nav>
                 <% 
                 if(amigos.size() > 0 ) {

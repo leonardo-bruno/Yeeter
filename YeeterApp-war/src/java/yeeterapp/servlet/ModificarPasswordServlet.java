@@ -43,8 +43,16 @@ public class ModificarPasswordServlet extends HttpServlet {
         HttpSession session = request.getSession();
         RequestDispatcher rd;
         String fieldsThatFail = "";
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
+        
         boolean error = false;
         Usuario user=null;
+        
+        if(idLoggedUser == null) {
+            rd = this.getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("error", "Por favor inicie sesión primero.");
+            rd.forward(request, response);
+        }
         
         try{
             int str=Integer.valueOf(request.getParameter("id"));
@@ -71,7 +79,6 @@ public class ModificarPasswordServlet extends HttpServlet {
             }else{
                 user.setPassword(password2);
                 usuarioFacade.edit(user);
-                session.setAttribute("loggedUser", user);
                 request.setAttribute("usuario", user);
                 rd = this.getServletContext().getRequestDispatcher("/panelUser.jsp");
                 rd.forward(request, response);
@@ -80,7 +87,7 @@ public class ModificarPasswordServlet extends HttpServlet {
             
             
         }catch(Exception ex){
-            user=(Usuario)session.getAttribute("loggedUser");
+            user=usuarioFacade.find(idLoggedUser);
             session.setAttribute("loggedUser", user);
             rd = this.getServletContext().getRequestDispatcher("/modificarPassword.jsp");
             rd.forward(request, response);

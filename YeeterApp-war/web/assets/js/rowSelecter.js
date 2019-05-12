@@ -10,3 +10,11 @@ $(document).ready(function($) {
         window.document.location = $(this).data("href");
     });
 });
+
+/* Esto es una chapuza pero paso de romperme la cabeza con el estilo */
+
+$(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});

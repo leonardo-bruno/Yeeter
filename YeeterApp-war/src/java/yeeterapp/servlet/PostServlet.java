@@ -51,16 +51,17 @@ public class PostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();        
+        Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
-        HttpSession session = request.getSession();
-        int idUsuario = (Integer) session.getAttribute("loggedUserID");
-        Usuario user = usuarioFacade.find(idUsuario);
-        if(user == null) {
+        Usuario loggedUser;
+        if(idLoggedUser == null) {
             rd = this.getServletContext().getRequestDispatcher("/login.jsp");
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
             return;
-        }
+        } 
+        loggedUser = usuarioFacade.find(idLoggedUser);
         
         String idPostValue = request.getParameter("postID");
         

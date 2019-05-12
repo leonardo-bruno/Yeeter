@@ -66,7 +66,16 @@
                         </a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ml-3">
+	          <li class="nav-item">
+	          	<a href="Login?logout=1">
+                            <button class="btn btn-outline-light my-2 my-sm-0">
+                                Logout                                
+                            </button>
+                        </a>
+	          </li>
+                </ul>
             </div>
-        </nav>
+        </nav>               
     </body>
 </html>

@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : welcomepage
     Created on : 16-Apr-2019, 10:56:06
     Author     : alec
@@ -13,7 +13,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="navbar.jsp" %>
 
-<%    
+<%
     List<Post> posts = (List) request.getAttribute("posts");
     Usuario userLog = (Usuario) request.getAttribute("loggedUser");
     String mensaje = (String) request.getAttribute("message");
@@ -33,7 +33,7 @@
             if(mensaje != null) {
         %>
             <div class="alert alert-success"><%=mensaje%></div>
-        <% 
+        <%
             }
         %>
         <div class="container mb-5">
@@ -43,7 +43,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">  @<%= userLog.getUsername()%>  
+                            <h5 class="card-title">  @<%= userLog.getUsername()%>
                             </h5>
                             <p class="card-text">
                             <div class="row overview">
@@ -55,7 +55,7 @@
                                     <h5>Amigos</h5>
                                     <h6><%= userLog.getUsuarioList1().size() %></h6>
                                 </div>
-                                
+
                             </div>
                             </p>
                         </div>
@@ -71,16 +71,16 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title"><%                            if (p.getIdGrupo() != null) {
-                                    %> 
-                                    Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername()%>     
+                                    %>
+                                    Posted in group <%=p.getIdGrupo().getNombre()%> by @<%= p.getIdAutor().getUsername()%>
 
                                     <% } else {%>
-                                    @<%= p.getIdAutor().getUsername()%> 
+                                    @<%= p.getIdAutor().getUsername()%>
 
-                                    <% }%> 
+                                    <% }%>
                                 </h5>
                                 <p class="card-text"><%= p.getContenido()%></p>
-                                
+
                                 <footer > <%= p.getFechaPublicacion() %> </footer>
                             </div>
                         </div>
@@ -92,5 +92,3 @@
     </body>
 
 </html>
-
- 

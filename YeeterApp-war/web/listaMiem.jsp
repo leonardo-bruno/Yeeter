@@ -20,7 +20,7 @@
         <title>Yeeter - Miembros de <%= grupo.getNombre() %></title>
     </head>
     <body>
-        <div class="content">
+        <div class="container">
             <div class="bot-grupos">
                 <nav class="navbar navbar-dark bg-dark">
                     <span class="navbar-brand">Miembros de <%= grupo.getNombre() %></span>

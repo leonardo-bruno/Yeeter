@@ -35,7 +35,7 @@
             <h1 class="mt-5 justify-content-center">Modificar Contraseña</h1>
         </div>
         <div class="body-container">
-            <form method="post" action="ModificarPasswordServlet?id=<%= usuario.getId()%>">
+            <form method="post" action="ModificarPasswordServlet?id=<%= usuario %>">
                 <div style="align-items: center;">
                     <%
                         if(fieldsThatFail != null && fieldsThatFail.contains("oldPass")) {

@@ -49,7 +49,7 @@
                             <%
                                 }
                             %>
-                            <a class="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a>
+                            <!--a class="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a-->
                         </div>
                         <div class="btn-group" role="group">
                             <a href="register.jsp" class="btn btn-lg btn-outline-secondary">

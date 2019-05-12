@@ -6,6 +6,7 @@
 package yeeterapp.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +36,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Comentario.findById", query = "SELECT c FROM Comentario c WHERE c.id = :id")
     , @NamedQuery(name = "Comentario.findByContenido", query = "SELECT c FROM Comentario c WHERE c.contenido = :contenido")})
 public class Comentario implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha_publicacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaPublicacion;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -119,6 +128,14 @@ public class Comentario implements Serializable {
     @Override
     public String toString() {
         return "yeeterapp.entity.Comentario[ id=" + id + " ]";
+    }
+
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
     }
     
 }

@@ -72,7 +72,7 @@ public class ListaGruposServlet extends HttpServlet {
             } 
             loggedUser = usuarioFacade.find(idLoggedUser);
             
-            
+            request.setAttribute("mensaje", request.getAttribute("mensaje"));
             List<Grupo> usGrupo = loggedUser.getGrupoList();
             List<Grupo> grupos = this.grupoFacade.findAll();
             

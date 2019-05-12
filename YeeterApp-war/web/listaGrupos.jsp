@@ -15,7 +15,8 @@
     List<Grupo> usGruposTodo=(List)request.getAttribute("usuariosGrupos");
     List<Grupo> gruposTodos=(List)request.getAttribute("grupos");
     int todos=0;
-    todos=(Integer)request.getAttribute("todos");    
+    todos=(Integer)request.getAttribute("todos"); 
+    String mensaje = (String)request.getAttribute("mensaje");
     %>
 <html>
     <head>
@@ -24,15 +25,18 @@
         <title>Yeeter - Grupos</title>
     </head>
     <body>
-        <div class="content">
+        <div class="container">
+            <div class="checkbox mb-3 mt-3">
+                <% if (mensaje != null) {
+                %>
+                <div class="alert alert-success"><%=mensaje%></div>
+                <%
+                    }
+                %>
+                <!--a class="text-muted" href="forgotpswrd.jsp">Contraseña Olvidada</a-->
+            </div>
+            <a href="nuevoGrupo.jsp"><button class="btn btn-outline-dark">Nuevo Grupo</button></a>
             <div class="bot-grupos">
-                <nav class="navbar navbar-dark bg-dark">
-                    <span class="navbar-brand">Grupos</span>
-                    <form class="form-inline my-2 my-lg-0" action="ListaGruposServlet">
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" id="todos" value="1">Todos</button>
-                    </form>
-                </nav>
-                    
                 <div class="list-group">
                     <% for(int i=0;i<usGruposTodo.size();i++){
                     %>

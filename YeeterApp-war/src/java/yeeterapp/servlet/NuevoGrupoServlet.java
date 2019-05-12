@@ -6,7 +6,7 @@
 package yeeterapp.servlet;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,21 +15,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import yeeterapp.ejb.GrupoFacade;
 import yeeterapp.ejb.UsuarioFacade;
-import yeeterapp.entity.PeticionAmistad;
 import yeeterapp.entity.Usuario;
+import yeeterapp.entity.Grupo;
 
 /**
  *
- * @author Juan Garcia Ruiz
+ * @author jesus
  */
-@WebServlet(name = "buscarAmigoServlet", urlPatterns = {"/BuscarAmigos"})
-public class SearchFriendsServlet extends HttpServlet {
+@WebServlet(name = "NuevoGrupoServlet", urlPatterns = {"/NuevoGrupoServlet"})
+public class NuevoGrupoServlet extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
 
+    @EJB
+    private GrupoFacade grupoFacade;
 
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,10 +46,8 @@ public class SearchFriendsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
-
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession();        
         Integer idLoggedUser = (Integer) session.getAttribute("loggedUserID");
         RequestDispatcher rd;
         Usuario loggedUser;
@@ -53,21 +56,22 @@ public class SearchFriendsServlet extends HttpServlet {
             request.setAttribute("error", "Por favor inicie sesión primero.");
             rd.forward(request, response);
             return;
-        }
+        } 
         loggedUser = usuarioFacade.find(idLoggedUser);
-        String input = request.getParameter("busqueda");
-        List<Usuario> users = usuarioFacade.queryUserByUsernameOrName(input);
-        List<Usuario> friends = loggedUser.getUsuarioList();
-
-        if(users.isEmpty()){
-            request.setAttribute("error","No existe ningún usuario que coincida con esos datos.");
-        }
         
-        request.setAttribute("loggedUser", loggedUser);
-        request.setAttribute("users", users);
-        request.setAttribute("friends", friends);
-        rd = this.getServletContext().getRequestDispatcher("/buscaramigo.jsp");
-        rd.forward(request, response);
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        
+        Grupo grupo = new Grupo();
+        grupo.setNombre(nombre);
+        grupo.setIdCreador(loggedUser);
+        grupo.setDescripcion(descripcion);
+        Date date = new java.util.Date(System.currentTimeMillis());
+        grupo.setFechaCreacion(date);
+        
+        grupoFacade.create(grupo);
+               
+        response.sendRedirect("ListaGruposServlet?mensaje=Grupo creado correctamente");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -35,8 +35,6 @@ public class AddFriendServlet extends HttpServlet {
 
     @EJB
     private PeticionAmistadFacade peticionFacade;
-    @EJB
-    private NotificacionesFacade notificacionesFacade;
 
 
     /**
