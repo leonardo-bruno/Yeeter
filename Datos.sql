@@ -31,7 +31,6 @@ insert into Amigos(idUsuario, idAmigo) values
 insert into Amigos(idUsuario, idAmigo) values
 	((select id from Usuario where correo like 'alkasete%'),(select id from Usuario where correo like 'pedro%'));
 
- select * from Amigos left join usuario on amigos.idAmigo = Usuario.id where id = (select id from usuario where correo like 'alkasete%'); # amigos de Leonardo
 
 
  insert into Grupo(nombre, descripcion, fecha_creacion, idCreador) values
@@ -65,19 +64,22 @@ insert into POST(contenido, fecha_publicacion, idAutor) values
     ('Hola mundo! (me copio del @alkasete)', '2019-01-20', (select id from usuario where correo like 'pedro%')),
     ('JEJEJEJE EL ALKASET!!!', '2018-01-20', (select id from usuario where correo like 'alkasete%')),
     ('Comprobando como van las movidas de las fechas oWo', '2017-01-20', (select id from usuario where correo like 'pedro%')),
-    ('Se ha muerto mi abuela YEET 👌🏻😂💯', '2016-01-20', (select id from usuario where correo like 'wan%'));
+    ('Oleeee YEET 👌🏻😂💯', '2016-01-20', (select id from usuario where correo like 'wan%')),
+    ('Madre mía Atenascumpo el cr7 del baloncesto', '2016-01-20', (select id from usuario where correo like 'wan%')),
+    ('Literalmente vivimos... Da que pensar...', '2019-01-20', (select id from usuario where correo like 'parejo%')),
+    ('POETWEET', '2016-01-20', (select id from usuario where correo like 'wan%'));
 insert into POST(contenido, fecha_publicacion, idAutor, idGrupo) values
 	('Hola grupo!!!', '2019-01-20', (select id from usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'devs%')),
     ('Hola grupo!!!', '2019-01-20', (select id from usuario where correo like 'pedro%'), (select id from grupo where nombre like 'Yeeter%'));
 insert into POST(contenido, fecha_publicacion, idAutor, idGrupo) values
-('Joder como te foyaba con la poya 😂', '2010-01-20', (select id from usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'Just%'));
+('Comprobando que los emojis los soporta la BD 😂', '2010-01-20', (select id from usuario where correo like 'alkasete%'), (select id from grupo where nombre like 'Just%'));
 
 
 
-Select *  from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PERTENECE_GRUPO.idGrupo Left Join
- Usuario ON Usuario.id = USUARIO_PERTENECE_GRUPO.idUsuario;
 
 
+# Realmente estas notificaciones son paria, no sirven para nada. Las notificaciones funcionan bien
+# dentro de la aplicación. Esto es un prototipo de notificación. 
  insert into Notificaciones(contenido, link, idUsuario) values
  ('Wan ha comentado en tu post', 'WelcomeServlet', (select id from Usuario where correo like 'alkasete%')),
  ('Jesucristo te quiere añadir como amigo', 'WelcomeServlet', (select id from Usuario where correo like 'pedro%')),
@@ -95,3 +97,8 @@ Select *  from Grupo Left Join USUARIO_PERTENECE_GRUPO ON Grupo.id = USUARIO_PER
      ('Holaaa!!!', '2013-01-20', (select id from Usuario where correo like 'alkasete%'), ((select id from Usuario where correo like 'leo%'))),
      ('Holaaa!!!', '2014-01-20', (select id from Usuario where correo like 'alkasete%'), ((select id from Usuario where correo like 'wan%')));
 
+
+insert into COMENTARIO(contenido, post, autor, fecha_publicacion) values 
+	('Definitivamente, vivimos en una sociedad....',  (select id from Post where contenido like '%Literalmente vivimos...%'), 5, '2019-01-20'),
+    ('Madre mía qué razón tienes... Fijo que se lleva un anillo!!!', (select id from Post where contenido like '%Atenascumpo%'), 5, '2019-01-20'),
+    ('borra borra XD', (select id from post where contenido like 'POETWEET'), 5, '2018-03-20');
