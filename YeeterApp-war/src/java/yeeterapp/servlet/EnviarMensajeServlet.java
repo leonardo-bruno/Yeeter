@@ -75,9 +75,11 @@ public class EnviarMensajeServlet extends HttpServlet {
         
        
         Notificaciones n = new Notificaciones();
-        n.setContenido("El usaurio" + loggedUser.getNombre()+ "te ha enviado un mensaje");
-        List<Notificaciones> amigoN = message.getIdReceptor().getNotificacionesList();
-        amigoN.add(n);
+        n.setContenido("El usuario" + loggedUser.getNombre()+ "te ha enviado un mensaje");     
+        n.setLink("EnviarMensajeServlet?id=" + amigo);
+        n.setIdUsuario(amigo);
+        
+        notificacionesFacade.create(n);
         mensajeFacade.create(message);
         
         response.sendRedirect("ChatServlet?idAmigo=" + amigoId);
